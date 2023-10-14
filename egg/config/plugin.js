@@ -1,25 +1,29 @@
 "use strict";
 
-/** @type Egg.EggPlugin */
-module.exports = {
-  // had enabled by egg
-  static: {
-    enable: true,
-  },
-  sequelize: {
-    enable: true,
-    package: "egg-sequelize",
-  },
-  io: {
-    enable: true,
-    package: "egg-socket.io",
-  },
-  routerPlus: {
-    enable: true,
-    package: "egg-router-plus",
-  },
-  ajv: {
-    enable: true,
-    package: "egg-ajv",
-  },
+exports.static = {
+  enable: true,
+};
+exports.io = {
+  enable: true,
+  package: "egg-socket.io",
+};
+exports.routerPlus = {
+  enable: true,
+  package: "egg-router-plus",
+};
+exports.swaggerdoc = {
+  enable: true,
+  package: "egg-swagger-doc-feat",
+};
+exports.jwt = {
+  enable: true,
+  package: "egg-jwt",
+};
+exports.eggvalidate = {
+  enable: true,
+  package: "egg-validate",
+};
+exports.sequelize = {
+  enable: true,
+  package: "egg-sequelize",
 };

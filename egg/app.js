@@ -19,8 +19,8 @@ module.exports = class AppBootHook {
 
   async willReady() {
     // All plugins have started, can do some thing before app ready
-    // 同步Model
-    this.app.model.sync({ alter: true });
+    // 同步Sequelize Model
+    // this.app.model.sync({ alter: true });
   }
 
   async didReady() {

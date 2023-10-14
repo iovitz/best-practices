@@ -7,4 +7,8 @@ module.exports = {
     }
     return this[LRU];
   },
+
+  get isProd() {
+    return this.env === "prod";
+  },
 };

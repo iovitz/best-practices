@@ -1,14 +1,15 @@
 "use strict";
 
 module.exports = (app) => {
-  const { router, controller, io } = app;
-  const { demo } = controller;
+  const { router, controller } = app;
+  // const { io } = app;
+  const { home } = controller;
 
   // Socket.IO
-  io.route("chat", io.controller.chat.ping);
+  // io.route("chat", io.controller.chat.ping);
 
   // Rest API
-  const userRouter = router.namespace("/api/demo");
-  userRouter.get("/", demo.testGet);
-  userRouter.post("/", demo.testPost);
+  const homeRouter = router.namespace("/api");
+  homeRouter.get("/status", home.getStatus);
+  homeRouter.post("/user/status", home.postStatus);
 };

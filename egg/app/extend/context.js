@@ -14,18 +14,19 @@ module.exports = {
       msg,
     };
   },
-  serverError(msg = "Server Error") {
-    this.status = 500;
-    this.body = {
-      code: 50000,
-      msg,
-    };
-  },
   authError(msg = "Login Request") {
     this.status = 403;
     this.body = {
-      code: 50000,
+      code: 40003,
       msg,
     };
+  },
+  serverError(msg = "Server Error", status = 500, code = 50000) {
+    this.status = status;
+    this.body = {
+      code,
+      msg,
+    };
+    
   },
 };
