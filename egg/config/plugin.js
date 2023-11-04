@@ -23,7 +23,7 @@ exports.eggvalidate = {
   enable: true,
   package: "egg-validate",
 };
-exports.sequelize = {
-  enable: true,
-  package: "egg-sequelize",
-};
+// exports.sequelize = {
+//   enable: true,
+//   package: "egg-sequelize",
+// };
