@@ -15,15 +15,7 @@ exports.swaggerdoc = {
   enable: true,
   package: "egg-swagger-doc-feat",
 };
-exports.jwt = {
-  enable: true,
-  package: "egg-jwt",
-};
-exports.eggvalidate = {
+exports.validate = {
   enable: true,
   package: "egg-validate",
 };
-// exports.sequelize = {
-//   enable: true,
-//   package: "egg-sequelize",
-// };

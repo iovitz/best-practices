@@ -1,4 +1,13 @@
 module.exports = {
+  get $body() {
+    return this.request.body;
+  },
+  get $query() {
+    return this.request.query;
+  },
+  get $header() {
+    return this.request.header;
+  },
   success(data, msg = "success") {
     this.status = 200;
     this.body = {
@@ -8,14 +17,14 @@ module.exports = {
     };
   },
   paramsError(msg = "Bad Request") {
-    this.status = 400;
+    this.status = 200;
     this.body = {
-      code: 200,
+      code: 40000,
       msg,
     };
   },
   authError(msg = "Login Request") {
-    this.status = 403;
+    this.status = 200;
     this.body = {
       code: 40003,
       msg,
@@ -27,6 +36,5 @@ module.exports = {
       code,
       msg,
     };
-    
   },
 };
