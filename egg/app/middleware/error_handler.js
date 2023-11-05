@@ -4,7 +4,6 @@ module.exports = (options, app) => {
       await next();
     } catch (err) {
       ctx.logger.error(err);
-      console.log(err);
       if (!err) return;
       const { statusCode, errCode } = err;
       const message =
