@@ -1,0 +1,14 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "username": "iovitz",
+      "password": "123456"
+    },
+    "local": {
+      "hostname": "localhost:8080"
+    },
+    "online": {
+      "hostname": "localhost:8081"
+    }
+  }
+}

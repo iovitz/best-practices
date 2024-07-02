@@ -1,13 +1,16 @@
 import {
-  INestApplication,
   Injectable,
   Logger,
+  OnApplicationShutdown,
   OnModuleInit,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnApplicationShutdown
+{
   async onModuleInit() {
     try {
       const res = await this.$connect();
@@ -17,10 +20,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     }
   }
 
-  async enableShutdownHooks(app: INestApplication) {
-    this.$on('beforeExit', async () => {
-      Logger.log('关闭数据库');
-      await app.close();
-    });
+  async onApplicationShutdown() {
+    this.$disconnect();
   }
 }
