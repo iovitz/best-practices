@@ -1,9 +1,6 @@
 {
   "rest-client.environmentVariables": {
-    "$shared": {
-      "username": "iovitz",
-      "password": "123456"
-    },
+    "$shared": {},
     "local": {
       "hostname": "localhost:8080"
     },

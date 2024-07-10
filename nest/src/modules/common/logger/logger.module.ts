@@ -9,10 +9,10 @@ import 'winston-daily-rotate-file';
     WinstonModule.forRootAsync({
       inject: [ConfigService],
       useFactory(configService: ConfigService) {
-        const env = configService.get('NODE_ENV');
         const logLevel = configService.get('LOG_LEVEL');
-        const isProd = env === 'production';
+        const isProd = configService.getOrThrow('isProd');
         const prefix = isProd ? 'PROD' : 'DEV';
+        const env = configService.getOrThrow('NODE_ENV');
 
         const consoleTransport = new transports.Console({
           level: logLevel,

@@ -12,9 +12,17 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      // 环境变量配置
-      // .env文件中的属性，会默认覆盖所有环境单独配置的属性
-      envFilePath: [`.env.${process.env.NODE_ENV}`],
+      envFilePath: [
+        '.env', // 默认配置文件
+        process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.prod', // 环境配置文件
+      ],
+      load: [
+        () => ({
+          ...process.env,
+          isProd: process.env.NODE_ENV !== 'dev',
+          NODE_ENV: process.env.NODE_ENV ?? 'prod',
+        }),
+      ],
     }),
     LoggerModule,
     EventEmitterModule.forRoot(),
