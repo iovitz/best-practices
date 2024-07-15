@@ -1,11 +1,11 @@
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SocketIoAdapter } from './adaptors/socket.io.adaptor';
-import { ResponseInterceptor } from './interceptors/response.interceptor.ts';
+import { ResponseFormatInterceptor } from './interceptors/response.interceptor.ts';
 import { ValidationPipe } from './pipes/validation.pipe';
 import { GlobalErrorFilter } from './filters/error.filter';
 import { HttpExceptionFilter } from './filters/http.filter';
 import { ParamsExceptionFilter } from './filters/validator.filter';
-import { PrismaService } from 'src/modules/common/prisma/prisma.service';
+import { PrismaService } from 'src/modules/global/prisma/prisma.service';
 import { LoggerService } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
@@ -17,5 +17,5 @@ export function useMiddlewares(app: NestExpressApplication) {
   app.useGlobalFilters(new GlobalErrorFilter(logger));
   app.useGlobalFilters(new ParamsExceptionFilter(logger));
   app.useGlobalFilters(new HttpExceptionFilter(logger));
-  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalInterceptors(new ResponseFormatInterceptor(logger));
 }

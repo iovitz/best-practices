@@ -28,4 +28,4 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     EventEmitterModule.forRoot(),
   ],
 })
-export class CommonModule {}
+export class GlobalModule {}
