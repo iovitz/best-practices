@@ -6,7 +6,7 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ParamsException } from 'src/common/errors';
+import { ParamsException } from 'src/common/errors/errors';
 
 @Catch(ParamsException)
 export class ParamsExceptionFilter implements ExceptionFilter {

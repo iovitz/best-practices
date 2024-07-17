@@ -1,0 +1,17 @@
+@prefix = {{host}}{{globalPrefix}}/user
+
+### 分页获取所有用户
+GET {{prefix}}/list
+  ?page=1
+
+### 根据ID获取指定用户
+GET {{prefix}}/52
+
+### 获取服务运行状态
+POST {{prefix}}/create
+content-type: application/json
+
+{
+    "name": "larry",
+    "age": {{$randomInt 5 150}}
+}
