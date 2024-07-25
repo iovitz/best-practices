@@ -8,7 +8,7 @@ import {
 import { Response } from 'express';
 
 @Catch(Error)
-export class GlobalErrorFilter implements ExceptionFilter {
+export class GlobalExceptionFilter implements ExceptionFilter {
   constructor(private logger: LoggerService) {}
 
   catch(exception: Error, host: ArgumentsHost) {

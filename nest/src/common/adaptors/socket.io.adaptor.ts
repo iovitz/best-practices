@@ -1,18 +1,16 @@
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { Server, ServerOptions } from 'socket.io';
 import { INestApplication, LoggerService } from '@nestjs/common';
-import { PrismaService } from 'src/modules/global/prisma/prisma.service';
 
 export class SocketIoAdapter extends IoAdapter {
   constructor(
     app: INestApplication,
     private logger: LoggerService,
-    private prismaService: PrismaService,
   ) {
     super(app);
   }
 
-  createIOServer(port: number, options?: ServerOptions) {
+  createIOServer(port: number, options?: ServerOptions): Server {
     options = {
       ...options,
     };

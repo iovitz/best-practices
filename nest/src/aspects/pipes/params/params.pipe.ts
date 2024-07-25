@@ -16,7 +16,7 @@ import { ParamsException } from 'src/common/errors/errors';
  */
 
 @Injectable()
-export class ValidationPipe implements PipeTransform {
+export class ParamsPipe implements PipeTransform {
   constructor(private logger: LoggerService) {}
 
   async transform(value: unknown, metadata: ArgumentMetadata) {

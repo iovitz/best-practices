@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { createUserDTO, getUserDTO, getUsersDTO } from './user.dto';
 import { UserService } from './user.service';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('/list')
-  async getUsers(@Query() query: getUsersDTO) {
+  async getUsers(@Query() query: getUsersDTO, @Req() req: Request) {
     const users = await this.userService.getUserList(
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
+    req.user;
     return users;
   }
 
@@ -21,8 +23,7 @@ export class UserController {
   }
 
   @Post('/create')
-  async createUser(@Body() body: createUserDTO) {
-    const res = await this.userService.createUser(body.name, body.age);
-    return res;
+  async createUser() {
+    return 'success';
   }
 }
