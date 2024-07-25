@@ -8,7 +8,6 @@ import {
 } from '@nestjs/websockets';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Server, Socket } from 'socket.io';
-import { PrismaService } from 'src/modules/global/prisma/prisma.service';
 
 @WebSocketGateway({
   path: '/socket/v1',
@@ -19,7 +18,6 @@ export class SocketV1Gateway
   constructor(
     @Inject(WINSTON_MODULE_NEST_PROVIDER)
     private readonly logger: LoggerService,
-    private readonly prismaService: PrismaService,
   ) {}
 
   @WebSocketServer() server: Server;
