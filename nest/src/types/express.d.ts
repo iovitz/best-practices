@@ -1,3 +1,5 @@
+import { LoggerService } from '@nestjs/common';
+
 export {};
 
 declare global {
@@ -10,6 +12,11 @@ declare global {
       tracer?: {
         id: string;
       };
+
+      /**
+       * 外部注入
+       */
+      logger: LoggerService;
     }
   }
 }

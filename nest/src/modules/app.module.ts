@@ -8,11 +8,18 @@ import {
 import { GlobalModule } from './global/global.module';
 import { SocketModule } from './socket/socket.module';
 import { UserModule } from './user/user.module';
-import { TracerMiddleware } from 'src/aspects/middlewares/tracer/tracer.middleware';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RequestTracerInterceptor } from 'src/aspects/interceptors/request-tracer/request-tracer.interceptor';
 
 @Module({
   imports: [GlobalModule, SocketModule, UserModule],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestTracerInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   constructor(
@@ -20,6 +27,6 @@ export class AppModule implements NestModule {
   ) {}
 
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(new TracerMiddleware(this.logger).use).forRoutes('*');
+    consumer.apply().forRoutes('*');
   }
 }

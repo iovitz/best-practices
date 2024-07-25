@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { WinstonModule, utilities } from 'nest-winston';
+import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
-import moment from 'moment';
+import chalk from 'chalk';
 import 'winston-daily-rotate-file';
 
 @Module({
@@ -11,16 +11,20 @@ import 'winston-daily-rotate-file';
       inject: [ConfigService],
       useFactory(configService: ConfigService) {
         const logLevel = configService.get('LOG_LEVEL');
-        const isProd = configService.getOrThrow('isProd');
-        const prefix = isProd ? 'PROD' : 'DEV';
         const env = configService.getOrThrow('NODE_ENV');
 
         const consoleTransport = new transports.Console({
           level: logLevel,
           // 使用时间戳和nest样式
           format: format.combine(
-            format.timestamp(),
-            utilities.format.nestLike(prefix),
+            format.timestamp({ format: 'MM-DD HH:mm:ss' }),
+            format.printf((i) => {
+              const timestamp = chalk.gray(i.timestamp);
+              const message = chalk.blue(i.message);
+              return `${[timestamp]} ${i.level} ${message} ${i.context ?? ''} ${
+                i.stack ?? ''
+              }`;
+            }),
           ),
         });
 
@@ -35,9 +39,9 @@ import 'winston-daily-rotate-file';
           format: format.combine(
             format.timestamp({ format: 'MMM-DD-YYYY HH:mm:ss' }),
             format.printf((i) => {
-              return `${[i.timestamp]} ${i.level}  ${i.message} ${JSON.stringify(
+              return `${[i.timestamp]} ${i.level} ${i.context}  ${i.message} ${JSON.stringify(
                 i.stack,
-              )} ${i.context}`;
+              )}`;
             }),
             format.colorize(),
           ),
