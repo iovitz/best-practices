@@ -2,12 +2,12 @@ import { Global, Module } from '@nestjs/common';
 import { LoggerModule } from './logger/logger.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { PrismaService } from './prisma/prisma.service';
+import { SqliteService } from './sqlite/sqlite.service';
 
 @Global()
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [SqliteService],
+  exports: [SqliteService],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
