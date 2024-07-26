@@ -1,18 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/modules/global/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor() {}
+  constructor(private prismaService: PrismaService) {}
 
   getUserList(page: number, take: number) {
-    return 1;
+    return this.prismaService.user.findMany({
+      skip: (page - 1) * take,
+      take,
+    });
   }
 
   getUserById(id: number) {
-    return 2;
+    return this.prismaService.user.findFirst({
+      where: {
+        id: id,
+      },
+    });
   }
 
   createUser(name: string, age: number) {
-    return 3;
+    return this.prismaService.user.create({
+      data: {
+        name,
+        age,
+      },
+    });
   }
 }

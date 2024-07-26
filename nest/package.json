@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "postinstall": "npm run sqlite:generate",
+    "sqlite:generate": "./node_modules/.bin/prisma generate --schema=./prisma/sqlite.prisma",
+    "sqlite:db:push": "./node_modules/.bin/prisma db push --schema=./prisma/sqlite.prisma"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -27,6 +30,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.3.1",
     "@nestjs/websockets": "^10.3.1",
+    "@prisma/client": "^5.17.0",
     "better-sqlite3": "^11.1.2",
     "chalk": "^4.1.2",
     "class-transformer": "^0.5.1",
@@ -35,6 +39,7 @@
     "drizzle-orm": "^0.32.1",
     "nanoid": "^3.3.7",
     "nest-winston": "^1.9.4",
+    "prisma": "^5.17.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.4",

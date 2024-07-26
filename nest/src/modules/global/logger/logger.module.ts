@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import 'winston-daily-rotate-file';
 
 @Module({

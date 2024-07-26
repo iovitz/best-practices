@@ -1,13 +1,13 @@
 import { Global, Module } from '@nestjs/common';
-import { UtilsService } from './utils/utils.service';
 import { LoggerModule } from './logger/logger.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { PrismaService } from './prisma/prisma.service';
 
 @Global()
 @Module({
-  providers: [UtilsService],
-  exports: [UtilsService],
+  providers: [PrismaService],
+  exports: [PrismaService],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
