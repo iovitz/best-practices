@@ -4,7 +4,7 @@ import {
   OnApplicationShutdown,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from './client';
+import { PrismaClient } from '@prisma/sqlite';
 
 @Injectable()
 export class SqliteService

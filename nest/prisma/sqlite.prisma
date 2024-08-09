@@ -1,6 +1,8 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/modules/global/sqlite/client"
+  // 初始化：pnpm generate:sqlite
+  // 引入：import { PrismaClient } from '@prisma/sqlite';
+  output   = "../node_modules/@prisma/sqlite"
 }
 
 datasource db {
