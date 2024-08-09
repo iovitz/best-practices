@@ -43,9 +43,9 @@ async function bootstrap() {
   // 允许跨域
   app.enableCors({});
 
-  app.setGlobalPrefix(configService.getOrThrow('API_GLOBAL_PREFIX'));
+  app.setGlobalPrefix(configService.getOrThrow('SERVER_GLOBAL_PREFIX'));
 
-  const appPort = parseInt(configService.getOrThrow('APP_PORT')) || 11000;
+  const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
 
   logger.log(`Server running in http://127.0.0.1:${appPort}`, 'bootstrap');
