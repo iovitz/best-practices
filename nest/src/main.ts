@@ -3,14 +3,14 @@ import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { LoggerService } from '@nestjs/common';
-import { AppModule } from './modules/app.module';
-import { GlobalExceptionFilter } from './aspects/filters/global-exception/global-exception.filter';
-import { ParamsExceptionFilter } from './aspects/filters/params-exception/params-exception.filter';
-import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
-import { ParamsPipe } from './aspects/pipes/params/params.pipe';
-import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor';
+import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
+import { ParamsExceptionFilter } from './common/filters/params-exception/params-exception.filter';
+import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { ParamsPipe } from './common/pipes/params/params.pipe';
+import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
-import { TracerMiddleware } from './aspects/middlewares/tracer/tracer.middleware';
+import { TracerMiddleware } from './common/middlewares/tracer/tracer.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
