@@ -7,7 +7,6 @@ declare global {
     export interface Request {
       user?: any;
       userId?: string;
-      skipFormat?: boolean;
 
       tracer?: {
         id: string;
@@ -17,6 +16,9 @@ declare global {
        * 外部注入
        */
       logger: LoggerService;
+    }
+    export interface Response {
+      skipFormat?: boolean;
     }
   }
 }

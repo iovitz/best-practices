@@ -14,6 +14,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './db/db.module';
 import { EncryptService } from './services/encrypt/encrypt.service';
 import { VerifyService } from './services/verify/verify.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -51,8 +53,9 @@ import { VerifyService } from './services/verify/verify.service';
     UserModule,
   ],
   // 全局使用的一些Service
-  providers: [EncryptService, VerifyService],
+  providers: [EncryptService, VerifyService, AppService],
   exports: [],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   constructor(

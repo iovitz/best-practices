@@ -5,20 +5,22 @@ import {
   LoggerService,
   NestInterceptor,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SKIP_RESPONSE_FORMAT_KEY } from 'src/common/constans/metas';
 
 @Injectable()
 export class ResponseFormatterInterceptor implements NestInterceptor {
   constructor(private logger: LoggerService) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
+    const handler = ctx.getHandler();
+    const skipFormat = Reflect.getMetadata(SKIP_RESPONSE_FORMAT_KEY, handler);
     return next.handle().pipe(
       map((data) => {
-        const res: Request = context.getArgByIndex(1);
+        console.log(data);
         // 跳过format
-        if (res.skipFormat) {
+        if (skipFormat) {
           this.logger.log('Skip Response Format');
           return data;
         }

@@ -10,7 +10,6 @@ import { HttpExceptionFilter } from './common/filters/http-exception/http-except
 import { ParamsPipe } from './common/pipes/params/params.pipe';
 import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
-import { TracerMiddleware } from './common/middlewares/tracer/tracer.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -26,13 +25,14 @@ async function bootstrap() {
 
   app.useWebSocketAdapter(new SocketIoAdapter(app, logger));
 
-  // 虚拟路径为 static
   app.useStaticAssets('public', {
-    prefix: '/',
+    // 虚拟路径为 static
+    prefix: '/static',
   });
 
-  // 注入Tracer
-  app.use(new TracerMiddleware(logger).use);
+  // 配置 EJS 模板引擎
+  app.setBaseViewsDir('views');
+  app.setViewEngine('ejs');
 
   app.useGlobalPipes(new ParamsPipe(logger));
   app.useGlobalFilters(new GlobalExceptionFilter(logger));
@@ -42,8 +42,6 @@ async function bootstrap() {
 
   // 允许跨域
   app.enableCors({});
-
-  app.setGlobalPrefix(configService.getOrThrow('SERVER_GLOBAL_PREFIX'));
 
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
