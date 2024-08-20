@@ -1,21 +1,13 @@
-import {
-  Inject,
-  LoggerService,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from '@nestjs/common';
-import { SocketModule } from './socket/socket.module';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-import { LoggerModule } from './logger/logger.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './db/db.module';
-import { EncryptService } from './services/encrypt/encrypt.service';
-import { VerifyService } from './services/verify/verify.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LogService } from './services/log/log.service';
+import { SocketV1Module } from './socketv1/socketv1.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -46,21 +38,18 @@ import { AppService } from './app.service';
         },
       ],
     }),
-    DbModule,
-    LoggerModule,
+    ServicesModule,
     EventEmitterModule.forRoot(),
-    SocketModule,
+    DbModule,
+    SocketV1Module,
     UserModule,
   ],
-  // 全局使用的一些Service
-  providers: [EncryptService, VerifyService, AppService],
+  providers: [AppService],
   exports: [],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
-  constructor(
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private logger: LoggerService,
-  ) {}
+  constructor(private log: LogService) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply().forRoutes('*');

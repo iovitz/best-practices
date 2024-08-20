@@ -25,7 +25,7 @@ export class ResponseFormatterInterceptor implements NestInterceptor {
           this.logger.log(`(${tracerInfo})Skip Response Format`);
           return data;
         }
-        this.logger.log(`(${tracerInfo})Request Success`);
+        // this.logger.log(`(${tracerInfo})Request Success`);
         return {
           data,
           code: 0,

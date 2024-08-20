@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-import { LoggerService } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
 import { ParamsExceptionFilter } from './common/filters/params-exception/params-exception.filter';
@@ -11,6 +9,7 @@ import { ParamsPipe } from './common/pipes/params/params.pipe';
 import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
 import { RequestTracerInterceptor } from './common/middlewares/request-tracer/request-tracer.middleware';
+import { LogService } from './services/log/log.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -18,7 +17,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const logger = app.get<LoggerService>(WINSTON_MODULE_NEST_PROVIDER);
+  const logger = app.get(LogService);
 
   app.useLogger(logger);
 
@@ -40,7 +39,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ParamsExceptionFilter(logger));
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.useGlobalInterceptors(new ResponseFormatterInterceptor(logger));
-  app.useGlobalInterceptors(new RequestTracerInterceptor(logger));
+  app.useGlobalInterceptors(new RequestTracerInterceptor());
 
   // 允许跨域
   app.enableCors({});
@@ -48,7 +47,7 @@ async function bootstrap() {
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
 
-  logger.log(`Server running in http://127.0.0.1:${appPort}`, 'bootstrap');
+  logger.log(`Server running in http://127.0.0.1:${appPort}`);
 }
 
 bootstrap();

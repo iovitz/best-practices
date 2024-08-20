@@ -7,14 +7,11 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class RequestTracerInterceptor implements NestInterceptor {
-  constructor(
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private logger: LoggerService,
-  ) {}
+  constructor() {}
 
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 

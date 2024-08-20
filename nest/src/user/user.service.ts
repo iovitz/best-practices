@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { SqliteService } from '../db/sqlite/sqlite.service';
+import { LogService } from 'src/services/log/log.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: SqliteService) {}
+  constructor(
+    private prismaService: SqliteService,
+    private log: LogService,
+  ) {}
 
   getUserList(page: number, take: number) {
     return this.prismaService.user.findMany({
