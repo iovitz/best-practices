@@ -12,6 +12,8 @@ import { LoggerModule } from './logger/logger.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './db/db.module';
+import { EncryptService } from './services/encrypt/encrypt.service';
+import { VerifyService } from './services/verify/verify.service';
 
 @Module({
   imports: [
@@ -48,7 +50,8 @@ import { DbModule } from './db/db.module';
     SocketModule,
     UserModule,
   ],
-  providers: [],
+  // 全局使用的一些Service
+  providers: [EncryptService, VerifyService],
   exports: [],
 })
 export class AppModule implements NestModule {
