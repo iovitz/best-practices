@@ -10,6 +10,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception/http-except
 import { ParamsPipe } from './common/pipes/params/params.pipe';
 import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
+import { RequestTracerInterceptor } from './common/middlewares/request-tracer/request-tracer.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -39,6 +40,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ParamsExceptionFilter(logger));
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.useGlobalInterceptors(new ResponseFormatterInterceptor(logger));
+  app.useGlobalInterceptors(new RequestTracerInterceptor(logger));
 
   // 允许跨域
   app.enableCors({});

@@ -5,7 +5,6 @@ import {
   HttpStatus,
   LoggerService,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { ParamsException } from 'src/common/errors/errors';
 
 @Catch(ParamsException)
@@ -15,7 +14,7 @@ export class ParamsExceptionFilter implements ExceptionFilter {
   catch(exception: ParamsException, host: ArgumentsHost) {
     this.logger.error(exception.message, exception.stack, 'ParamsException');
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<Res>();
     const errorResponse = {
       code: HttpStatus.INTERNAL_SERVER_ERROR,
       message: exception.errorList,

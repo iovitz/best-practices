@@ -1,24 +1,20 @@
-import { LoggerService } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 export {};
 
 declare global {
+  interface Req extends Request {
+    user?: any;
+    userId?: string;
+
+    tid?: string;
+    traceInfo?: string;
+  }
+  interface Res extends Response {}
+
+  // 往原始类型上增加类型
   namespace Express {
-    export interface Request {
-      user?: any;
-      userId?: string;
-
-      tracer?: {
-        id: string;
-      };
-
-      /**
-       * 外部注入
-       */
-      logger: LoggerService;
-    }
-    export interface Response {
-      skipFormat?: boolean;
-    }
+    export interface Request {}
+    export interface Response {}
   }
 }

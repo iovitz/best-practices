@@ -5,7 +5,6 @@ import {
   HttpStatus,
   LoggerService,
 } from '@nestjs/common';
-import { Response } from 'express';
 
 @Catch(Error)
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -18,7 +17,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       'AllErrorExceptionFilter',
     );
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<Res>();
     const errorResponse = {
       code: HttpStatus.INTERNAL_SERVER_ERROR,
       message: 'Internal Server Error',
