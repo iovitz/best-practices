@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
 import { ParamsExceptionFilter } from './common/filters/params-exception/params-exception.filter';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
-import { ParamsPipe } from './common/pipes/params/params.pipe';
 import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
 import { RequestTracerInterceptor } from './common/middlewares/request-tracer/request-tracer.middleware';
@@ -34,7 +33,6 @@ async function bootstrap() {
   app.setBaseViewsDir('views');
   app.setViewEngine('ejs');
 
-  app.useGlobalPipes(new ParamsPipe(log));
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalFilters(new ParamsExceptionFilter(log));
   app.useGlobalFilters(new HttpExceptionFilter(log));

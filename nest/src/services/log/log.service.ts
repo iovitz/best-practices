@@ -122,7 +122,6 @@ class BaseLog implements LoggerService {
     this.logger.info(message, this.formatContext(context));
   }
   error(message: any, context?: LogContext) {
-    console.log(message, context);
     this.logger.error(message, this.formatContext(context));
   }
   warn(message: any, context?: LogContext) {
