@@ -1,9 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { REQUEST_LOGGER } from '../constans/meta-keys';
 
 export const Log = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<Req>();
+    const handler = ctx.getHandler();
 
-    return data ? request.body[data] : request.body;
+    return Reflect.getMetadata(REQUEST_LOGGER, handler);
   },
 );

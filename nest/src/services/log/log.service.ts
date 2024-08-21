@@ -1,6 +1,6 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import pino, { Logger } from 'pino';
+import pino, { ChildLoggerOptions, Logger } from 'pino';
 
 interface LogContext {
   ex?: Error;
@@ -9,33 +9,10 @@ interface LogContext {
   [key: string]: unknown;
 }
 
-@Injectable()
-export class LogService implements LoggerService {
-  logger: Logger;
-  constructor(private config: ConfigService) {
-    this.logger = pino({
-      // 配置 Pino
-      transport: {
-        target: 'pino-pretty',
-        options: {
-          colorize: true,
-          translateTime: 'yyyy/MM/dd HH:mm:ss.l',
-        },
-      },
-      serializers: {
-        ex(ex: LogContext['ex']) {
-          return {
-            key: ex.message,
-            name: ex.name,
-            stack: ex.stack,
-          };
-        },
-      },
-      base: {},
-    });
-  }
+class BaseLog implements LoggerService {
+  constructor(private logger: Logger) {}
 
-  formatContext(context?: LogContext | string) {
+  private formatContext(context?: LogContext | string) {
     if (!context) return {};
     if (typeof context === 'string') {
       return {
@@ -61,5 +38,36 @@ export class LogService implements LoggerService {
   }
   verbose(message: any, context?: string) {
     this.logger.info(this.formatContext(context), message);
+  }
+
+  child(bindings: pino.Bindings, options?: ChildLoggerOptions<never>) {
+    return new BaseLog(this.logger.child(bindings, options));
+  }
+}
+
+@Injectable()
+export class LogService extends BaseLog {
+  constructor(private config: ConfigService) {
+    const logger = pino({
+      // 配置 Pino
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'yyyy/MM/dd HH:mm:ss.l',
+        },
+      },
+      serializers: {
+        ex(ex: LogContext['ex']) {
+          return {
+            key: ex.message,
+            name: ex.name,
+            stack: ex.stack,
+          };
+        },
+      },
+      base: {},
+    });
+    super(logger);
   }
 }

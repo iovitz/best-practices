@@ -5,3 +5,5 @@ export const SKIP_RESPONSE_FORMAT_KEY = Symbol('SKIP_RESPONSE_FORMAT_KEY');
 export const TRACER_ID_KEY = Symbol('TRACER_ID_KEY');
 // TracerId
 export const USER_ID = Symbol('USER_ID');
+// Request Logger
+export const REQUEST_LOGGER = Symbol('REQUEST_LOGGER');
