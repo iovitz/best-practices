@@ -28,7 +28,13 @@ export class RequestTracerInterceptor implements NestInterceptor {
     });
     const userId = 'u123123';
 
-    requestLogger.log(`META：${userId} ${method} ${path}`);
+    requestLogger.log(`reqMeta：${userId} ${method} ${path}`);
+    // 生产环境不上报
+    requestLogger.log('reqData', {
+      body: req.body,
+      query: req.query,
+      params: req.params,
+    });
 
     Reflect.defineMetadata(REQUEST_LOGGER, requestLogger, handler);
 
