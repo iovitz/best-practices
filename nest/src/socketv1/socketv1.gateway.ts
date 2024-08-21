@@ -20,11 +20,11 @@ export class SocketV1Gateway
   users = 0;
 
   async handleConnection(client: Socket) {
-    this.log.log(client.id, '开始连接');
+    this.log.log('开始连接', { id: client.id });
   }
 
   async handleDisconnect(client: Socket) {
-    this.log.log(client.id, '取消连接');
+    this.log.log('取消连接', { id: client.id });
   }
 
   @SubscribeMessage('events')
@@ -34,7 +34,9 @@ export class SocketV1Gateway
 
   @SubscribeMessage('hello')
   async handleMessage(client: Socket, payload: string) {
-    this.log.log('hello', payload);
+    this.log.log('socket hello', {
+      payload,
+    });
 
     client.emit('hello', 'server hello payload');
   }

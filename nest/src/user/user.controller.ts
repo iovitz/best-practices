@@ -15,7 +15,9 @@ export class UserController {
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
-    this.log.error('niubi', new Error('123'));
+    this.log.error('异常', {
+      ex: new Error('123'),
+    });
     return users;
   }
 

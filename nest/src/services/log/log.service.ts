@@ -2,6 +2,13 @@ import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import pino, { Logger } from 'pino';
 
+interface LogContext {
+  ex?: Error;
+  req?: Request;
+  res?: Response;
+  [key: string]: unknown;
+}
+
 @Injectable()
 export class LogService implements LoggerService {
   logger: Logger;
@@ -12,25 +19,47 @@ export class LogService implements LoggerService {
         target: 'pino-pretty',
         options: {
           colorize: true,
-          translateTime: 'SYS:HH:mm:ss.l',
+          translateTime: 'yyyy/MM/dd HH:mm:ss.l',
         },
       },
+      serializers: {
+        ex(ex: LogContext['ex']) {
+          return {
+            key: ex.message,
+            name: ex.name,
+            stack: ex.stack,
+          };
+        },
+      },
+      base: {},
     });
   }
 
-  log(message: any, context?: unknown) {
-    this.logger.info(message, context);
+  formatContext(context?: LogContext | string) {
+    if (!context) return {};
+    if (typeof context === 'string') {
+      return {
+        name: context,
+      };
+    }
+    return {
+      ...context,
+    };
   }
-  error(message: any, context?: unknown) {
-    this.logger.error(message, context);
+
+  log(message: any, context?: LogContext) {
+    this.logger.info(this.formatContext(context), message);
   }
-  warn(message: any, context?: unknown) {
-    this.logger.warn(message, context);
+  error(message: any, context?: LogContext) {
+    this.logger.error(this.formatContext(context), message);
   }
-  debug(message: any, context?: unknown) {
-    this.logger.debug(message, context);
+  warn(message: any, context?: LogContext) {
+    this.logger.warn(this.formatContext(context), message);
+  }
+  debug(message: any, context?: LogContext) {
+    this.logger.debug(this.formatContext(context), message);
   }
   verbose(message: any, context?: string) {
-    this.logger.info(message, { context });
+    this.logger.info(this.formatContext(context), message);
   }
 }

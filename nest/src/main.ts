@@ -17,13 +17,13 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const logger = app.get(LogService);
+  const log = app.get(LogService);
 
-  app.useLogger(logger);
+  app.useLogger(log);
 
   const configService = app.get(ConfigService);
 
-  app.useWebSocketAdapter(new SocketIoAdapter(app, logger));
+  app.useWebSocketAdapter(new SocketIoAdapter(app, log));
 
   app.useStaticAssets('public', {
     // 虚拟路径为 static
@@ -34,12 +34,12 @@ async function bootstrap() {
   app.setBaseViewsDir('views');
   app.setViewEngine('ejs');
 
-  app.useGlobalPipes(new ParamsPipe(logger));
-  app.useGlobalFilters(new GlobalExceptionFilter(logger));
-  app.useGlobalFilters(new ParamsExceptionFilter(logger));
-  app.useGlobalFilters(new HttpExceptionFilter(logger));
-  app.useGlobalInterceptors(new ResponseFormatterInterceptor(logger));
-  app.useGlobalInterceptors(new RequestTracerInterceptor());
+  app.useGlobalPipes(new ParamsPipe(log));
+  app.useGlobalFilters(new GlobalExceptionFilter(log));
+  app.useGlobalFilters(new ParamsExceptionFilter(log));
+  app.useGlobalFilters(new HttpExceptionFilter(log));
+  app.useGlobalInterceptors(new ResponseFormatterInterceptor(log));
+  app.useGlobalInterceptors(new RequestTracerInterceptor(log));
 
   // 允许跨域
   app.enableCors({});
@@ -47,7 +47,7 @@ async function bootstrap() {
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
 
-  logger.log(`Server running in http://127.0.0.1:${appPort}`);
+  log.log(`Server running in http://127.0.0.1:${appPort}`);
 }
 
 bootstrap();

@@ -21,8 +21,7 @@ export class ParamsPipe implements PipeTransform {
 
   async transform(value: unknown, metadata: ArgumentMetadata) {
     const { metatype } = metadata;
-    this.logger.log('接受参数', JSON.stringify(value));
-    this.logger.log('收到Meta', JSON.stringify(metadata));
+    this.logger.log('接受参数', value);
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }

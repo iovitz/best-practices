@@ -1,17 +1,16 @@
 import {
   CallHandler,
   ExecutionContext,
-  Inject,
   Injectable,
-  LoggerService,
   NestInterceptor,
 } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
 import { Observable } from 'rxjs';
+import { LogService } from 'src/services/log/log.service';
 
 @Injectable()
 export class RequestTracerInterceptor implements NestInterceptor {
-  constructor() {}
+  constructor(private log: LogService) {}
 
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 
