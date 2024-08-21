@@ -37,17 +37,21 @@ class BaseLog implements LoggerService {
   }
 
   insertOutput(v) {
-    return v ? ` ${v}` : '';
+    if (!v) return '';
+    if (typeof v === 'object') {
+      return ` ${JSON.stringify(v)}`;
+    }
+    return ` ${v}`;
   }
 
   formatOutput = (info) => {
     if (!info) return '';
-    const { timestamp, level, pid, name, message, traceInfo } = info;
+    const { timestamp, level, name, message, traceInfo, stack, ...rest } = info;
     // 错误日志特别输出
     if (info[ERROR]) {
-      return `${[timestamp]} [${pid}] ${level} ${this.insertOutput(traceInfo)}${this.insertOutput(message)} ${info.stack}`;
+      return `${[timestamp]} ${level}${this.insertOutput(traceInfo)}${this.insertOutput(message)}${this.insertOutput(stack)}${this.insertOutput(rest)}`;
     }
-    return `${[timestamp]} [${pid}] ${level} ${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}`;
+    return `${[timestamp]} ${level}${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}`;
   };
 
   getConsoleTransport() {
@@ -55,8 +59,8 @@ class BaseLog implements LoggerService {
       level: 'debug',
       // 使用时间戳和nest样式
       format: format.combine(
+        format.timestamp({ format: 'YY-MM-DD HH:mm:ss.SSS' }),
         format.colorize(),
-        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
         format.printf(this.formatOutput),
       ),
     });
@@ -101,6 +105,7 @@ class BaseLog implements LoggerService {
       return {
         [ERROR]: true,
         name: context.message ?? get(context, 'message'),
+        message: context.message ?? get(context, 'message'),
         stack: context.stack?.split('\n').join('\\n'),
         cause: context.cause,
       };
@@ -117,6 +122,7 @@ class BaseLog implements LoggerService {
     this.logger.info(message, this.formatContext(context));
   }
   error(message: any, context?: LogContext) {
+    console.log(message, context);
     this.logger.error(message, this.formatContext(context));
   }
   warn(message: any, context?: LogContext) {
@@ -130,7 +136,7 @@ class BaseLog implements LoggerService {
   }
 
   child(option: unknown) {
-    return new BaseLog(this.logger.child(option));
+    return new BaseLog(this.logger.child(option)) as LogService;
   }
 }
 

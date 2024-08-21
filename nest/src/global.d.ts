@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import type { LogService } from './services/log/log.service';
 
 export {};
 
@@ -7,17 +8,10 @@ declare global {
     user?: any;
     userId?: string;
 
-    tid?: string;
-    traceInfo?: string;
-
-    // handler
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    handler?: Function;
+    logger?: LogService;
   }
   interface Res extends Response {
-    // handler
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    handler?: Function;
+    // ...
   }
 
   // 往原始类型上增加类型

@@ -4,9 +4,6 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common';
-import { REQUEST_LOGGER } from 'src/common/constans/meta-keys';
-import { LogService } from 'src/services/log/log.service';
-
 @Catch(Error)
 export class GlobalExceptionFilter implements ExceptionFilter {
   constructor() {}
@@ -14,9 +11,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const httpCtx = host.switchToHttp();
     const res = httpCtx.getResponse<Res>();
-    const handler = res.handler;
-    const logger: LogService = Reflect.getMetadata(REQUEST_LOGGER, handler);
-    logger.error('global error', exception);
+    const req = httpCtx.getRequest<Req>();
+    req.logger.error('global error', exception);
 
     const errorResponse = {
       code: HttpStatus.INTERNAL_SERVER_ERROR,

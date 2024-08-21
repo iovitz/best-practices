@@ -16,10 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getResponse<Req>();
     const response = ctx.getResponse<Res>();
 
-    this.logger.log(
-      `HttpExceptionFilter - ${request.traceInfo ?? ''}`,
-      exception,
-    );
+    this.logger.log(`HttpExceptionFilter`, exception);
 
     const status =
       exception instanceof HttpException
