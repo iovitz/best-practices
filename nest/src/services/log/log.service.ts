@@ -46,12 +46,37 @@ class BaseLog implements LoggerService {
 
   formatOutput = (info) => {
     if (!info) return '';
-    const { timestamp, level, name, message, traceInfo, stack, ...rest } = info;
+    const {
+      timestamp,
+      level,
+      name,
+      pid,
+      message,
+      traceInfo,
+      msgPrefix,
+      stack,
+      ...rest
+    } = info;
     // 错误日志特别输出
-    if (info[ERROR]) {
-      return `${[timestamp]} ${level}${this.insertOutput(traceInfo)}${this.insertOutput(message)}${this.insertOutput(stack)}${this.insertOutput(rest)}`;
+    let restStr = '';
+    if (rest) {
+      try {
+        restStr = JSON.stringify(rest);
+      } catch (e) {
+        this.error('Log Rest Info Stringify fail', e);
+      }
     }
-    return `${[timestamp]} ${level}${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}`;
+    if (info[ERROR]) {
+      [timestamp, level, msgPrefix, traceInfo, message, stack, rest].join;
+      return `${[timestamp]} ${pid} ${level}${this.insertOutput(
+        pid,
+      )}${this.insertOutput(msgPrefix)}${this.insertOutput(
+        traceInfo,
+      )}${this.insertOutput(message)}${this.insertOutput(
+        stack,
+      )}${this.insertOutput(restStr)}`;
+    }
+    return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}${this.insertOutput(restStr)}`;
   };
 
   getConsoleTransport() {

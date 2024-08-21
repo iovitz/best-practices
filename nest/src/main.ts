@@ -9,6 +9,7 @@ import { ResponseFormatterInterceptor } from './common/interceptors/response-for
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
 import { RequestTracerInterceptor } from './common/middlewares/request-tracer/request-tracer.middleware';
 import { LogService } from './services/log/log.service';
+import * as pkg from '../package.json';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -16,7 +17,13 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const log = app.get(LogService);
+  const log = app.get(LogService).child({
+    msgPrefix: 'APP',
+  });
+
+  log.log('APP START', {
+    version: pkg.version,
+  });
 
   app.useLogger(log);
 
