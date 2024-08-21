@@ -35,7 +35,7 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   app.useGlobalPipes(new ParamsPipe(log));
-  app.useGlobalFilters(new GlobalExceptionFilter(log));
+  app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalFilters(new ParamsExceptionFilter(log));
   app.useGlobalFilters(new HttpExceptionFilter(log));
   app.useGlobalInterceptors(new ResponseFormatterInterceptor(log));

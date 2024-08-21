@@ -1,17 +1,19 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { isEmpty, isObject } from 'lodash';
-import { SPLAT } from 'triple-beam';
+import { get } from 'lodash';
 import 'winston-daily-rotate-file';
 import { Logger, createLogger, format, transports } from 'winston';
-import * as chalk from 'chalk';
 
-interface LogContext {
-  ex?: Error;
-  req?: Request;
-  res?: Response;
-  [key: string]: unknown;
-}
+const ERROR = Symbol('ERROR');
+
+type LogContext =
+  | Error
+  | {
+      ex?: Error;
+      req?: Request;
+      res?: Response;
+      [key: string]: unknown;
+    };
 
 type Format = ReturnType<typeof format.timestamp>;
 
@@ -34,51 +36,32 @@ class BaseLog implements LoggerService {
     });
   }
 
-  formatObject(param: unknown, indent = false) {
-    if (param instanceof Error) {
-      return param.stack.split('\n').join('\\n');
-    }
-    if (isObject(param)) {
-      try {
-        if (indent) {
-          return JSON.stringify(param, null, 2);
-        }
-        return JSON.stringify(param);
-      } catch (e) {
-        return param;
-      }
-    }
-    return param;
+  insertOutput(v) {
+    return v ? ` ${v}` : '';
   }
 
-  formatInfo(info, indent = false): Format {
-    const splat = info[SPLAT] || [];
-    const message = this.formatObject(info.message, indent);
-    const rest = splat.map(this.formatObject).join(' \\n ');
-
-    info.message = `${message}`;
-    if (!isEmpty(rest)) {
-      info.message += ` ${rest}`;
+  formatOutput = (info) => {
+    if (!info) return '';
+    const { timestamp, level, pid, name, message, traceInfo } = info;
+    // 错误日志特别输出
+    if (info[ERROR]) {
+      return `${[timestamp]} [${pid}] ${level} ${this.insertOutput(traceInfo)}${this.insertOutput(message)} ${info.stack}`;
     }
-    return info;
-  }
+    return `${[timestamp]} [${pid}] ${level} ${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}`;
+  };
 
   getConsoleTransport() {
     return new transports.Console({
       level: 'debug',
       // 使用时间戳和nest样式
       format: format.combine(
+        format.colorize(),
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-        format.printf((i) => {
-          this.formatInfo(i);
-          console.log(i);
-          const t = i.timestamp;
-          const { message } = i;
-          return `${[t]} ${i.level} ${i.name ? `(${i.name}) ` : ''}${message} ${i.context || ''}`;
-        }),
+        format.printf(this.formatOutput),
       ),
     });
   }
+
   getInfoTransport() {
     return new transports.DailyRotateFile({
       dirname: 'logs/info',
@@ -108,24 +91,25 @@ class BaseLog implements LoggerService {
   getCommonFormat(): Format[] {
     return [
       format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-      format.printf((i) => {
-        this.formatInfo(i);
-        const t = i.timestamp;
-        const { message } = i;
-        return `${[t]} ${i.level} ${i.name} ${message} ${i.context || ''}`;
-      }),
+      format.printf(this.formatOutput),
     ];
   }
 
   private formatContext(context?: LogContext | string) {
     if (!context) return {};
-    if (typeof context === 'string') {
+    if (context instanceof Error) {
       return {
-        name: context,
+        [ERROR]: true,
+        name: context.message ?? get(context, 'message'),
+        stack: context.stack?.split('\n').join('\\n'),
+        cause: context.cause,
       };
     }
+    if (typeof context === 'object') {
+      return context;
+    }
     return {
-      ...context,
+      name: context,
     };
   }
 

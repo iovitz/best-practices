@@ -3,26 +3,26 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
-  LoggerService,
 } from '@nestjs/common';
+import { REQUEST_LOGGER } from 'src/common/constans/meta-keys';
+import { LogService } from 'src/services/log/log.service';
 
 @Catch(Error)
 export class GlobalExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService) {}
+  constructor() {}
 
   catch(exception: Error, host: ArgumentsHost) {
-    this.logger.error(
-      exception.message,
-      exception.stack,
-      'AllErrorExceptionFilter',
-    );
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Res>();
+    const httpCtx = host.switchToHttp();
+    const res = httpCtx.getResponse<Res>();
+    const handler = res.handler;
+    const logger: LogService = Reflect.getMetadata(REQUEST_LOGGER, handler);
+    logger.error('global error', exception);
+
     const errorResponse = {
       code: HttpStatus.INTERNAL_SERVER_ERROR,
       message: 'Internal Server Error',
     };
-    response.status(HttpStatus.INTERNAL_SERVER_ERROR);
-    response.send(errorResponse);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+    res.send(errorResponse);
   }
 }

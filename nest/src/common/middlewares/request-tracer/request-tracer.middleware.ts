@@ -22,11 +22,11 @@ export class RequestTracerInterceptor implements NestInterceptor {
     const handler = ctx.getHandler();
     const { method, path } = req;
     const requestTid = res.get('tracer-id');
-    const tid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
-    const requestLogger = this.log.child({
-      pid: tid,
-    });
+    const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
     const userId = 'u123123';
+    const requestLogger = this.log.child({
+      traceInfo: `${rid}${userId ? `/${userId}` : ''}`,
+    });
 
     requestLogger.log(`reqMeta：${userId} ${method} ${path}`);
     // 生产环境不上报
@@ -38,9 +38,11 @@ export class RequestTracerInterceptor implements NestInterceptor {
 
     Reflect.defineMetadata(REQUEST_LOGGER, requestLogger, handler);
 
-    req.tid = tid;
-    req.traceInfo = `${tid} ${method} ${path}`;
-    res.setHeader('tracer-id', tid);
+    req.handler = handler;
+    res.handler = handler;
+
+    req.traceInfo = `${rid}`;
+    res.setHeader('request-id', rid);
 
     return next.handle();
   }
