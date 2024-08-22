@@ -4,10 +4,10 @@ module.exports = {
     "$shared": {
     },
     "dev": {
-      "host": "http://localhost:5001/api"
+      "host": "http://localhost:3333"
     },
     "prod": {
-      "host": "http://localhost:5001/api"
+      "host": "http://localhost:3333"
     }
   }
 }

@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "yac": "node_modules/.bin/httpyac -o body -e dev",
+    "yac": "node_modules/.bin/httpyac -e dev -o body ",
     "postinstall": "npm run sqlite:generate",
     "sqlite:generate": "./node_modules/.bin/prisma generate --schema=./prisma/sqlite.prisma",
     "sqlite:db:push": "./node_modules/.bin/prisma db push --schema=./prisma/sqlite.prisma"
