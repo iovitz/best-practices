@@ -20,7 +20,7 @@ async function bootstrap() {
     msgPrefix: 'APP',
   });
 
-  log.log('APP START', {
+  log.log('Application Running', {
     version: pkg.version,
   });
 
@@ -48,7 +48,7 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   // 允许跨域
-  app.enableCors({});
+  // app.enableCors({});
 
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
