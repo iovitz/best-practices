@@ -7,11 +7,13 @@ export class TracerMiddleware implements NestMiddleware {
   constructor(private readonly log: LogService) {}
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 
-  use(req: Req, res: Res, next: () => void) {
+  async use(req: Req, res: Res, next: () => void) {
+    const stime = process.hrtime.bigint();
+    req.stime = stime;
     const { method, path } = req;
     const requestTid = res.get('tracer-id');
     const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
-    const userId = 'u123123';
+    const userId = req.session.userId;
     const requestLogger = this.log.child({
       traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
     });

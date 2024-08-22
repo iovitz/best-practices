@@ -1,8 +1,9 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { get } from 'lodash';
+import { get, isEmpty, omit } from 'lodash';
 import 'winston-daily-rotate-file';
 import { Logger, createLogger, format, transports } from 'winston';
+import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
 
 const ERROR = Symbol('ERROR');
 
@@ -61,10 +62,10 @@ class BaseLog implements LoggerService {
       stack,
       payload,
       ...rest
-    } = info;
+    } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
     // 错误日志特别输出
     let restStr = '';
-    if (rest) {
+    if (rest && !isEmpty(rest)) {
       try {
         restStr = JSON.stringify(rest);
       } catch (e) {
@@ -72,7 +73,6 @@ class BaseLog implements LoggerService {
       }
     }
     if (info[ERROR]) {
-      [timestamp, level, msgPrefix, traceInfo, message, stack, rest].join;
       return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(
         traceInfo,
       )}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(
@@ -135,7 +135,6 @@ class BaseLog implements LoggerService {
         name: context.message ?? get(context, 'message'),
         message: context.message ?? get(context, 'message'),
         stack: context.stack?.split('\n').join('\\n'),
-        cause: context.cause,
       };
     }
     if (typeof context === 'object') {

@@ -8,6 +8,7 @@ declare global {
     user?: any;
     userId?: string;
 
+    stime?: bigint;
     logger?: LogService;
   }
   interface Res extends Response {
@@ -18,5 +19,11 @@ declare global {
   namespace Express {
     export interface Request {}
     export interface Response {}
+  }
+}
+
+declare module 'express-session' {
+  interface SessionData {
+    userId: string;
   }
 }

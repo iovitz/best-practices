@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
 import { LogService } from './services/log/log.service';
 import * as pkg from '../package.json';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -13,6 +14,7 @@ async function bootstrap() {
   });
 
   const rootLogger = app.get(LogService);
+  const config = app.get(ConfigService);
 
   const log = rootLogger.child({
     msgPrefix: 'APP',
@@ -23,6 +25,14 @@ async function bootstrap() {
   });
 
   app.useLogger(log);
+
+  app.use(
+    session({
+      secret: config.getOrThrow('SESSION_SECRET'),
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
   const configService = app.get(ConfigService);
 
