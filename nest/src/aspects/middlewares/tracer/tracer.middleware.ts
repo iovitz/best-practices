@@ -16,9 +16,9 @@ export class TracerMiddleware implements NestMiddleware {
       traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
     });
 
-    requestLogger.log(`reqMeta11：${userId} ${method} ${path}`);
+    requestLogger.log(`reqMeta：${userId} ${method} ${path}`);
     // 生产环境不上报
-    requestLogger.log('reqData', {
+    requestLogger.debug('reqData', {
       body: req.body,
       query: req.query,
       params: req.params,

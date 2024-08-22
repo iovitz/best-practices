@@ -73,9 +73,7 @@ class BaseLog implements LoggerService {
     }
     if (info[ERROR]) {
       [timestamp, level, msgPrefix, traceInfo, message, stack, rest].join;
-      return `${[timestamp]} ${pid} ${level}${this.insertOutput(
-        pid,
-      )}${this.insertOutput(msgPrefix)}${this.insertOutput(
+      return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(
         traceInfo,
       )}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(
         stack,
