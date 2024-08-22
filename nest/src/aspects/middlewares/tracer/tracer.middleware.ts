@@ -19,7 +19,7 @@ export class TracerMiddleware implements NestMiddleware {
     });
     res.on('finish', function (this: Res) {
       const cost = process.hrtime.bigint() - stime;
-      requestLogger.log('REQUEST FINISH', {
+      requestLogger.log('Request Finish', {
         cost: cost.toString(),
         status: this.statusCode,
       });
