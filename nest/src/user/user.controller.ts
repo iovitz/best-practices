@@ -15,9 +15,6 @@ export class UserController {
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
-    if (3 > 2) {
-      throw new Error('牛逼');
-    }
     return users;
   }
 
