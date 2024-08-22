@@ -1,16 +1,20 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { getUserDTO, getUsersDTO, createUserDTO } from './user.dto';
 import { UserService } from './user.service';
+import { Tracer } from 'src/shared/decorator/tracer';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @Controller('/api/user')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('/list')
-  async getUsers(@Query() query: getUsersDTO) {
+  async getUsers(@Query() query: getUsersDTO, @Tracer() tracer: TracerService) {
     const users = await this.userService.getUserList(
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
+    tracer.warn('警告');
+    tracer.error('出错');
     return users;
   }
 

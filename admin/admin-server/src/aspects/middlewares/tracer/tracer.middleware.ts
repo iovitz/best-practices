@@ -15,7 +15,7 @@ export class TracerMiddleware implements NestMiddleware {
     const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
     const userId = req.session.userId;
     const requestTracer = this.tracer.child({
-      traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
+      name: `${rid}${userId ? `#${userId}` : ''}`,
     });
     res.on('finish', function (this: Res) {
       const cost = process.hrtime.bigint() - stime;

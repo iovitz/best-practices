@@ -16,7 +16,9 @@ async function bootstrap() {
   const rootTracer = app.get(TracerService);
   const config = app.get(ConfigService);
 
-  const appTracer = rootTracer.child('APP');
+  const appTracer = rootTracer.child({
+    name: 'APP',
+  });
 
   app.useLogger(appTracer);
 

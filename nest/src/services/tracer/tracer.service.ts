@@ -7,18 +7,17 @@ import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
 
 const ERROR = Symbol('ERROR');
 
-type LogContext =
-  | string
-  | Error
-  | {
-      name?: string;
-      pid?: number;
-      traceInfo?: string;
-      msgPrefix?: string;
-      stack?: string;
-      payload?: string;
-      [key: string]: unknown;
-    };
+interface LogInfo {
+  name?: string;
+  pid?: number;
+  traceInfo?: string;
+  msgPrefix?: string;
+  stack?: string;
+  payload?: string;
+  [key: string | symbol]: unknown;
+}
+
+type LogContext = string | Error | LogInfo;
 
 type Format = ReturnType<typeof format.timestamp>;
 
@@ -41,7 +40,7 @@ class BaseTracer implements LoggerService {
     });
   }
 
-  insertOutput(v) {
+  insertOutput(v: unknown) {
     if (!v) return '';
     if (typeof v === 'object') {
       return ` ${JSON.stringify(v)}`;
@@ -49,7 +48,7 @@ class BaseTracer implements LoggerService {
     return ` ${v}`;
   }
 
-  formatOutput = (info) => {
+  formatOutput = (info: LogInfo) => {
     if (!info) return '';
     const {
       timestamp,

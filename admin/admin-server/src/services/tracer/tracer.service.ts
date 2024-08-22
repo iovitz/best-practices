@@ -1,26 +1,56 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { get, isEmpty, omit } from 'lodash';
-import 'winston-daily-rotate-file';
-import { Logger, createLogger, format, transports } from 'winston';
-import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
+import { get } from 'lodash';
+import * as l4j from 'log4js';
 
 const ERROR = Symbol('ERROR');
+const tokens = {
+  name: function (logEvent) {
+    const info = logEvent.context.name;
+    return info ? ` ${info}` : '';
+  },
+};
 
-type LogContext =
-  | string
-  | Error
-  | {
-      name?: string;
-      pid?: number;
-      traceInfo?: string;
-      msgPrefix?: string;
-      stack?: string;
-      payload?: string;
-      [key: string]: unknown;
-    };
+l4j.configure({
+  appenders: {
+    stdout: {
+      type: 'stdout',
+      layout: {
+        type: 'pattern',
+        pattern: '%p%x{name} %m',
+        tokens,
+      },
+    },
+    all: {
+      type: 'file',
+      filename: 'logs/app',
+      pattern: 'yyyy-MM-dd.log',
+      alwaysIncludePattern: true, // 设置文件名称为 filename + pattern
+      level: 'info',
+      layout: {
+        type: 'pattern',
+        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} %z %p%x{name} %m',
+        tokens,
+      },
+      maxLogSize: '10m',
+    },
+  },
+  categories: {
+    default: { appenders: ['stdout', 'all'], level: 'debug' },
+  },
+});
+interface LogInfo {
+  name?: string;
+  pid?: number;
+  traceInfo?: string;
+  msgPrefix?: string;
+  stack?: string;
 
-type Format = ReturnType<typeof format.timestamp>;
+  payload?: string;
+  [key: string | symbol]: unknown;
+}
+type LogContext = string | Error | LogInfo;
+type Logger = l4j.Logger;
 
 class BaseTracer implements LoggerService {
   logger: Logger;
@@ -29,102 +59,7 @@ class BaseTracer implements LoggerService {
   }
 
   createRootLogger() {
-    const logger = createLogger({
-      transports: [
-        this.getConsoleTransport(),
-        this.getInfoTransport(),
-        this.getErrorTransport(),
-      ],
-    });
-    return logger.child({
-      pid: process.pid,
-    });
-  }
-
-  insertOutput(v) {
-    if (!v) return '';
-    if (typeof v === 'object') {
-      return ` ${JSON.stringify(v)}`;
-    }
-    return ` ${v}`;
-  }
-
-  formatOutput = (info) => {
-    if (!info) return '';
-    const {
-      timestamp,
-      level,
-      message,
-      name,
-      pid,
-      traceInfo,
-      msgPrefix,
-      stack,
-      payload,
-      ...rest
-    } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
-    // 错误日志特别输出
-    let restStr = '';
-    if (rest && !isEmpty(rest)) {
-      try {
-        restStr = JSON.stringify(rest);
-      } catch (e) {
-        this.error('Log Rest Info Stringify fail', e);
-      }
-    }
-    if (info[ERROR]) {
-      return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(
-        traceInfo,
-      )}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(
-        stack,
-      )}${this.insertOutput(restStr)}`;
-    }
-    return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(traceInfo)}${this.insertOutput(name)}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(restStr)}`;
-  };
-
-  getConsoleTransport() {
-    return new transports.Console({
-      level: 'debug',
-      // 使用时间戳和nest样式
-      format: format.combine(
-        format.timestamp({ format: 'YY-MM-DD HH:mm:ss.SSS' }),
-        format.colorize(),
-        format.printf(this.formatOutput),
-      ),
-    });
-  }
-
-  getInfoTransport() {
-    return new transports.DailyRotateFile({
-      dirname: 'logs/info',
-      filename: '%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      zippedArchive: true,
-      maxSize: '20m',
-      maxFiles: '14d',
-      level: 'info',
-      format: format.combine(...this.getCommonFormat()),
-    });
-  }
-
-  getErrorTransport() {
-    return new transports.DailyRotateFile({
-      dirname: 'logs/error',
-      filename: '%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      zippedArchive: true,
-      maxSize: '20m',
-      maxFiles: '14d',
-      level: 'error',
-      format: format.combine(...this.getCommonFormat()),
-    });
-  }
-
-  getCommonFormat(): Format[] {
-    return [
-      format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-      format.printf(this.formatOutput),
-    ];
+    return l4j.getLogger('APP');
   }
 
   private formatContext(context?: LogContext | string) {
@@ -146,23 +81,27 @@ class BaseTracer implements LoggerService {
   }
 
   log(message: any, context?: LogContext) {
-    this.logger.info(message, this.formatContext(context));
+    this.logger.info(message, context);
   }
   error(message: any, context?: LogContext) {
-    this.logger.error(message, this.formatContext(context));
+    this.logger.error(message, context);
   }
   warn(message: any, context?: LogContext) {
-    this.logger.warn(message, this.formatContext(context));
+    this.logger.warn(message, context);
   }
   debug(message: any, context?: LogContext) {
-    this.logger.debug(message, this.formatContext(context));
+    this.logger.debug(message, context);
   }
   verbose(message: any, context?: string) {
-    this.logger.info(message, this.formatContext(context));
+    this.logger.info(message, context);
   }
 
-  child(option: unknown) {
-    return new BaseTracer(this.logger.child(option)) as TracerService;
+  child(context: Record<string, string>) {
+    const logger = l4j.getLogger();
+    for (const k in context) {
+      logger.addContext(k, context[k]);
+    }
+    return new BaseTracer(logger) as TracerService;
   }
 }
 
