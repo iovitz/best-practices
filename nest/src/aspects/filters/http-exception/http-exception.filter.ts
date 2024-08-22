@@ -4,35 +4,40 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
-  LoggerService,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { LogService } from 'src/services/log/log.service';
+import * as statuses from 'statuses';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService) {}
+  constructor(
+    private logger: LogService,
+    private config: ConfigService,
+  ) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const request = ctx.getResponse<Req>();
-    const response = ctx.getResponse<Res>();
+    const res = ctx.getResponse<Res>();
 
-    this.logger.log(`HttpExceptionFilter`, exception);
+    this.logger.debug(`HttpExceptionFilter`, exception);
 
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message = exception.message
-      ? exception.message
-      : `${status >= 500 ? 'Service Error' : 'Client Error'}`;
+    const message = this.config.getOrThrow('isOnline')
+      ? statuses(status)
+      : exception.message;
 
     const errorResponse = {
-      code: status,
+      code: status * 100,
       message: message,
     };
+
     // 设置返回的状态码、请求头、发送错误信息
-    response.status(status);
-    response.send(errorResponse);
+    res.status(status);
+    res.send(errorResponse);
   }
 }

@@ -5,20 +5,20 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 @Catch(Error)
-export class GlobalExceptionFilter implements ExceptionFilter {
+export class InternalExceptionFilter implements ExceptionFilter {
   constructor() {}
 
   catch(exception: Error, host: ArgumentsHost) {
     const httpCtx = host.switchToHttp();
     const res = httpCtx.getResponse<Res>();
     const req = httpCtx.getRequest<Req>();
-    req.logger.error('global error', exception);
-
+    req.logger.error('Internal Error', exception);
+    const status = HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = {
-      code: HttpStatus.INTERNAL_SERVER_ERROR,
+      code: status,
       message: 'Internal Server Error',
     };
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+    res.status(status);
     res.send(errorResponse);
   }
 }

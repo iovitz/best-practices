@@ -1,23 +1,13 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
-import { Observable } from 'rxjs';
 import { LogService } from 'src/services/log/log.service';
 
 @Injectable()
-export class RequestTracerInterceptor implements NestInterceptor {
-  constructor(private log: LogService) {}
-
+export class TracerMiddleware implements NestMiddleware {
+  constructor(private readonly log: LogService) {}
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 
-  intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
-    const http = ctx.switchToHttp();
-    const req = http.getRequest<Req>();
-    const res = http.getResponse<Res>();
+  use(req: Req, res: Res, next: () => void) {
     const { method, path } = req;
     const requestTid = res.get('tracer-id');
     const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
@@ -26,7 +16,7 @@ export class RequestTracerInterceptor implements NestInterceptor {
       traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
     });
 
-    requestLogger.log(`reqMeta：${userId} ${method} ${path}`);
+    requestLogger.log(`reqMeta11：${userId} ${method} ${path}`);
     // 生产环境不上报
     requestLogger.log('reqData', {
       body: req.body,
@@ -36,7 +26,6 @@ export class RequestTracerInterceptor implements NestInterceptor {
     req.logger = requestLogger;
 
     res.setHeader('request-id', rid);
-
-    return next.handle();
+    next();
   }
 }

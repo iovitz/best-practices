@@ -8,6 +8,12 @@ import { AppService } from './app.service';
 import { LogService } from './services/log/log.service';
 import { SocketV1Module } from './socketv1/socketv1.module';
 import { ServicesModule } from './services/services.module';
+import { TracerMiddleware } from './aspects/middlewares/tracer/tracer.middleware';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor';
+import { ParamsExceptionFilter } from './aspects/filters/params-exception/params-exception.filter';
+import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
+import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
 
 @Module({
   imports: [
@@ -44,7 +50,25 @@ import { ServicesModule } from './services/services.module';
     SocketV1Module,
     UserModule,
   ],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseFormatterInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: InternalExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ParamsExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    AppService,
+  ],
   exports: [],
   controllers: [AppController],
 })
@@ -52,6 +76,6 @@ export class AppModule implements NestModule {
   constructor(private log: LogService) {}
 
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply().forRoutes('*');
+    consumer.apply(TracerMiddleware).forRoutes('*');
   }
 }

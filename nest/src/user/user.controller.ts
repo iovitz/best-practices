@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { getUserDTO, getUsersDTO, createUserDTO } from './user.dto';
 import { UserService } from './user.service';
 import { LogService } from 'src/services/log/log.service';
-import { Log } from 'src/common/decorator/log';
 
 @Controller('/api/user')
 export class UserController {
@@ -11,12 +10,11 @@ export class UserController {
     private log: LogService,
   ) {}
   @Get('/list')
-  async getUsers(@Query() query: getUsersDTO, @Log() log: LogService) {
+  async getUsers(@Query() query: getUsersDTO) {
     const users = await this.userService.getUserList(
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
-    log.error('global error', new Error('牛逼'));
     if (3 > 2) {
       throw new Error('牛逼');
     }

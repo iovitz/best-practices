@@ -2,12 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
-import { ParamsExceptionFilter } from './common/filters/params-exception/params-exception.filter';
-import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
-import { ResponseFormatterInterceptor } from './common/interceptors/response-formatter/response-formatter.interceptor';
 import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
-import { RequestTracerInterceptor } from './common/middlewares/request-tracer/request-tracer.middleware';
 import { LogService } from './services/log/log.service';
 import * as pkg from '../package.json';
 
@@ -17,7 +12,9 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const log = app.get(LogService).child({
+  const rootLogger = app.get(LogService);
+
+  const log = rootLogger.child({
     msgPrefix: 'APP',
   });
 
@@ -39,12 +36,6 @@ async function bootstrap() {
   // 配置 EJS 模板引擎
   app.setBaseViewsDir('views');
   app.setViewEngine('ejs');
-
-  app.useGlobalFilters(new GlobalExceptionFilter());
-  app.useGlobalFilters(new ParamsExceptionFilter(log));
-  app.useGlobalFilters(new HttpExceptionFilter(log));
-  app.useGlobalInterceptors(new ResponseFormatterInterceptor(log));
-  app.useGlobalInterceptors(new RequestTracerInterceptor(log));
 
   // 允许跨域
   app.enableCors({});

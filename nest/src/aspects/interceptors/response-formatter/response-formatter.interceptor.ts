@@ -2,16 +2,16 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
-  LoggerService,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SKIP_RESPONSE_FORMAT_KEY } from 'src/common/constans/meta-keys';
+import { LogService } from 'src/services/log/log.service';
 
 @Injectable()
 export class ResponseFormatterInterceptor implements NestInterceptor {
-  constructor(private logger: LoggerService) {}
+  constructor(private logger: LogService) {}
 
   intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
     const handler = ctx.getHandler();
