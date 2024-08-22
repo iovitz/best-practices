@@ -19,13 +19,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Res>();
-
-    this.logger.debug(`HttpExceptionFilter`, exception);
-
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    this.logger.debug(`HttpExceptionFilter${status}`, exception.message);
 
     const message = this.config.getOrThrow('isOnline')
       ? statuses(status)

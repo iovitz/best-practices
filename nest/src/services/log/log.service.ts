@@ -7,6 +7,7 @@ import { Logger, createLogger, format, transports } from 'winston';
 const ERROR = Symbol('ERROR');
 
 type LogContext =
+  | string
   | Error
   | {
       ex?: Error;
@@ -55,6 +56,7 @@ class BaseLog implements LoggerService {
       traceInfo,
       msgPrefix,
       stack,
+      payload,
       ...rest
     } = info;
     // 错误日志特别输出
@@ -72,11 +74,11 @@ class BaseLog implements LoggerService {
         pid,
       )}${this.insertOutput(msgPrefix)}${this.insertOutput(
         traceInfo,
-      )}${this.insertOutput(message)}${this.insertOutput(
+      )}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(
         stack,
       )}${this.insertOutput(restStr)}`;
     }
-    return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(traceInfo)}${this.insertOutput(name)} ${message}${this.insertOutput(restStr)}`;
+    return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(traceInfo)}${this.insertOutput(name)}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(restStr)}`;
   };
 
   getConsoleTransport() {
@@ -139,7 +141,7 @@ class BaseLog implements LoggerService {
       return context;
     }
     return {
-      name: context,
+      payload: context,
     };
   }
 
