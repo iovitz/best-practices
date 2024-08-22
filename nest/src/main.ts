@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
+import { SocketIoAdapter } from './aspects/adaptors/socket.io.adaptor';
 import { LogService } from './services/log/log.service';
 import * as pkg from '../package.json';
 import * as session from 'express-session';

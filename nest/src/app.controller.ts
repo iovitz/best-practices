@@ -1,5 +1,5 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import { SkipFormat } from './common/decorator/skip-format';
+import { SkipFormat } from './shared/decorator/skip-format';
 
 @Controller()
 export class AppController {

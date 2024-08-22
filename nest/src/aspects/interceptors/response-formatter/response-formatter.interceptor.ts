@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SKIP_RESPONSE_FORMAT_KEY } from 'src/common/constans/meta-keys';
+import { SKIP_RESPONSE_FORMAT_KEY } from 'src/shared/constans/meta-keys';
 import { LogService } from 'src/services/log/log.service';
 
 @Injectable()

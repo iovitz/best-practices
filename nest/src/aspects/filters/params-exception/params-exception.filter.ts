@@ -5,7 +5,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ParamsException } from 'src/common/errors/errors';
+import { ParamsException } from 'src/shared/errors/errors';
 import { LogService } from 'src/services/log/log.service';
 import * as statuses from 'statuses';
 
