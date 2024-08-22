@@ -10,9 +10,12 @@ type LogContext =
   | string
   | Error
   | {
-      ex?: Error;
-      req?: Request;
-      res?: Response;
+      name?: string;
+      pid?: number;
+      traceInfo?: string;
+      msgPrefix?: string;
+      stack?: string;
+      payload?: string;
       [key: string]: unknown;
     };
 
@@ -50,9 +53,9 @@ class BaseLog implements LoggerService {
     const {
       timestamp,
       level,
+      message,
       name,
       pid,
-      message,
       traceInfo,
       msgPrefix,
       stack,
