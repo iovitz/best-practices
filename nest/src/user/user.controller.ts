@@ -1,14 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { getUserDTO, getUsersDTO, createUserDTO } from './user.dto';
 import { UserService } from './user.service';
-import { LogService } from 'src/services/log/log.service';
 
 @Controller('/api/user')
 export class UserController {
-  constructor(
-    private userService: UserService,
-    private log: LogService,
-  ) {}
+  constructor(private userService: UserService) {}
   @Get('/list')
   async getUsers(@Query() query: getUsersDTO) {
     const users = await this.userService.getUserList(

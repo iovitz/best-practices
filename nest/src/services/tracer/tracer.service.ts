@@ -22,7 +22,7 @@ type LogContext =
 
 type Format = ReturnType<typeof format.timestamp>;
 
-class BaseLog implements LoggerService {
+class BaseTracer implements LoggerService {
   logger: Logger;
   constructor(logger?: Logger) {
     this.logger = logger ?? this.createRootLogger();
@@ -162,12 +162,12 @@ class BaseLog implements LoggerService {
   }
 
   child(option: unknown) {
-    return new BaseLog(this.logger.child(option)) as LogService;
+    return new BaseTracer(this.logger.child(option)) as TracerService;
   }
 }
 
 @Injectable()
-export class LogService extends BaseLog {
+export class TracerService extends BaseTracer {
   constructor(private config: ConfigService) {
     super();
   }

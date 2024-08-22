@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import type { LogService } from './services/log/log.service';
+import { TracerService } from './services/tracer/tracer.service';
 
 export {};
 
@@ -9,7 +9,7 @@ declare global {
     userId?: string;
 
     stime?: bigint;
-    logger?: LogService;
+    tracer?: TracerService;
   }
   interface Res extends Response {
     // ...

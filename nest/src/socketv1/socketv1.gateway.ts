@@ -6,7 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { LogService } from 'src/services/log/log.service';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @WebSocketGateway({
   path: '/socket/v1',
@@ -14,7 +14,7 @@ import { LogService } from 'src/services/log/log.service';
 export class SocketV1Gateway
   implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket>
 {
-  constructor(private readonly log: LogService) {}
+  constructor(private readonly log: TracerService) {}
 
   @WebSocketServer() server: Server;
   users = 0;

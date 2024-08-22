@@ -6,13 +6,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { LogService } from 'src/services/log/log.service';
+import { TracerService } from 'src/services/tracer/tracer.service';
 import * as statuses from 'statuses';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(
-    private logger: LogService,
+    private tracer: TracerService,
     private config: ConfigService,
   ) {}
 
@@ -24,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.logger.debug(`HttpExceptionFilter${status}`, exception.message);
+    this.tracer.debug(`HttpExceptionFilter${status}`, exception.message);
 
     const message = this.config.getOrThrow('isOnline')
       ? statuses(status)

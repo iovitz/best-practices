@@ -1,10 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
-import { LogService } from 'src/services/log/log.service';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @Injectable()
 export class TracerMiddleware implements NestMiddleware {
-  constructor(private readonly log: LogService) {}
+  constructor(private readonly tracer: TracerService) {}
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 
   async use(req: Req, res: Res, next: () => void) {
@@ -14,27 +14,27 @@ export class TracerMiddleware implements NestMiddleware {
     const requestTid = res.get('tracer-id');
     const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
     const userId = req.session.userId;
-    const requestLogger = this.log.child({
+    const requestTracer = this.tracer.child({
       traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
     });
     res.on('finish', function (this: Res) {
       const cost = process.hrtime.bigint() - stime;
-      requestLogger.log('Request Finish', {
+      requestTracer.log('Request Finish', {
         cost: cost.toString(),
         status: this.statusCode,
       });
     });
 
-    requestLogger.log(
+    requestTracer.log(
       `Incoming Info：${userId ?? 'NO_USER'} ${method} ${originalUrl}`,
     );
     // 生产环境不上报
-    requestLogger.debug('Incoming Data', {
+    requestTracer.debug('Incoming Data', {
       body: req.body,
       query: req.query,
       params: req.params,
     });
-    req.logger = requestLogger;
+    req.tracer = requestTracer;
 
     res.setHeader('request-id', rid);
     next();

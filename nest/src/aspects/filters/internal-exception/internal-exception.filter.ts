@@ -12,7 +12,7 @@ export class InternalExceptionFilter implements ExceptionFilter {
     const httpCtx = host.switchToHttp();
     const res = httpCtx.getResponse<Res>();
     const req = httpCtx.getRequest<Req>();
-    req.logger.error('Internal Error', exception);
+    req.tracer.error('Internal Error', exception);
     const status = HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = {
       code: status,

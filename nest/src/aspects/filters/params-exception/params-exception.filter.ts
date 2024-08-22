@@ -5,19 +5,19 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { TracerService } from 'src/services/tracer/tracer.service';
 import { ParamsException } from 'src/shared/errors/errors';
-import { LogService } from 'src/services/log/log.service';
 import * as statuses from 'statuses';
 
 @Catch(ParamsException)
 export class ParamsExceptionFilter implements ExceptionFilter {
   constructor(
-    private logger: LogService,
+    private tracer: TracerService,
     private config: ConfigService,
   ) {}
 
   catch(exception: ParamsException, host: ArgumentsHost) {
-    this.logger.error(exception.message, exception);
+    this.tracer.error(exception.message, exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Res>();
     const errorResponse = {

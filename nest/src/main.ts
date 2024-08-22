@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { SocketIoAdapter } from './aspects/adaptors/socket.io.adaptor';
-import { LogService } from './services/log/log.service';
 import * as pkg from '../package.json';
 import * as session from 'express-session';
+import { TracerService } from './services/tracer/tracer.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -13,18 +13,18 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const rootLogger = app.get(LogService);
+  const rootTracer = app.get(TracerService);
   const config = app.get(ConfigService);
 
-  const log = rootLogger.child({
+  const appTracer = rootTracer.child({
     msgPrefix: 'APP',
   });
 
-  log.log('Application Running', {
+  app.useLogger(appTracer);
+
+  appTracer.log('Application Running', {
     version: pkg.version,
   });
-
-  app.useLogger(log);
 
   app.use(
     session({
@@ -36,7 +36,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.useWebSocketAdapter(new SocketIoAdapter(app, log));
+  app.useWebSocketAdapter(new SocketIoAdapter(app, appTracer));
 
   app.useStaticAssets('public', {
     // 虚拟路径为 static
@@ -53,7 +53,7 @@ async function bootstrap() {
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
 
-  log.log(`Server running in http://127.0.0.1:${appPort}`);
+  appTracer.log(`Server running in http://127.0.0.1:${appPort}`);
 }
 
 bootstrap();

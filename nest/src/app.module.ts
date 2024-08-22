@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './db/db.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LogService } from './services/log/log.service';
 import { SocketV1Module } from './socketv1/socketv1.module';
 import { ServicesModule } from './services/services.module';
 import { TracerMiddleware } from './aspects/middlewares/tracer/tracer.middleware';
@@ -14,6 +13,7 @@ import { ResponseFormatterInterceptor } from './aspects/interceptors/response-fo
 import { ParamsExceptionFilter } from './aspects/filters/params-exception/params-exception.filter';
 import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
 import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
+import { TracerService } from './services/tracer/tracer.service';
 
 @Module({
   imports: [
@@ -73,7 +73,7 @@ import { InternalExceptionFilter } from './aspects/filters/internal-exception/in
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
-  constructor(private log: LogService) {}
+  constructor(private tracer: TracerService) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(TracerMiddleware).forRoutes('*');
