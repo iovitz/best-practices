@@ -13,8 +13,6 @@ export class UserController {
       Number(query.page ?? 1),
       Number(query.size ?? 10),
     );
-    tracer.warn('警告');
-    tracer.error('出错');
     return users;
   }
 
