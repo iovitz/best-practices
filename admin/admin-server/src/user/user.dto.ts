@@ -1,5 +1,5 @@
 import { IsInt, IsString, Length, Matches, Max, Min } from 'class-validator';
-import { PagingDTO } from 'src/common/dto/dto';
+import { PagingDTO } from 'src/shared/dto/dto';
 
 export class getUsersDTO extends PagingDTO {}
 

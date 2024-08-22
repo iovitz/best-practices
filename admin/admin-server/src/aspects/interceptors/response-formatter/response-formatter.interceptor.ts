@@ -2,26 +2,28 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
-  LoggerService,
   NestInterceptor,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TracerService } from 'src/services/tracer/tracer.service';
+import { SKIP_RESPONSE_FORMAT_KEY } from 'src/shared/constans/meta-keys';
 
 @Injectable()
 export class ResponseFormatterInterceptor implements NestInterceptor {
-  constructor(private logger: LoggerService) {}
+  constructor(private tracer: TracerService) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
+    const handler = ctx.getHandler();
+    const skipFormat = Reflect.getMetadata(SKIP_RESPONSE_FORMAT_KEY, handler);
     return next.handle().pipe(
       map((data) => {
-        const res: Request = context.getArgByIndex(1);
         // 跳过format
-        if (res.skipFormat) {
-          this.logger.log('Skip Response Format');
+        if (skipFormat) {
+          this.tracer.log(`Skip Response Format`);
           return data;
         }
+        // this.logger.log(`(${tracerInfo})Request Success`);
         return {
           data,
           code: 0,

@@ -1,4 +1,3 @@
-import { Inject, LoggerService } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -6,8 +5,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Server, Socket } from 'socket.io';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @WebSocketGateway({
   path: '/socket/v1',
@@ -15,20 +14,17 @@ import { Server, Socket } from 'socket.io';
 export class SocketV1Gateway
   implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket>
 {
-  constructor(
-    @Inject(WINSTON_MODULE_NEST_PROVIDER)
-    private readonly logger: LoggerService,
-  ) {}
+  constructor(private readonly log: TracerService) {}
 
   @WebSocketServer() server: Server;
   users = 0;
 
   async handleConnection(client: Socket) {
-    this.logger.log(client.id, '开始连接');
+    this.log.log('开始连接', { id: client.id });
   }
 
   async handleDisconnect(client: Socket) {
-    this.logger.log(client.id, '取消连接');
+    this.log.log('取消连接', { id: client.id });
   }
 
   @SubscribeMessage('events')
@@ -38,7 +34,9 @@ export class SocketV1Gateway
 
   @SubscribeMessage('hello')
   async handleMessage(client: Socket, payload: string) {
-    this.logger.log(payload, 'hello');
+    this.log.log('socket hello', {
+      payload,
+    });
 
     client.emit('hello', 'server hello payload');
   }

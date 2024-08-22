@@ -3,22 +3,28 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
-  LoggerService,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { ParamsException } from 'src/common/errors/errors';
+import { ConfigService } from '@nestjs/config';
+import { TracerService } from 'src/services/tracer/tracer.service';
+import { ParamsException } from 'src/shared/errors/errors';
+import * as statuses from 'statuses';
 
 @Catch(ParamsException)
 export class ParamsExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService) {}
+  constructor(
+    private tracer: TracerService,
+    private config: ConfigService,
+  ) {}
 
   catch(exception: ParamsException, host: ArgumentsHost) {
-    this.logger.error(exception.message, exception.stack, 'ParamsException');
+    this.tracer.error(exception.message, exception);
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<Res>();
     const errorResponse = {
       code: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: exception.errorList,
+      message: this.config.get('isOnline')
+        ? statuses(HttpStatus.INTERNAL_SERVER_ERROR)
+        : exception.errorList,
     };
     response.status(HttpStatus.INTERNAL_SERVER_ERROR);
     response.send(errorResponse);

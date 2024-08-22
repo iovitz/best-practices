@@ -1,49 +1,42 @@
-import {
-  Inject,
-  Injectable,
-  LoggerService,
-  NestMiddleware,
-} from '@nestjs/common';
-import { Request } from 'express';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @Injectable()
 export class TracerMiddleware implements NestMiddleware {
-  constructor(
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private logger: LoggerService,
-  ) {}
-
+  constructor(private readonly tracer: TracerService) {}
   private tracerIdGenerator = customAlphabet('0123456789', 5);
 
-  use = (req: Request, res: Response, next: () => void) => {
-    req.tracer = {
-      id: `${Date.now()}${this.tracerIdGenerator()}`,
-    };
-    req.logger = {
-      debug: (message, context) => {
-        this.logger.debug(message, context);
-      },
-      verbose: (message, context) => {
-        this.logger.verbose(message, context);
-      },
-      log: (message, context) => {
-        this.logger.log(message, context);
-      },
-      warn: (message, context) => {
-        this.logger.warn(message, context);
-      },
-      error: (message, context) => {
-        this.logger.error(message, context);
-      },
-      fatal: (message, context) => {
-        console.log(message, context);
-        this.logger.fatal(message, context);
-      },
-    };
-    this.logger.verbose({
-      name: 'zs',
+  async use(req: Req, res: Res, next: () => void) {
+    const stime = process.hrtime.bigint();
+    req.stime = stime;
+    const { method, originalUrl } = req;
+    const requestTid = res.get('tracer-id');
+    const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
+    const userId = req.session.userId;
+    const requestTracer = this.tracer.child({
+      traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
     });
+    res.on('finish', function (this: Res) {
+      const cost = process.hrtime.bigint() - stime;
+      requestTracer.log('Request Finish', {
+        cost: cost.toString(),
+        status: this.statusCode,
+      });
+    });
+
+    requestTracer.log(
+      `Incoming Info：${userId ?? 'NO_USER'} ${method} ${originalUrl}`,
+    );
+    // 生产环境不上报
+    requestTracer.debug('Incoming Data', {
+      body: req.body,
+      query: req.query,
+      params: req.params,
+    });
+    req.tracer = requestTracer;
+
+    res.setHeader('request-id', rid);
     next();
-  };
+  }
 }

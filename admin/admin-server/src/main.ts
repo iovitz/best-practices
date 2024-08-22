@@ -1,16 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-import { LoggerService } from '@nestjs/common';
-import { AppModule } from './modules/app.module';
-import { GlobalExceptionFilter } from './aspects/filters/global-exception/global-exception.filter';
-import { ParamsExceptionFilter } from './aspects/filters/params-exception/params-exception.filter';
-import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
-import { ParamsPipe } from './aspects/pipes/params/params.pipe';
-import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor';
-import { SocketIoAdapter } from './common/adaptors/socket.io.adaptor';
-import { TracerMiddleware } from './aspects/middlewares/tracer/tracer.middleware';
+import { AppModule } from './app.module';
+import { SocketIoAdapter } from './aspects/adaptors/socket.io.adaptor';
+import * as pkg from '../package.json';
+import * as session from 'express-session';
+import { TracerService } from './services/tracer/tracer.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -18,37 +13,47 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  const logger = app.get<LoggerService>(WINSTON_MODULE_NEST_PROVIDER);
+  const rootTracer = app.get(TracerService);
+  const config = app.get(ConfigService);
 
-  app.useLogger(logger);
+  const appTracer = rootTracer.child({
+    msgPrefix: 'APP',
+  });
+
+  app.useLogger(appTracer);
+
+  appTracer.log('Application Running', {
+    version: pkg.version,
+  });
+
+  app.use(
+    session({
+      secret: config.getOrThrow('SESSION_SECRET'),
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
   const configService = app.get(ConfigService);
 
-  app.useWebSocketAdapter(new SocketIoAdapter(app, logger));
+  app.useWebSocketAdapter(new SocketIoAdapter(app, appTracer));
 
-  // 虚拟路径为 static
   app.useStaticAssets('public', {
-    prefix: '/',
+    // 虚拟路径为 static
+    prefix: '/static',
   });
 
-  // 注入Tracer
-  app.use(new TracerMiddleware(logger).use);
-
-  app.useGlobalPipes(new ParamsPipe(logger));
-  app.useGlobalFilters(new GlobalExceptionFilter(logger));
-  app.useGlobalFilters(new ParamsExceptionFilter(logger));
-  app.useGlobalFilters(new HttpExceptionFilter(logger));
-  app.useGlobalInterceptors(new ResponseFormatterInterceptor(logger));
+  // 配置 EJS 模板引擎
+  app.setBaseViewsDir('views');
+  app.setViewEngine('ejs');
 
   // 允许跨域
-  app.enableCors({});
-
-  app.setGlobalPrefix(configService.getOrThrow('SERVER_GLOBAL_PREFIX'));
+  // app.enableCors({});
 
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);
 
-  logger.log(`Server running in http://127.0.0.1:${appPort}`, 'bootstrap');
+  appTracer.log(`Server running in http://127.0.0.1:${appPort}`);
 }
 
 bootstrap();
