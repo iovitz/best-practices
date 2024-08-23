@@ -81,19 +81,19 @@ class BaseTracer implements LoggerService {
   }
 
   log(message: any, context?: LogContext) {
-    this.logger.info(message, context);
+    this.logger.info(message, context ?? '');
   }
   error(message: any, context?: LogContext) {
-    this.logger.error(message, context);
+    this.logger.error(message, context ?? '');
   }
   warn(message: any, context?: LogContext) {
-    this.logger.warn(message, context);
+    this.logger.warn(message, context ?? '');
   }
   debug(message: any, context?: LogContext) {
-    this.logger.debug(message, context);
+    this.logger.debug(message, context ?? '');
   }
   verbose(message: any, context?: string) {
-    this.logger.info(message, context);
+    this.logger.info(message, context ?? '');
   }
 
   child(context: Record<string, string>) {
