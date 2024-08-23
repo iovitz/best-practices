@@ -14,9 +14,9 @@ export class TracerMiddleware implements NestMiddleware {
     const requestTid = res.get('tracer-id');
     const rid = requestTid || `${Date.now()}${this.tracerIdGenerator()}`;
     const userId = req.session.userId;
-    const requestTracer = this.tracer.child({
-      traceInfo: `${rid}${userId ? `#${userId}` : ''}`,
-    });
+    const requestTracer = this.tracer.child(
+      `TRACE ${rid}${userId ? `#${userId}` : ''}`,
+    );
     res.on('finish', function (this: Res) {
       const cost = process.hrtime.bigint() - stime;
       requestTracer.log('Request Finish', {
@@ -30,10 +30,11 @@ export class TracerMiddleware implements NestMiddleware {
     );
     // 生产环境不上报
     requestTracer.debug('Incoming Data', {
-      body: req.body,
-      query: req.query,
-      params: req.params,
+      body: JSON.stringify(req.body),
+      query: JSON.stringify(req.query),
+      params: JSON.stringify(req.params),
     });
+
     req.tracer = requestTracer;
 
     res.setHeader('request-id', rid);

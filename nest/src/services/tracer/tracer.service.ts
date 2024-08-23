@@ -1,138 +1,29 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { get, isEmpty, omit } from 'lodash';
 import 'winston-daily-rotate-file';
-import { Logger, createLogger, format, transports } from 'winston';
-import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
+import { Logger } from 'winston';
+import { rootLogger } from './trace-logger';
 
-const ERROR = Symbol('ERROR');
-
-interface LogInfo {
-  name?: string;
-  pid?: number;
-  traceInfo?: string;
-  msgPrefix?: string;
-  stack?: string;
-  payload?: string;
-  [key: string | symbol]: unknown;
-}
-
-type LogContext = string | Error | LogInfo;
-
-type Format = ReturnType<typeof format.timestamp>;
+type LogContext =
+  | string
+  | Error
+  | {
+      name?: string;
+      err?: string;
+      stack?: string;
+      [key: string]: string | number | void;
+    };
 
 class BaseTracer implements LoggerService {
-  logger: Logger;
-  constructor(logger?: Logger) {
-    this.logger = logger ?? this.createRootLogger();
-  }
+  constructor(private logger: Logger) {}
 
-  createRootLogger() {
-    const logger = createLogger({
-      transports: [
-        this.getConsoleTransport(),
-        this.getInfoTransport(),
-        this.getErrorTransport(),
-      ],
-    });
-    return logger.child({
-      pid: process.pid,
-    });
-  }
-
-  insertOutput(v: unknown) {
-    if (!v) return '';
-    if (typeof v === 'object') {
-      return ` ${JSON.stringify(v)}`;
-    }
-    return ` ${v}`;
-  }
-
-  formatOutput = (info: LogInfo) => {
-    if (!info) return '';
-    const {
-      timestamp,
-      level,
-      message,
-      name,
-      pid,
-      traceInfo,
-      msgPrefix,
-      stack,
-      payload,
-      ...rest
-    } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
-    // 错误日志特别输出
-    let restStr = '';
-    if (rest && !isEmpty(rest)) {
-      try {
-        restStr = JSON.stringify(rest);
-      } catch (e) {
-        this.error('Log Rest Info Stringify fail', e);
-      }
-    }
-    if (info[ERROR]) {
-      return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(
-        traceInfo,
-      )}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(
-        stack,
-      )}${this.insertOutput(restStr)}`;
-    }
-    return `${[timestamp]} ${pid} ${level}${this.insertOutput(msgPrefix)}${this.insertOutput(traceInfo)}${this.insertOutput(name)}${this.insertOutput(message)}${this.insertOutput(payload)}${this.insertOutput(restStr)}`;
-  };
-
-  getConsoleTransport() {
-    return new transports.Console({
-      level: 'debug',
-      // 使用时间戳和nest样式
-      format: format.combine(
-        format.timestamp({ format: 'YY-MM-DD HH:mm:ss.SSS' }),
-        format.colorize(),
-        format.printf(this.formatOutput),
-      ),
-    });
-  }
-
-  getInfoTransport() {
-    return new transports.DailyRotateFile({
-      dirname: 'logs/info',
-      filename: '%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      zippedArchive: true,
-      maxSize: '20m',
-      maxFiles: '14d',
-      level: 'info',
-      format: format.combine(...this.getCommonFormat()),
-    });
-  }
-
-  getErrorTransport() {
-    return new transports.DailyRotateFile({
-      dirname: 'logs/error',
-      filename: '%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      zippedArchive: true,
-      maxSize: '20m',
-      maxFiles: '14d',
-      level: 'error',
-      format: format.combine(...this.getCommonFormat()),
-    });
-  }
-
-  getCommonFormat(): Format[] {
-    return [
-      format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-      format.printf(this.formatOutput),
-    ];
-  }
-
-  private formatContext(context?: LogContext | string) {
-    if (!context) return {};
+  private formatContext(context?: LogContext) {
+    if (!context) return;
     if (context instanceof Error) {
       return {
-        [ERROR]: true,
-        name: context.message ?? get(context, 'message'),
-        message: context.message ?? get(context, 'message'),
+        name: context.name,
+        message: context.message,
+        // 尽量吧错误都放在同一行方便日志按行过滤查看
         stack: context.stack?.split('\n').join('\\n'),
       };
     }
@@ -140,7 +31,7 @@ class BaseTracer implements LoggerService {
       return context;
     }
     return {
-      payload: context,
+      name: context,
     };
   }
 
@@ -156,18 +47,19 @@ class BaseTracer implements LoggerService {
   debug(message: any, context?: LogContext) {
     this.logger.debug(message, this.formatContext(context));
   }
-  verbose(message: any, context?: string) {
-    this.logger.info(message, this.formatContext(context));
-  }
 
-  child(option: unknown) {
-    return new BaseTracer(this.logger.child(option)) as TracerService;
+  child(scope: string) {
+    return new BaseTracer(
+      this.logger.child({
+        scope,
+      }),
+    ) as TracerService;
   }
 }
 
 @Injectable()
 export class TracerService extends BaseTracer {
   constructor(private config: ConfigService) {
-    super();
+    super(rootLogger);
   }
 }
