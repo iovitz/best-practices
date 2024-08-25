@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SqliteService } from './sqlite.service';
+import { MysqlService } from './mysql.service';
 
-describe('SqliteService', () => {
-  let service: SqliteService;
+describe('MysqlService', () => {
+  let service: MysqlService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SqliteService],
+      providers: [MysqlService],
     }).compile();
 
-    service = module.get<SqliteService>(SqliteService);
+    service = module.get<MysqlService>(MysqlService);
   });
 
   it('should be defined', () => {

@@ -1,22 +1,25 @@
 import {
   Injectable,
-  Logger,
   OnApplicationShutdown,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/sqlite';
+import { PrismaClient } from '@prisma/client-mysql';
+import { TracerService } from 'src/services/tracer/tracer.service';
 
 @Injectable()
-export class SqliteService
+export class MysqlService
   extends PrismaClient
   implements OnModuleInit, OnApplicationShutdown
 {
+  constructor(private tracer: TracerService) {
+    super();
+  }
   async onModuleInit() {
     try {
       const res = await this.$connect();
-      Logger.log('数据库链接成功', res);
+      this.tracer.log('数据库链接成功');
     } catch (e) {
-      Logger.error('数据库链接失败', e);
+      this.tracer.error('数据库链接失败', e);
     }
   }
 

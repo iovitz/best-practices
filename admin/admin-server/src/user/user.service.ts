@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { SqliteService } from '../db/sqlite/sqlite.service';
+import { MysqlService } from 'src/db/mysql/mysql.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: SqliteService) {}
+  constructor(private mysql: MysqlService) {}
 
   getUserList(page: number, take: number) {
-    return this.prismaService.user.findMany({
+    return this.mysql.user.findMany({
       skip: (page - 1) * take,
       take,
     });
   }
 
   getUserById(id: number) {
-    return this.prismaService.user.findFirst({
+    return this.mysql.user.findFirst({
       where: {
         id: id,
       },
@@ -21,7 +21,7 @@ export class UserService {
   }
 
   createUser(name: string, age: number) {
-    return this.prismaService.user.create({
+    return this.mysql.user.create({
       data: {
         name,
         age,

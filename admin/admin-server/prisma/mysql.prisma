@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+  // 初始化：pnpm generate:mysql
+  // 引入：import { PrismaClient } from '@prisma/client-mysql';
+  output   = "../node_modules/@prisma/client-mysql"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "mysql://admin_data:a123123.@192.168.86.128:3306/admin_data"
+}
+
+model User {
+  id   Int    @id @default(autoincrement())
+  name String
+  age  Int
+}
