@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "mysql://admin_data:a123123.@192.168.86.128:3306/admin_data"
+  provider = "mysql"
+  url      = "mysql://admin-table:acacac@192.168.86.128:3306/admin-table"
 }
 
 model User {

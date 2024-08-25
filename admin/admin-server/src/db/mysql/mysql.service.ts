@@ -16,7 +16,7 @@ export class MysqlService
   }
   async onModuleInit() {
     try {
-      const res = await this.$connect();
+      await this.$connect();
       this.tracer.log('数据库链接成功');
     } catch (e) {
       this.tracer.error('数据库链接失败', e);
