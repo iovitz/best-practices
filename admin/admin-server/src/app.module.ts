@@ -14,6 +14,7 @@ import { ParamsExceptionFilter } from './aspects/filters/params-exception/params
 import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
 import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
 import { TracerService } from './services/tracer/tracer.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { TracerService } from './services/tracer/tracer.service';
     DbModule,
     SocketV1Module,
     UserModule,
+    AuthModule,
   ],
   providers: [
     {

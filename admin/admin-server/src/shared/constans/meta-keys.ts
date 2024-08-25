@@ -7,3 +7,5 @@ export const TRACER_ID_KEY = Symbol('TRACER_ID_KEY');
 export const USER_ID = Symbol('USER_ID');
 // Request Logger
 export const REQUEST_LOGGER = Symbol('REQUEST_LOGGER');
+// 公开接口（不需要挡路也能访问）
+export const PUBLIC_INTERFACE = Symbol('PUBLIC_INTERFACE');

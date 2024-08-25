@@ -1,9 +1,7 @@
 import { IsInt, IsString, Length, Matches, Max, Min } from 'class-validator';
 import { PagingDTO } from 'src/shared/dto/dto';
 
-export class getUsersDTO extends PagingDTO {}
-
-export class getUserDTO {
+export class getUserInfoDTO {
   @IsString()
   @Matches(/^\d+$/)
   id: string;
