@@ -7,11 +7,19 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://admin-table:acacac@192.168.86.128:3306/admin-table"
+  url      = env("DB_MYSQL_URL")
 }
 
 model User {
-  id   Int    @id @default(autoincrement())
-  name String
-  age  Int
+  idx      Int    @id @default(autoincrement())
+  id       String @db.VarChar(10)
+  email    String @db.VarChar(20)
+  password String @db.VarChar(32)
+}
+
+model UserProfile {
+  idx      Int    @id @default(autoincrement())
+  id       String @db.VarChar(10)
+  nickname String @db.VarChar(10)
+  avatar   String @db.VarChar(100)
 }

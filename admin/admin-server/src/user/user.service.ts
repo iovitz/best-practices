@@ -15,7 +15,7 @@ export class UserService {
   getUserById(id: number) {
     return this.mysql.user.findFirst({
       where: {
-        id: id,
+        id: '123',
       },
     });
   }
@@ -23,8 +23,7 @@ export class UserService {
   createUser(name: string, age: number) {
     return this.mysql.user.create({
       data: {
-        name,
-        age,
+        id: '123',
       },
     });
   }
