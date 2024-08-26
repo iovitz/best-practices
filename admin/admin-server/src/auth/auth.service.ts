@@ -18,7 +18,7 @@ export class AuthService {
 
   createUser(
     user: Pick<User, 'email' | 'password'>,
-    userProfile: Pick<UserProfile, 'realName' | 'homepath' | 'username'>,
+    userProfile: Pick<UserProfile, 'realName' | 'homepath'>,
   ) {
     const id = this.genUserId();
     return this.mysql.$transaction([
@@ -31,6 +31,8 @@ export class AuthService {
       this.mysql.userProfile.create({
         data: {
           id,
+          // 默认昵称为用户名
+          username: userProfile.realName,
           ...userProfile,
         },
       }),
