@@ -11,15 +11,32 @@ datasource db {
 }
 
 model User {
-  idx      Int    @id @default(autoincrement())
-  id       String @db.VarChar(10)
-  email    String @db.VarChar(20)
-  password String @db.VarChar(32)
+  index     Int       @id @default(autoincrement())
+  id        String    @unique @db.VarChar(10)
+  email     String    @unique @db.VarChar(20)
+  password  String    @db.VarChar(32)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Session   Session[]
 }
 
 model UserProfile {
-  idx      Int    @id @default(autoincrement())
-  id       String @db.VarChar(10)
-  nickname String @db.VarChar(10)
-  avatar   String @db.VarChar(100)
+  index     Int      @id @default(autoincrement())
+  id        String   @unique @db.VarChar(10)
+  username  String   @db.VarChar(11)
+  realName  String   @unique @db.VarChar(20)
+  desc      String?  @db.VarChar(50)
+  avatar    String?  @db.VarChar(100)
+  homepath  String?  @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  index     Int      @id @default(autoincrement())
+  id        String   @unique @db.VarChar(30)
+  userId    String   @db.VarChar(10)
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

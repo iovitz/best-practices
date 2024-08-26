@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MysqlService } from 'src/db/mysql/mysql.service';
+import { User } from '@prisma/client-mysql';
 
 @Injectable()
 export class UserService {
@@ -12,19 +13,17 @@ export class UserService {
     });
   }
 
-  getUserById(id: number) {
+  getUserById(id: string) {
     return this.mysql.user.findFirst({
       where: {
-        id: '123',
+        id,
       },
     });
   }
 
-  createUser(name: string, age: number) {
+  createUser(data: User) {
     return this.mysql.user.create({
-      data: {
-        id: '123',
-      },
+      data,
     });
   }
 }
