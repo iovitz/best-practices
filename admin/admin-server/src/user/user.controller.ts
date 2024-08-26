@@ -16,6 +16,7 @@ export class UserController {
     tracer.log('收到请求', {
       ...query,
     });
+
     return {
       userId: '1',
       username: 'vben',

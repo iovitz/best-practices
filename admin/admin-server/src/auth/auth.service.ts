@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { nanoid, customAlphabet } from 'nanoid';
 import { MysqlService } from 'src/db/mysql/mysql.service';
 import { User, UserProfile } from '@prisma/client-mysql';
+import { PickProps } from 'src/shared/types/utils';
 
 @Injectable()
 export class AuthService {
@@ -17,8 +18,8 @@ export class AuthService {
   }
 
   createUser(
-    user: Pick<User, 'email' | 'password'>,
-    userProfile: Pick<UserProfile, 'realName' | 'homepath'>,
+    user: PickProps<User, 'email' | 'password'>,
+    userProfile: PickProps<UserProfile, 'realName'>,
   ) {
     const id = this.genUserId();
     return this.mysql.$transaction([
