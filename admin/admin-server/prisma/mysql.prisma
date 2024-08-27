@@ -15,6 +15,7 @@ model User {
   id        String    @unique @db.VarChar(10)
   email     String    @unique @db.VarChar(30)
   password  String    @db.VarChar(32)
+  status    Boolean?  @db.UnsignedTinyInt
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Session   Session[]
@@ -28,6 +29,7 @@ model UserProfile {
   desc      String?  @db.VarChar(50)
   avatar    String?  @db.VarChar(100)
   homepath  String?  @db.VarChar(50)
+  status    Boolean? @db.UnsignedTinyInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -37,6 +39,7 @@ model Session {
   id        String   @unique @db.VarChar(30)
   userId    String   @db.VarChar(10)
   user      User     @relation(fields: [userId], references: [id])
+  status    Boolean? @db.UnsignedTinyInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
