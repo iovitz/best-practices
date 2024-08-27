@@ -26,6 +26,7 @@ async function bootstrap() {
 
   app.use(
     session({
+      name: '__ss',
       secret: config.getOrThrow('SESSION_SECRET'),
       resave: false,
       saveUninitialized: false,

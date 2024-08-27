@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DbModule } from './db/db.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,6 +14,8 @@ import { ParamsExceptionFilter } from './aspects/filters/params-exception/params
 import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
 import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
 import { TracerService } from './services/tracer/tracer.service';
+import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
 
 @Module({
   imports: [
@@ -73,9 +75,23 @@ import { TracerService } from './services/tracer/tracer.service';
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
-  constructor(private tracer: TracerService) {}
+  constructor(
+    private config: ConfigService,
+    private tracer: TracerService,
+  ) {}
 
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(TracerMiddleware).forRoutes('*');
+    this.tracer.log('Initial middlewares');
+    consumer
+      .apply(
+        cookieParser(),
+        session({
+          secret: this.config.getOrThrow('SESSION_SECRET'),
+          resave: false,
+          saveUninitialized: false,
+        }),
+        TracerMiddleware,
+      )
+      .forRoutes('*');
   }
 }
