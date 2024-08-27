@@ -20,8 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "yac": "node_modules/.bin/httpyac -e dev -o body ",
     "postinstall": "npm run sqlite:generate",
-    "sqlite:generate": "./node_modules/.bin/prisma generate --schema=./prisma/sqlite.prisma",
-    "sqlite:db:push": "./node_modules/.bin/prisma db push --schema=./prisma/sqlite.prisma"
+    "sqlite:generate": "dotenv -e .env.dev -- prisma generate --schema=./prisma/sqlite.prisma",
+    "sqlite:db:push": "dotenv -e .env.dev -- prisma db push --schema=./prisma/sqlite.prisma"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -38,7 +38,6 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
-    "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "ejs": "^3.1.10",
     "express-session": "^1.18.0",
@@ -75,6 +74,8 @@
     "@types/triple-beam": "^1.3.5",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
