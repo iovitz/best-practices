@@ -8,10 +8,11 @@ GET {{prefix}}/list
 GET {{prefix}}/52
 
 ### 创建用户
+@username = {{$random.alphabetic(46)}}
 POST {{prefix}}/create
 content-type: application/json
 
 {
-    "name": "larry",
+    "name": "{{username}}",
     "age": {{$randomInt 5 150}}
 }

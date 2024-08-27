@@ -3,6 +3,7 @@ import { getUserDTO, getUsersDTO, createUserDTO } from './user.dto';
 import { UserService } from './user.service';
 import { Tracer } from 'src/shared/decorator/tracer';
 import { TracerService } from 'src/services/tracer/tracer.service';
+import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe';
 
 @Controller('/api/user')
 export class UserController {
@@ -26,7 +27,7 @@ export class UserController {
   }
 
   @Post('/create')
-  async createUser(@Body() body: createUserDTO) {
+  async createUser(@Body(VerifyPipe) body: createUserDTO) {
     const user = await this.userService.createUser(body.name, body.age);
     return user;
   }

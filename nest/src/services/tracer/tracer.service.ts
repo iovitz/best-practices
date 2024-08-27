@@ -11,7 +11,7 @@ type LogContext =
       name?: string;
       err?: string;
       stack?: string;
-      [key: string]: string | number | void;
+      [key: string]: unknown;
     };
 
 class BaseTracer implements LoggerService {

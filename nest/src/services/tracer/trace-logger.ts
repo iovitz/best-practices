@@ -4,6 +4,7 @@ import { createLogger, format, transports } from 'winston';
 import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
 import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 import * as chalk from 'chalk';
+import * as stringify from 'json-stringify-safe';
 
 const ERROR = Symbol('ERROR');
 
@@ -42,8 +43,8 @@ export function createRootLogger(level: string) {
               ...rest
             } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
             // 错误日志特别输出
-            const restStr = formatRest(rest);
-            return `${chalk.gray(timestamp)}${insertOutput(pid)} ${level}${insertOutput(scope, chalk.gray)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
+            const restStr = isEmpty(rest) ? '' : stringify(rest);
+            return `${chalk.gray(timestamp)} ${level}${insertOutput(scope, chalk.red)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
               stack,
             )}${insertOutput(restStr)}`;
           }),
@@ -66,7 +67,9 @@ export function createRootLogger(level: string) {
       }),
     ],
   });
-  return rootLogger;
+  return rootLogger.child({
+    pid: process.pid,
+  });
 }
 
 function getCommonStyleFormat(): Format[] {
@@ -88,20 +91,8 @@ function getCommonRotateFileOption(): DailyRotateFileTransportOptions {
 
 function insertOutput(v: unknown, chalk?: chalk.Chalk) {
   if (!v) return '';
-  const content = typeof v === 'object' ? JSON.stringify(v) : v;
+  const content = typeof v === 'object' ? stringify(v) : v;
   return ` ${chalk ? chalk(content) : content}`;
-}
-
-function formatRest(rest: unknown) {
-  let restStr = '';
-  if (rest && !isEmpty(rest)) {
-    try {
-      restStr = JSON.stringify(rest);
-    } catch (e) {
-      console.error('Log Rest Info Stringify fail', e);
-    }
-  }
-  return restStr;
 }
 
 function formatOutput(info: LogInfo) {
@@ -118,7 +109,7 @@ function formatOutput(info: LogInfo) {
     ...rest
   } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
   // 错误日志特别输出
-  const restStr = formatRest(rest);
+  const restStr = isEmpty(rest) ? '' : stringify(rest);
   return `${[timestamp]}${insertOutput(pid)} ${level}${insertOutput(scope)}${insertOutput(name)}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
     stack,
   )}${insertOutput(restStr)}`;

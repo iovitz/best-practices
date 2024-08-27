@@ -3,6 +3,7 @@ import { gzip, ungzip } from 'pako';
 import { AES } from 'crypto-js';
 import { compare, genSalt, hash } from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import * as stringify from 'json-stringify-safe';
 
 @Injectable()
 export class EncryptService {
@@ -15,7 +16,7 @@ export class EncryptService {
   }
 
   gzip(data) {
-    return this.strToGzipBase64(JSON.stringify(data));
+    return this.strToGzipBase64(stringify(data));
   }
 
   strToGzipBase64(str) {

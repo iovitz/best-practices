@@ -30,9 +30,8 @@ export class TracerMiddleware implements NestMiddleware {
     );
     // 生产环境不上报
     requestTracer.debug('Incoming Data', {
-      body: JSON.stringify(req.body),
-      query: JSON.stringify(req.query),
-      params: JSON.stringify(req.params),
+      body: req.body,
+      query: req.query,
     });
 
     req.tracer = requestTracer;
