@@ -24,7 +24,6 @@ export class TracerMiddleware implements NestMiddleware {
         status: this.statusCode,
       });
     });
-    console.log(req.useragent);
 
     requestTracer.log(
       `Incoming Info：${userId ?? 'NO_USER'} ${method} ${originalUrl}`,
