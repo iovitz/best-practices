@@ -2,7 +2,7 @@ import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import 'winston-daily-rotate-file';
 import { Logger } from 'winston';
-import { rootLogger } from './trace-logger';
+import { createRootLogger } from './trace-logger';
 
 type LogContext =
   | string
@@ -60,6 +60,6 @@ class BaseTracer implements LoggerService {
 @Injectable()
 export class TracerService extends BaseTracer {
   constructor(private config: ConfigService) {
-    super(rootLogger);
+    super(createRootLogger(config.getOrThrow('LOG_LEVEL')));
   }
 }

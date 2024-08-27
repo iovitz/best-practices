@@ -3,6 +3,7 @@ import 'winston-daily-rotate-file';
 import { createLogger, format, transports } from 'winston';
 import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
 import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
+import * as chalk from 'chalk';
 
 const ERROR = Symbol('ERROR');
 
@@ -18,34 +19,55 @@ interface LogInfo {
   [key: string | symbol]: unknown;
 }
 
-export const rootLogger = createLogger({
-  transports: [
-    new transports.Console({
-      level: 'debug',
-      // 使用时间戳和nest样式
-      format: format.combine(
-        format.timestamp({ format: 'YY-MM-DD HH:mm:ss.SSS' }),
-        format.colorize(),
-        format.printf(formatOutput),
-      ),
-    }),
-    new transports.DailyRotateFile({
-      dirname: 'logs/info',
-      level: 'info',
-      ...getCommonRotateFileOption(),
-    }),
-    new transports.DailyRotateFile({
-      dirname: 'logs/warn',
-      level: 'warn',
-      ...getCommonRotateFileOption(),
-    }),
-    new transports.DailyRotateFile({
-      dirname: 'logs/error',
-      level: 'error',
-      ...getCommonRotateFileOption(),
-    }),
-  ],
-});
+export function createRootLogger(level: string) {
+  const rootLogger = createLogger({
+    transports: [
+      new transports.Console({
+        level,
+        // 使用时间戳和nest样式
+        format: format.combine(
+          format.timestamp({ format: 'HH:mm:ss.SSS' }),
+          format.colorize(),
+          format.printf((info: LogInfo) => {
+            if (!info) return '';
+            const {
+              timestamp,
+              level,
+              message,
+              name,
+              pid,
+              scope,
+              stack,
+              payload,
+              ...rest
+            } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
+            // 错误日志特别输出
+            const restStr = formatRest(rest);
+            return `${chalk.gray(timestamp)}${insertOutput(pid)} ${level}${insertOutput(scope, chalk.gray)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
+              stack,
+            )}${insertOutput(restStr)}`;
+          }),
+        ),
+      }),
+      new transports.DailyRotateFile({
+        dirname: 'logs/info',
+        level: 'info',
+        ...getCommonRotateFileOption(),
+      }),
+      new transports.DailyRotateFile({
+        dirname: 'logs/warn',
+        level: 'warn',
+        ...getCommonRotateFileOption(),
+      }),
+      new transports.DailyRotateFile({
+        dirname: 'logs/error',
+        level: 'error',
+        ...getCommonRotateFileOption(),
+      }),
+    ],
+  });
+  return rootLogger;
+}
 
 function getCommonStyleFormat(): Format[] {
   return [
@@ -64,12 +86,22 @@ function getCommonRotateFileOption(): DailyRotateFileTransportOptions {
   };
 }
 
-function insertOutput(v: unknown) {
+function insertOutput(v: unknown, chalk?: chalk.Chalk) {
   if (!v) return '';
-  if (typeof v === 'object') {
-    return ` ${JSON.stringify(v)}`;
+  const content = typeof v === 'object' ? JSON.stringify(v) : v;
+  return ` ${chalk ? chalk(content) : content}`;
+}
+
+function formatRest(rest: unknown) {
+  let restStr = '';
+  if (rest && !isEmpty(rest)) {
+    try {
+      restStr = JSON.stringify(rest);
+    } catch (e) {
+      console.error('Log Rest Info Stringify fail', e);
+    }
   }
-  return ` ${v}`;
+  return restStr;
 }
 
 function formatOutput(info: LogInfo) {
@@ -86,14 +118,7 @@ function formatOutput(info: LogInfo) {
     ...rest
   } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
   // 错误日志特别输出
-  let restStr = '';
-  if (rest && !isEmpty(rest)) {
-    try {
-      restStr = JSON.stringify(rest);
-    } catch (e) {
-      rootLogger.error('Log Rest Info Stringify fail', e);
-    }
-  }
+  const restStr = formatRest(rest);
   return `${[timestamp]}${insertOutput(pid)} ${level}${insertOutput(scope)}${insertOutput(name)}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
     stack,
   )}${insertOutput(restStr)}`;
