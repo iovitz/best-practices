@@ -1,24 +1,47 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { TracerService } from 'src/services/tracer/tracer.service';
 import { Public } from 'src/shared/decorator/public';
 import { Tracer } from 'src/shared/decorator/tracer';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './auth.dto';
 import { ValidationPipe } from 'src/aspects/pipes/validation/validation.pipe';
+import { MD5 } from 'crypto-js';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
   @Public()
   @Post('login')
-  login(
+  async login(
     @Body(ValidationPipe) user: CreateUserDto,
+    @Request() req: Req,
     @Tracer() tracer: TracerService,
   ) {
     tracer.log('收到登录请求', {
       ...user,
     });
-    const session = this.auth.genSessionId();
+    const existsUser = await this.auth.findUserBy(
+      {
+        email: user.email,
+      },
+      {
+        id: true,
+        password: true,
+      },
+    );
+    if (!existsUser) {
+      throw new BadRequestException('User not exists!');
+    }
+    if (existsUser.password !== MD5(user.password).toString()) {
+      throw new BadRequestException('Invalid Password!');
+    }
+    const session = this.auth.genSessionId(existsUser.id, req.useragent);
     return {
       token: session,
     };

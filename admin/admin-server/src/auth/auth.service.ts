@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { nanoid, customAlphabet } from 'nanoid';
+import { customAlphabet } from 'nanoid';
 import { MysqlService } from 'src/db/mysql/mysql.service';
 import { User, UserProfile } from '@prisma/client-mysql';
 import { PickProps } from 'src/shared/types/utils';
+import { MD5 } from 'crypto-js';
+import { Details } from 'express-useragent';
+import * as moment from 'moment';
+
+type UserFindFirstParams = Parameters<MysqlService['user']['findFirst']>[0];
 
 @Injectable()
 export class AuthService {
@@ -13,8 +18,23 @@ export class AuthService {
     9,
   );
 
+  private sessionIdGenerator = customAlphabet(
+    '0123456789abcdefghijklmnopqrstuvwxyz',
+    30,
+  );
+
   genUserId() {
     return 'u' + this.userIdGenerator();
+  }
+
+  findUserBy(
+    where: UserFindFirstParams['where'],
+    select: UserFindFirstParams['select'] = {},
+  ) {
+    return this.mysql.user.findFirst({
+      where,
+      select,
+    });
   }
 
   createUser(
@@ -22,12 +42,13 @@ export class AuthService {
     userProfile: PickProps<UserProfile, 'realName', 'homepath'>,
   ) {
     const id = this.genUserId();
-    console.log(id);
+    const password = MD5(user.password).toString();
     return this.mysql.$transaction([
       this.mysql.user.create({
         data: {
           id,
           ...user,
+          password,
         },
       }),
       this.mysql.userProfile.create({
@@ -40,7 +61,19 @@ export class AuthService {
       }),
     ]);
   }
-  genSessionId() {
-    return nanoid();
+  genSessionId(userId: string, env?: Details) {
+    const session = this.sessionIdGenerator();
+    this.mysql.session.create({
+      data: {
+        userId,
+        id: session,
+        os: env?.os,
+        browser: env?.browser,
+        browserVersion: env?.version,
+        useragent: env?.source,
+        expiredAt: moment().add(1, 'M').toDate(),
+      },
+    });
+    return session;
   }
 }

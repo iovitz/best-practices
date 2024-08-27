@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { get } from 'lodash';
 import { TracerService } from 'src/services/tracer/tracer.service';
 import * as statuses from 'statuses';
 
@@ -26,9 +27,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     if (status < 500) {
-      req.tracer.log(`Client Error(${status}): `, exception.message);
+      req.tracer.log(`Client Error(${status}): `, {
+        context: get(exception, 'response.message'),
+      });
     } else {
-      req.tracer.warn(`Server Error(${status})：`, exception);
+      req.tracer.error(`Client Error(${status}): `, {
+        context: get(exception, 'response.message'),
+      });
     }
 
     // 不把详细的错误码吐给前端
