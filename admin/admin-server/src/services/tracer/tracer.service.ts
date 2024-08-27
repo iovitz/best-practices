@@ -1,6 +1,7 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { get } from 'lodash';
+import * as chalk from 'chalk';
 import * as l4j from 'log4js';
 
 const ERROR = Symbol('ERROR');
@@ -17,7 +18,7 @@ l4j.configure({
       type: 'stdout',
       layout: {
         type: 'pattern',
-        pattern: '%p%x{name} %m',
+        pattern: `${chalk.blue('%p')}${chalk.red('%x{name}')} %m`,
         tokens,
       },
     },
