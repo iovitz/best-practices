@@ -21,13 +21,25 @@ export class AuthController {
   }
 
   @Post('create-user')
-  createUser(@Body() user: CreateUserDto, @Tracer() tracer: TracerService) {
+  async createUser(
+    @Body() user: CreateUserDto,
+    @Tracer() tracer: TracerService,
+  ) {
     tracer.log('创建用户', {
       ...user,
     });
-    const session = this.auth.genSessionId();
+    const [_user, userProfile] = await this.auth.createUser(
+      {
+        email: user.email,
+        password: user.password,
+      },
+      {
+        realName: user.realName,
+        homepath: user.homepath,
+      },
+    );
     return {
-      token: session,
+      id: userProfile.id,
     };
   }
 }

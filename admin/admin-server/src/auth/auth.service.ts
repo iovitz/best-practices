@@ -19,7 +19,7 @@ export class AuthService {
 
   createUser(
     user: PickProps<User, 'email' | 'password'>,
-    userProfile: PickProps<UserProfile, 'realName'>,
+    userProfile: PickProps<UserProfile, 'realName', 'homepath'>,
   ) {
     const id = this.genUserId();
     return this.mysql.$transaction([
