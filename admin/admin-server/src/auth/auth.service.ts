@@ -14,7 +14,7 @@ export class AuthService {
   );
 
   genUserId() {
-    return nanoid();
+    return 'u' + this.userIdGenerator();
   }
 
   createUser(
@@ -22,6 +22,7 @@ export class AuthService {
     userProfile: PickProps<UserProfile, 'realName', 'homepath'>,
   ) {
     const id = this.genUserId();
+    console.log(id);
     return this.mysql.$transaction([
       this.mysql.user.create({
         data: {

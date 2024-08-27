@@ -1,0 +1,14 @@
+@prefix = {{host}}/api/auth
+
+### 创建用户
+# @name create-success
+# @description 创建用户
+@realName = {{$random.alphabetic()}}
+POST {{prefix}}/create
+content-type: application/json
+
+{
+  "realName": "用户{{realName.substr(0, 5)}}",
+  "email": "{{realName}}@gmail.com",
+  "password": "22"
+}

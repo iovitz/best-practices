@@ -32,7 +32,6 @@ export class TracerMiddleware implements NestMiddleware {
     requestTracer.debug('Incoming Data', {
       body: req.body,
       query: req.query,
-      params: req.params,
     });
     req.tracer = requestTracer;
 

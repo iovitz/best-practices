@@ -13,7 +13,7 @@ datasource db {
 model User {
   index     Int       @id @default(autoincrement())
   id        String    @unique @db.VarChar(10)
-  email     String    @unique @db.VarChar(20)
+  email     String    @unique @db.VarChar(30)
   password  String    @db.VarChar(32)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -23,7 +23,7 @@ model User {
 model UserProfile {
   index     Int      @id @default(autoincrement())
   id        String   @unique @db.VarChar(10)
-  username  String   @db.VarChar(11)
+  username  String   @db.VarChar(10)
   realName  String   @unique @db.VarChar(20)
   desc      String?  @db.VarChar(50)
   avatar    String?  @db.VarChar(100)

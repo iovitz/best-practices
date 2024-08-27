@@ -19,16 +19,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Res>();
+    const req = ctx.getRequest<Req>();
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.tracer.debug(`HttpExceptionFilter${status}`, exception.message);
+    if (status < 500) {
+      req.tracer.log(`Client Error(${status}): `, exception.message);
+    } else {
+      req.tracer.warn(`Server Error(${status})：`, exception);
+    }
 
-    const message = this.config.getOrThrow('isOnline')
-      ? statuses(status)
-      : exception.message;
+    // 不把详细的错误码吐给前端
+    const message = statuses(status);
 
     const errorResponse = {
       code: status * 100,
