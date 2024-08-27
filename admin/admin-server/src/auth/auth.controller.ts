@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './auth.dto';
 import { ValidationPipe } from 'src/aspects/pipes/validation/validation.pipe';
 import { MD5 } from 'crypto-js';
+import * as UAParser from 'ua-parser-js';
 
 @Controller('api/auth')
 export class AuthController {
@@ -41,7 +42,37 @@ export class AuthController {
     if (existsUser.password !== MD5(user.password).toString()) {
       throw new BadRequestException('Invalid Password!');
     }
-    const session = this.auth.genSessionId(existsUser.id, req.useragent);
+    const ua = req.headers['user-agent'];
+    const uaObj = new UAParser(ua);
+    // const env = {
+    //   browser: uaObj.getBrowser().name,
+    //   browserVersion: uaObj.getBrowser().version,
+    //   os: uaObj.getOS().name,
+    //   osVersion: uaObj.getOS().version,
+    //   ua,
+    // };
+    console.log({
+      id: existsUser.id,
+      os: uaObj.getOS().name,
+      osVersion: uaObj.getOS().version,
+      engine: uaObj.getEngine().name,
+      browser: uaObj.getBrowser().name,
+      browserVersion: uaObj.getBrowser().version,
+      deviceModel: uaObj.getDevice().model,
+      deviceVendor: uaObj.getDevice().vendor,
+      useragent: uaObj.getUA(),
+    });
+    const session = await this.auth.createSession({
+      userId: existsUser.id,
+      os: uaObj.getOS().name,
+      osVersion: uaObj.getOS().version,
+      engine: uaObj.getEngine().name,
+      browser: uaObj.getBrowser().name,
+      browserVersion: uaObj.getBrowser().version,
+      deviceModel: uaObj.getDevice().model,
+      deviceVendor: uaObj.getDevice().vendor,
+      useragent: uaObj.getUA(),
+    });
     return {
       token: session,
     };

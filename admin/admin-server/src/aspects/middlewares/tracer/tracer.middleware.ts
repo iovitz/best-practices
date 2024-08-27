@@ -27,6 +27,7 @@ export class TracerMiddleware implements NestMiddleware {
 
     requestTracer.log(
       `Incoming Info：${userId ?? 'NO_USER'} ${method} ${originalUrl}`,
+      {},
     );
     // 生产环境不上报
     requestTracer.debug('Incoming Data', {

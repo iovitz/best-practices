@@ -38,14 +38,17 @@ model Session {
   index          Int      @id @default(autoincrement())
   id             String   @unique @db.VarChar(30)
   userId         String   @db.VarChar(10)
-  user           User     @relation(fields: [userId], references: [id])
   browser        String?  @db.VarChar(20)
   browserVersion String?  @db.VarChar(20)
   os             String?  @db.VarChar(20)
-  platform       String?  @db.VarChar(20)
+  osVersion      String?  @db.VarChar(20)
+  engine         String?  @db.VarChar(20)
+  deviceVendor   String?  @db.VarChar(20)
+  deviceModel    String?  @db.VarChar(20)
   useragent      String?  @db.VarChar(100)
   status         Boolean? @default(false) @db.UnsignedTinyInt
   expiredAt      DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id])
 }

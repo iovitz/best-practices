@@ -17,7 +17,6 @@ import { TracerService } from './services/tracer/tracer.service';
 import { AuthModule } from './auth/auth.module';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
-import { express as expressUseragent } from 'express-useragent';
 
 @Module({
   imports: [
@@ -87,7 +86,6 @@ export class AppModule implements NestModule {
     this.tracer.log('Initial middlewares');
     consumer
       .apply(
-        expressUseragent(),
         cookieParser(),
         session({
           secret: this.config.getOrThrow('SESSION_SECRET'),
