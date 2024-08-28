@@ -10,8 +10,8 @@ import { Public } from 'src/shared/decorator/public';
 import { Tracer } from 'src/shared/decorator/tracer';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './auth.dto';
-import { ValidationPipe } from 'src/aspects/pipes/validation/validation.pipe';
 import { MD5 } from 'crypto-js';
+import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe';
 
 @Controller('api/auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
   @Public()
   @Post('login')
   async login(
-    @Body(ValidationPipe) user: CreateUserDto,
+    @Body(VerifyPipe) user: CreateUserDto,
     @Request() req: Req,
     @Tracer() tracer: TracerService,
   ) {
@@ -55,13 +55,14 @@ export class AuthController {
       useragent: ua,
     });
     return {
+      id: existsUser.id,
       token: session,
     };
   }
 
   @Post('create')
   async createUser(
-    @Body(ValidationPipe) user: CreateUserDto,
+    @Body(VerifyPipe) user: CreateUserDto,
     @Tracer() tracer: TracerService,
   ) {
     tracer.log('创建用户', {

@@ -1,31 +1,33 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Tracer } from 'src/shared/decorator/tracer';
-import { TracerService } from 'src/services/tracer/tracer.service';
 import { getUserInfoDTO } from './user.dto';
+import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe';
 
-@Controller('/api/user')
+@Controller('api/user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('/user-info')
-  async getUserInfo(
-    @Query() query: getUserInfoDTO,
-    @Tracer() tracer: TracerService,
-  ) {
-    tracer.log('收到请求', {
-      ...query,
-    });
-
+  @Get(':id')
+  async getUserInfo(@Param(VerifyPipe) param: getUserInfoDTO) {
+    const res = await this.userService.findUserBy(
+      {
+        id: param.id,
+      },
+      {
+        username: true,
+        realName: true,
+        avatar: true,
+        desc: true,
+        homepath: true,
+      },
+    );
     return {
       userId: '1',
-      username: 'vben',
-      realName: 'Vben Admin',
-      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
-      desc: 'manager',
-      password: '123456',
-      token: 'fakeToken1',
-      homePath: '/dashboard/analysis',
+      username: res.username,
+      realName: res.realName,
+      avatar: res.avatar,
+      desc: res.desc,
+      homePath: res.homepath,
       roles: [
         {
           roleName: 'Super Admin',

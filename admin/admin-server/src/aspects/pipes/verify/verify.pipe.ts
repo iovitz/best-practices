@@ -5,10 +5,10 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { validate, ValidationError } from 'class-validator';
+import { ValidationError, validate } from 'class-validator';
 
 @Injectable()
-export class ValidationPipe implements PipeTransform<any> {
+export class VerifyPipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
     const { metatype } = metadata;
     const object = plainToClass(metatype, value);

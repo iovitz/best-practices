@@ -7,7 +7,7 @@ import { MD5 } from 'crypto-js';
 import * as moment from 'moment';
 import { UAParser } from 'ua-parser-js';
 
-type UserFindFirstParams = Parameters<MysqlService['user']['findFirst']>[0];
+type FindUserParam = Parameters<MysqlService['user']['findFirst']>[0];
 
 @Injectable()
 export class AuthService {
@@ -30,8 +30,8 @@ export class AuthService {
   }
 
   findUserBy(
-    where: UserFindFirstParams['where'],
-    select: UserFindFirstParams['select'] = {},
+    where: FindUserParam['where'],
+    select: FindUserParam['select'] = {},
   ) {
     return this.mysql.user.findFirst({
       where,

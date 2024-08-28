@@ -1,17 +1,5 @@
 @prefix = {{host}}/api/user
 
-### 分页获取所有用户
-GET {{prefix}}/list
-  ?page=1
-
-### 根据ID获取指定用户
-GET {{prefix}}/52
-
-### 创建用户
-POST {{prefix}}/create
-content-type: application/json
-
-{
-    "name": "larry",
-    "age": {{$randomInt 5 150}}
-}
+### userinfo:success
+@UserId = upsrrbsrio
+GET {{prefix}}/{{UserId}}
