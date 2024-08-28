@@ -45,7 +45,7 @@ model Session {
   engine         String?  @db.VarChar(20)
   deviceVendor   String?  @db.VarChar(20)
   deviceModel    String?  @db.VarChar(20)
-  useragent      String?  @db.VarChar(100)
+  useragent      String?  @db.VarChar(200)
   status         Boolean? @default(false) @db.UnsignedTinyInt
   expiredAt      DateTime
   createdAt      DateTime @default(now())

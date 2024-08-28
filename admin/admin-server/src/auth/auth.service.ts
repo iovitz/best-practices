@@ -5,12 +5,15 @@ import { User, UserProfile, Session } from '@prisma/client-mysql';
 import { PickProps } from 'src/shared/types/utils';
 import { MD5 } from 'crypto-js';
 import * as moment from 'moment';
+import { UAParser } from 'ua-parser-js';
 
 type UserFindFirstParams = Parameters<MysqlService['user']['findFirst']>[0];
 
 @Injectable()
 export class AuthService {
   constructor(private mysql: MysqlService) {}
+
+  private uaParser = new UAParser();
 
   private userIdGenerator = customAlphabet(
     '0123456789abcdefghijklmnopqrstuvwxyz',
@@ -34,6 +37,11 @@ export class AuthService {
       where,
       select,
     });
+  }
+
+  getUAParser(useragent: string) {
+    this.uaParser.setUA(useragent);
+    return this.uaParser.getResult();
   }
 
   createUser(
@@ -61,7 +69,7 @@ export class AuthService {
     ]);
   }
 
-  createSession(
+  async createSession(
     data: PickProps<
       Session,
       'userId',
@@ -76,7 +84,7 @@ export class AuthService {
     >,
   ) {
     const session = this.sessionIdGenerator();
-    this.mysql.session.create({
+    await this.mysql.session.create({
       data: {
         id: session,
         ...data,
