@@ -1,20 +1,11 @@
-.wave {
-  position: fixed;
-  height: 100%;
-  width: 80%;
-  left: 0;
-  bottom: 0;
-  z-index: -1;
-}
-
 .login-container {
   width: 100vw;
   height: 100vh;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-gap: 18rem;
   padding: 0 2rem;
+  grid-template-columns: 1fr;
 }
 
 .img {
@@ -32,6 +23,7 @@
   align-items: center;
   text-align: center;
   overflow: hidden;
+  justify-content: center;
 }
 
 .login-form {
@@ -51,46 +43,4 @@
     bold 200% Consolas,
     Monaco,
     monospace;
-}
-
-@media screen and (max-width: 1180px) {
-  .login-container {
-    grid-gap: 9rem;
-  }
-
-  .login-form {
-    width: 290px;
-  }
-
-  .login-form h2 {
-    font-size: 2.4rem;
-    margin: 8px 0;
-  }
-
-  .img img {
-    width: 360px;
-  }
-
-  .avatar {
-    width: 280px;
-    height: 80px;
-  }
-}
-
-@media screen and (max-width: 968px) {
-  .wave {
-    display: none;
-  }
-
-  .img {
-    display: none;
-  }
-
-  .login-container {
-    grid-template-columns: 1fr;
-  }
-
-  .login-box {
-    justify-content: center;
-  }
 }
