@@ -18,3 +18,7 @@ content-type: application/json
   "email": "jkHrtiaakh@gmail.com",
   "password": "a123123."
 }
+
+### code:success
+GET {{prefix}}/code?width=200&height=300&type=login
+content-type: application/json

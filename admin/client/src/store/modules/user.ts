@@ -15,6 +15,7 @@ import {
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+import type { HttpResponse } from "@/utils/http";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -66,10 +67,10 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
+      return new Promise<HttpResponse<UserResult>>((resolve, reject) => {
         getLogin(data)
           .then(data => {
-            if (data?.success) setToken(data.data);
+            if (data.data) setToken(data.data);
             resolve(data);
           })
           .catch(error => {
@@ -94,7 +95,7 @@ export const useUserStore = defineStore({
           .then(data => {
             if (data) {
               setToken(data.data);
-              resolve(data);
+              resolve(data.data);
             }
           })
           .catch(error => {

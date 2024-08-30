@@ -14,6 +14,12 @@ import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 
+export interface HttpResponse<T> {
+  code: number;
+  data: T;
+  message: string;
+}
+
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -23,6 +29,7 @@ const defaultConfig: AxiosRequestConfig = {
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest"
   },
+  baseURL: "/api/",
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
   paramsSerializer: {
     serialize: stringify as unknown as CustomParamsSerializer
@@ -88,7 +95,7 @@ class PureHttp {
                     useUserStoreHook()
                       .handRefreshToken({ refreshToken: data.refreshToken })
                       .then(res => {
-                        const token = res.data.accessToken;
+                        const token = res.accessToken;
                         config.headers["Authorization"] = formatToken(token);
                         PureHttp.requests.forEach(cb => cb(token));
                         PureHttp.requests = [];
@@ -151,7 +158,7 @@ class PureHttp {
     url: string,
     param?: AxiosRequestConfig,
     axiosConfig?: PureHttpRequestConfig
-  ): Promise<T> {
+  ): Promise<HttpResponse<T>> {
     const config = {
       method,
       url,
@@ -177,7 +184,7 @@ class PureHttp {
     url: string,
     params?: AxiosRequestConfig<P>,
     config?: PureHttpRequestConfig
-  ): Promise<T> {
+  ): Promise<HttpResponse<T>> {
     return this.request<T>("post", url, params, config);
   }
 
@@ -186,7 +193,7 @@ class PureHttp {
     url: string,
     params?: AxiosRequestConfig<P>,
     config?: PureHttpRequestConfig
-  ): Promise<T> {
+  ): Promise<HttpResponse<T>> {
     return this.request<T>("get", url, params, config);
   }
 }

@@ -17,6 +17,7 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import ReVerifyCode from "@/components/ReVerifyCode";
 
 defineOptions({
   name: "Login"
@@ -33,8 +34,9 @@ dataThemeChange(overallStyle.value);
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "",
+  password: "",
+  code: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -45,7 +47,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       useUserStoreHook()
         .loginByUsername({ username: ruleForm.username, password: "admin123" })
         .then(res => {
-          if (res.success) {
+          if (res.code === 0) {
             // 获取后端路由
             return initRouter().then(() => {
               router.push(getTopMenu(true).path).then(() => {
@@ -133,6 +135,23 @@ onBeforeUnmount(() => {
                   :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
+            </Motion>
+
+            <Motion :delay="200">
+              <el-row :gutter="15">
+                <el-col :span="12">
+                  <el-form-item prop="code" class="!mb-0">
+                    <el-input
+                      v-model="ruleForm.code"
+                      placeholder="验证码"
+                      :prefix-icon="useRenderIcon(Lock)"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <ReVerifyCode />
+                </el-col>
+              </el-row>
             </Motion>
 
             <Motion :delay="250">

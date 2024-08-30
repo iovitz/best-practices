@@ -1,9 +1,14 @@
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
+  IsIn,
+  IsInt,
   IsOptional,
   IsString,
   Length,
   Matches,
+  Max,
+  Min,
 } from 'class-validator';
 
 class AuthBaseDTO {
@@ -19,7 +24,7 @@ class AuthBaseDTO {
 
 export class LoginDTO extends AuthBaseDTO {}
 
-export class CreateUserDto extends AuthBaseDTO {
+export class CreateUserDTO extends AuthBaseDTO {
   @IsString()
   @Length(2, 10)
   realName: string;
@@ -28,4 +33,25 @@ export class CreateUserDto extends AuthBaseDTO {
   @Length(1, 50)
   @IsOptional()
   homepath: string;
+}
+
+export class GetCodeDTO {
+  @IsInt()
+  @Transform(({ value }) => parseInt(value))
+  @Min(0)
+  @Max(500)
+  width: number;
+
+  @IsInt()
+  @Transform(({ value }) => parseInt(value))
+  @Min(0)
+  @Max(500)
+  height: number;
+
+  @IsIn(['login'])
+  type: string;
+
+  @IsString()
+  @Matches(/^#[a-fA-F0-9]{6}$/)
+  background?: string;
 }
