@@ -1,14 +1,14 @@
 @prefix = {{host}}/api/auth
 
 ### create:success
-@realName = {{$random.alphabetic()}}
+@username = {{$random.alphabetic()}}
 POST {{prefix}}/create
 content-type: application/json
 
 {
-  "realName": "用户{{realName.substr(0, 5)}}",
-  "email": "{{realName}}@gmail.com",
-  "password": "a123123."
+  "username": "用户{{username.substr(0, 5)}}",
+  "email": "{{username}}@gmail.com",
+  "password": "123123"
 }
 ### login:success
 POST {{prefix}}/login
@@ -16,7 +16,7 @@ content-type: application/json
 
 {
   "email": "jkHrtiaakh@gmail.com",
-  "password": "a123123."
+  "password": "123123"
 }
 
 ### code:success

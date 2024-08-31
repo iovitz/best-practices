@@ -21,32 +21,47 @@ export class AuthController {
   @Public()
   @Post('login')
   async login(
-    @Body(VerifyPipe) user: LoginDTO,
+    @Body(VerifyPipe) body: LoginDTO,
     @Request() req: Req,
     @Tracer() tracer: TracerService,
   ) {
     tracer.log('收到登录请求', {
-      ...user,
+      ...body,
     });
-    const existsUser = await this.auth.findUserBy(
+    console.log(req.session);
+    if (!this.auth.checkVerifyCode(req.session, 'login', body.code)) {
+      throw new BadRequestException('验证码错误');
+    }
+    const user = await this.auth.findUserBy(
       {
-        email: user.email,
+        email: body.email,
       },
       {
         id: true,
         password: true,
       },
     );
-    if (!existsUser) {
+    if (!user) {
       throw new BadRequestException('User not exists!');
     }
-    if (existsUser.password !== MD5(user.password).toString()) {
+    if (user.password !== MD5(body.password).toString()) {
       throw new BadRequestException('Invalid Password!');
     }
+    // const user =
     const ua = req.headers['user-agent'];
     const uaDetail = this.auth.getUAParser(ua);
+    const userProfile = await this.auth.findUserProfileBy(
+      {
+        id: user.id,
+      },
+      {
+        avatar: true,
+        email: true,
+        username: true,
+      },
+    );
     const session = await this.auth.createSession({
-      userId: existsUser.id,
+      userId: user.id,
       os: uaDetail.os.name,
       osVersion: uaDetail.os.version,
       engine: uaDetail.engine.name,
@@ -57,31 +72,40 @@ export class AuthController {
       useragent: ua,
     });
     return {
-      id: existsUser.id,
+      id: user.id,
       token: session,
+      avatar: userProfile.avatar,
+      username: userProfile.email,
+      nickname: userProfile.username,
+      // 一个用户可能有多个角色
+      roles: ['admin'],
+      // 按钮级别权限
+      permissions: ['*:*:*'],
+      accessToken: 'eyJhbGciOiJIUzUxMiJ9.admin',
+      refreshToken: 'eyJhbGciOiJIUzUxMiJ9.adminRefresh',
+      expires: '2030/10/30 00:00:00',
     };
   }
 
   @Post('create')
   async createUser(
-    @Body(VerifyPipe) user: CreateUserDTO,
+    @Body(VerifyPipe) body: CreateUserDTO,
     @Tracer() tracer: TracerService,
   ) {
     tracer.log('创建用户', {
-      ...user,
+      ...body,
     });
-    const [_user, userProfile] = await this.auth.createUser(
+    const [user] = await this.auth.createUser(
       {
-        email: user.email,
-        password: user.password,
+        password: body.password,
+        email: body.email,
       },
       {
-        realName: user.realName,
-        homepath: user.homepath,
+        username: body.username,
       },
     );
     return {
-      id: userProfile.id,
+      id: user.id,
     };
   }
 

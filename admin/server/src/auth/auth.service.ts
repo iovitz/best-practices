@@ -9,6 +9,9 @@ import { UAParser } from 'ua-parser-js';
 import * as svgCaptcha from 'svg-captcha';
 
 type FindUserParam = Parameters<MysqlService['user']['findFirst']>[0];
+type FindUserProfileParam = Parameters<
+  MysqlService['userProfile']['findFirst']
+>[0];
 
 @Injectable()
 export class AuthService {
@@ -30,6 +33,15 @@ export class AuthService {
     return 'u' + this.userIdGenerator();
   }
 
+  findUserProfileBy(
+    where: FindUserProfileParam['where'],
+    select: FindUserProfileParam['select'] = {},
+  ) {
+    return this.mysql.userProfile.findFirst({
+      where,
+      select,
+    });
+  }
   findUserBy(
     where: FindUserParam['where'],
     select: FindUserParam['select'] = {},
@@ -47,7 +59,7 @@ export class AuthService {
 
   createUser(
     user: PickProps<User, 'email' | 'password'>,
-    userProfile: PickProps<UserProfile, 'realName', 'homepath'>,
+    userProfile: PickProps<UserProfile, 'username'>,
   ) {
     const id = this.genUserId();
     const password = MD5(user.password).toString();
@@ -62,8 +74,9 @@ export class AuthService {
       this.mysql.userProfile.create({
         data: {
           id,
+          email: user.email,
           // 默认昵称为用户名
-          username: userProfile.realName,
+          username: userProfile.username,
           ...userProfile,
         },
       }),
@@ -113,7 +126,7 @@ export class AuthService {
     return captcha;
   }
 
-  checkVerifyCode(session: Session, type: string, text: string) {
+  checkVerifyCode(session: Req['session'], type: string, text: string) {
     // 获取验证码
     const code = session[`#c_${type}`] ?? '';
     const codeTime = session[`#t_${type}`] ?? '';

@@ -17,6 +17,7 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import Shield from "@iconify-icons/ri/shield-check-fill";
 import ReVerifyCode from "@/components/ReVerifyCode";
 
 defineOptions({
@@ -34,7 +35,7 @@ dataThemeChange(overallStyle.value);
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "",
+  email: "",
   password: "",
   code: ""
 });
@@ -45,7 +46,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .loginByUsername({
+          email: ruleForm.email,
+          password: ruleForm.password,
+          code: ruleForm.code
+        })
         .then(res => {
           if (res.code === 0) {
             // 获取后端路由
@@ -106,20 +111,12 @@ onBeforeUnmount(() => {
             size="large"
           >
             <Motion :delay="100">
-              <el-form-item
-                :rules="[
-                  {
-                    required: true,
-                    message: '请输入账号',
-                    trigger: 'blur'
-                  }
-                ]"
-                prop="username"
-              >
+              <el-form-item prop="email">
                 <el-input
-                  v-model="ruleForm.username"
+                  v-model="ruleForm.email"
                   clearable
-                  placeholder="账号"
+                  placeholder="邮箱"
+                  maxlength="30"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
@@ -132,6 +129,7 @@ onBeforeUnmount(() => {
                   clearable
                   show-password
                   placeholder="密码"
+                  maxlength="16"
                   :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
@@ -144,7 +142,8 @@ onBeforeUnmount(() => {
                     <el-input
                       v-model="ruleForm.code"
                       placeholder="验证码"
-                      :prefix-icon="useRenderIcon(Lock)"
+                      maxlength="4"
+                      :prefix-icon="useRenderIcon(Shield)"
                     />
                   </el-form-item>
                 </el-col>

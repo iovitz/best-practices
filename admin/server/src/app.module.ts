@@ -15,6 +15,7 @@ import { HttpExceptionFilter } from './aspects/filters/http-exception/http-excep
 import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
 import { TracerService } from './services/tracer/tracer.service';
 import { AuthModule } from './auth/auth.module';
+import { MenuModule } from './menu/menu.module';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 
@@ -53,6 +54,7 @@ import * as cookieParser from 'cookie-parser';
     SocketV1Module,
     UserModule,
     AuthModule,
+    MenuModule,
   ],
   providers: [
     {

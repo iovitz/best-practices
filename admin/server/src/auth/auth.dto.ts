@@ -22,12 +22,17 @@ class AuthBaseDTO {
   password: string;
 }
 
-export class LoginDTO extends AuthBaseDTO {}
+export class LoginDTO extends AuthBaseDTO {
+  @IsString()
+  @Length(4, 4)
+  @Matches(/^\S+$/)
+  code: string;
+}
 
 export class CreateUserDTO extends AuthBaseDTO {
   @IsString()
   @Length(2, 10)
-  realName: string;
+  username: string;
 
   @IsString()
   @Length(1, 50)
