@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "yac": "node_modules/.bin/httpyac -e dev -o exchange ",
+    "yac": "node_modules/.bin/httpyac http.http -e dev -o exchange",
     "postinstall": "npm run mysql:generate",
     "mysql:generate": "prisma generate --schema=./prisma/mysql.prisma",
     "mysql:db:push": "dotenv -e ./.env.dev -- prisma db push --schema=prisma/mysql.prisma"

@@ -1,9 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
+import { MenuService } from './menu.service';
 
-@Controller('menu')
+@Controller('api/menu')
 export class MenuController {
-  @Get('')
-  getMenu() {
-    return [];
+  constructor(private menu: MenuService) {}
+  @Get('list')
+  async getMenu() {
+    const menu = await this.menu.getVisibleMenu();
+    return menu;
   }
 }

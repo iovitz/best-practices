@@ -1,9 +1,0 @@
-@prefix = {{host}}/api/user
-
-### info:success
-@UserId = ukybdpq7r1
-GET {{prefix}}/{{UserId}}
-
-### route:success
-@UserId = upsrrbsrio
-GET {{prefix}}/routes

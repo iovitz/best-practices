@@ -60,9 +60,12 @@ model Menu {
   id        Int      @id @default(autoincrement()) @db.UnsignedMediumInt
   pid       Int      @default(0)
   path      String   @db.VarChar(100)
-  name      String   @db.VarChar(50)
+  icon      String?  @db.VarChar(20)
+  rank      Int?     @db.UnsignedInt
+  name      String?  @db.VarChar(50)
   title     String   @db.VarChar(30)
-  roles     String   @db.VarChar(200)
+  roles     String?  @db.VarChar(200)
+  auth      String?
   status    Boolean? @default(false) @db.UnsignedTinyInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
