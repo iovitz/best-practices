@@ -28,11 +28,11 @@ export class MenuService {
       const routeItem = {
         path: item.path,
         name: item.name,
-        children: [],
+        component: item.component,
         meta: {
           title: item.title,
           icon: item.icon,
-          rank: item.rank,
+          rank: item.rank ?? void 0,
           roles: item.roles ? JSON.parse(item.roles) : void 0,
           auths: item.auth ? JSON.parse(item.auth) : void 0,
         },
@@ -42,7 +42,7 @@ export class MenuService {
         routes.push(routeItem);
       } else {
         const parentRoutes = routePidMap.get(item.pid);
-        parentRoutes.children = parentRoutes.children;
+        parentRoutes.children = parentRoutes.children ?? [];
         parentRoutes.children.push(routeItem);
       }
     });
