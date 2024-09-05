@@ -1,0 +1,28 @@
+/**
+ * {{friendlyName}} helper
+ *
+ * @description :: {{description}}
+ * @usage       :: {{usage}}
+ */
+
+module.exports = {
+
+  inputs: {
+    // name: {
+    //   type: 'string',
+    //   example: 'zhangsan',
+    //   description: 'Someone\'s name',
+    //   required: true,
+    //   custom() {
+    //     return true;
+    //   },
+    // },
+  },
+
+  async fn(inputs, exits) {
+    const data = '{{friendlyName}}';
+
+    return exits.success(data);
+  },
+
+};
