@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { TracerService } from './services/tracer/tracer.service';
+import { PromiseManager } from './aspects/middlewares/promise-manager/promise-manager.middleware';
 
 export {};
 
@@ -10,6 +11,7 @@ declare global {
 
     stime?: bigint;
     tracer?: TracerService;
+    promiseManager?: PromiseManager;
   }
   interface Res extends Response {
     // ...

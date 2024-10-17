@@ -15,12 +15,13 @@ export class ResponseFormatterInterceptor implements NestInterceptor {
 
   intercept(ctx: ExecutionContext, next: CallHandler): Observable<any> {
     const handler = ctx.getHandler();
+    const req = ctx.switchToHttp().getRequest();
     const skipFormat = Reflect.getMetadata(SKIP_RESPONSE_FORMAT_KEY, handler);
     return next.handle().pipe(
       map((data) => {
         // 跳过format
         if (skipFormat) {
-          this.tracer.log(`Skip Response Format`);
+          req.tracer.log(`Skip Response Format`);
           return data;
         }
         // this.logger.log(`(${tracerInfo})Request Success`);

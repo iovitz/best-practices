@@ -16,6 +16,8 @@ import { InternalExceptionFilter } from './aspects/filters/internal-exception/in
 import { TracerService } from './services/tracer/tracer.service';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import { RequestInfoInterceptor } from './aspects/interceptors/request-info/request-info.interceptor';
+import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor';
 
 @Module({
   imports: [
@@ -56,6 +58,14 @@ import * as session from 'express-session';
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseFormatterInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestInfoInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: PreparePromiseInterceptor,
     },
     {
       provide: APP_FILTER,
