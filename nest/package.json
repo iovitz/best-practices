@@ -18,6 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "compodoc": "pnpx @compodoc/compodoc -p tsconfig.json -s -o -c .compodoc.json",
     "yac": "node_modules/.bin/httpyac -e dev -o body ./http.rest",
     "postinstall": "npm run sqlite:generate",
     "sqlite:generate": "dotenv -e .env.dev -- prisma generate --schema=./prisma/sqlite.prisma",
@@ -57,6 +58,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.26",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
