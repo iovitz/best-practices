@@ -36,7 +36,6 @@ export function createRootLogger(level: string) {
               level,
               message,
               name,
-              pid,
               scope,
               stack,
               payload,

@@ -1,14 +1,14 @@
 @prefix = {{host}}/api/user
 
-### 分页获取所有用户
+### getAllUser
 GET {{prefix}}/list
   ?page=1
 
-### 根据ID获取指定用户
+### getUserById
 GET {{prefix}}/52
 
-### 创建用户
-@username = {{$random.alphabetic(46)}}
+### createUser
+@username = {{$random.alphabetic(10)}}
 POST {{prefix}}/create
 content-type: application/json
 

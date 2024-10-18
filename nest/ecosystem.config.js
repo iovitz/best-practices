@@ -2,7 +2,9 @@ module.exports = {
   apps: [
     {
       name: 'nest-app',
-      script: 'dist/src/main.js',
+      script: 'npm',
+      args: 'start',
+      exec_mode: 'fork',
       instances: 1,
       autorestart: true,
       watch: false,
