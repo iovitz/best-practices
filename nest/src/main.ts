@@ -6,6 +6,7 @@ import { SocketIoAdapter } from './aspects/adaptors/socket.io.adaptor';
 import * as pkg from '../package.json';
 import * as session from 'express-session';
 import { TracerService } from './services/tracer/tracer.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -48,6 +49,16 @@ async function bootstrap() {
 
   // 允许跨域
   // app.enableCors({});
+
+  // swagger
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle(pkg.name)
+    .setDescription(pkg.description)
+    .setVersion(pkg.version)
+    // .addTag('test')
+    .build();
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('doc', app, swaggerDocument);
 
   const appPort = parseInt(configService.getOrThrow('SERVER_PORT')) || 11000;
   await app.listen(appPort);

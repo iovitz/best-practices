@@ -4,11 +4,20 @@ import { UserService } from './user.service';
 import { Tracer } from 'src/shared/decorator/tracer';
 import { TracerService } from 'src/services/tracer/tracer.service';
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User Module')
 @Controller('/api/user')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('/list')
+  @ApiOperation({
+    description: '用户注册',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '注册成功的用户信息',
+  })
   async getUsers(@Query() query: getUsersDTO, @Tracer() tracer: TracerService) {
     const users = await this.userService.getUserList(
       Number(query.page ?? 1),
@@ -21,6 +30,13 @@ export class UserController {
   }
 
   @Get('/:id')
+  @ApiOperation({
+    description: '用户注册',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '注册成功的用户信息',
+  })
   async getUser(@Param() param: getUserDTO) {
     const user = await this.userService.getUserById(Number(param.id));
     return user;

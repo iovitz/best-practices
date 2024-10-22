@@ -1,7 +1,7 @@
 {
-  "name": "serve",
+  "name": "nest-server",
   "version": "0.0.1",
-  "description": "",
+  "description": "A NestJS Project.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -31,6 +31,7 @@
     "@nestjs/event-emitter": "^2.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.3.1",
+    "@nestjs/swagger": "^7.4.2",
     "@nestjs/websockets": "^10.3.1",
     "@prisma/client": "^5.18.0",
     "bcrypt": "^5.1.1",

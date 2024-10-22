@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'nest-app',
       script: 'npm',
-      args: 'start',
+      args: 'start:prod',
       exec_mode: 'fork',
       instances: 1,
       autorestart: true,
