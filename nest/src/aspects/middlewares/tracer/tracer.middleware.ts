@@ -11,13 +11,12 @@ export class TracerMiddleware implements NestMiddleware {
   );
 
   async use(req: Req, res: Res, next: () => void) {
-    const requestTid = res.get('tracer-id');
-    const rid = requestTid || this.tracerIdGenerator();
+    const rid = req.headers['x-trace-id'] ?? this.tracerIdGenerator();
     const requestTracer = this.tracer.child(`TRACE ${rid}`);
 
     req.tracer = requestTracer;
 
-    res.setHeader('request-id', rid);
+    res.setHeader('x-trace-id', rid);
     next();
   }
 }
