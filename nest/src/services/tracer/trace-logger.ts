@@ -5,6 +5,9 @@ import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
 import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 import * as chalk from 'chalk';
 import * as stringify from 'json-stringify-safe';
+import * as pkg from 'package.json';
+import { homedir } from 'os';
+import * as path from 'path';
 
 const ERROR = Symbol('ERROR');
 
@@ -50,19 +53,13 @@ export function createRootLogger(level: string) {
         ),
       }),
       new transports.DailyRotateFile({
-        dirname: 'logs/info',
-        level: 'info',
-        ...getCommonRotateFileOption(),
+        ...getCommonRotateFileOption('info'),
       }),
       new transports.DailyRotateFile({
-        dirname: 'logs/warn',
-        level: 'warn',
-        ...getCommonRotateFileOption(),
+        ...getCommonRotateFileOption('warn'),
       }),
       new transports.DailyRotateFile({
-        dirname: 'logs/error',
-        level: 'error',
-        ...getCommonRotateFileOption(),
+        ...getCommonRotateFileOption('error'),
       }),
     ],
   });
@@ -77,9 +74,14 @@ function getCommonStyleFormat(): Format[] {
     format.printf(formatOutput),
   ];
 }
-function getCommonRotateFileOption(): DailyRotateFileTransportOptions {
+function getCommonRotateFileOption(
+  level: string,
+): DailyRotateFileTransportOptions {
+  console.log(path.join(homedir(), pkg.name, 'logs'));
   return {
-    filename: '%DATE%.log',
+    level,
+    dirname: path.join(homedir(), 'logs', pkg.name),
+    filename: `${level}-%DATE%.log`,
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '20m',
