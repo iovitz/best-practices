@@ -7,7 +7,7 @@ export class TracerMiddleware implements NestMiddleware {
   constructor(private readonly tracer: TracerService) {}
   private tracerIdGenerator = customAlphabet(
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    30,
+    10,
   );
 
   async use(req: Req, res: Res, next: () => void) {
