@@ -77,7 +77,6 @@ function getCommonStyleFormat(): Format[] {
 function getCommonRotateFileOption(
   level: string,
 ): DailyRotateFileTransportOptions {
-  console.log(path.join(homedir(), pkg.name, 'logs'));
   return {
     level,
     dirname: path.join(homedir(), 'logs', pkg.name),
