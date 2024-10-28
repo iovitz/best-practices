@@ -14,7 +14,6 @@ export class LogInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const req: Req = context.switchToHttp().getRequest();
     const { method, originalUrl } = req;
-    const userId = req.session.userId;
 
     req.tracer.log(`+REQ：${method} ${originalUrl}`, {
       clientId: req.clientId,
