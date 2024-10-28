@@ -7,17 +7,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SocketV1Module } from './socketv1/socketv1.module';
 import { ServicesModule } from './services/services.module';
-import { TracerMiddleware } from './aspects/middlewares/tracer/tracer.middleware';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor';
-import { ParamsExceptionFilter } from './aspects/filters/params-exception/params-exception.filter';
-import { HttpExceptionFilter } from './aspects/filters/http-exception/http-exception.filter';
-import { InternalExceptionFilter } from './aspects/filters/internal-exception/internal-exception.filter';
 import { TracerService } from './services/tracer/tracer.service';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { RequestInfoInterceptor } from './aspects/interceptors/request-info/request-info.interceptor';
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor';
+import { DefaultFilter } from './aspects/filters/default/default.filter';
+import { HttpFilter } from './aspects/filters/http/http.filter';
+import { InjectRequestUtilsMiddleware } from './aspects/middlewares/inject-request-utils/inject-request-utils.middleware';
 
 @Module({
   imports: [
@@ -69,15 +68,11 @@ import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promis
     },
     {
       provide: APP_FILTER,
-      useClass: InternalExceptionFilter,
+      useClass: DefaultFilter,
     },
     {
       provide: APP_FILTER,
-      useClass: ParamsExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
+      useClass: HttpFilter,
     },
     AppService,
   ],
@@ -100,7 +95,8 @@ export class AppModule implements NestModule {
           resave: false,
           saveUninitialized: false,
         }),
-        TracerMiddleware,
+        // middleware中主要用来注入工具函数
+        InjectRequestUtilsMiddleware,
       )
       .forRoutes('*');
   }

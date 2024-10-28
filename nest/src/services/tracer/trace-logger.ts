@@ -38,6 +38,7 @@ export function createRootLogger(level: string) {
               timestamp,
               level,
               message,
+              pid,
               name,
               scope,
               stack,
@@ -46,7 +47,7 @@ export function createRootLogger(level: string) {
             } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
             // 错误日志特别输出
             const restStr = isEmpty(rest) ? '' : stringify(rest);
-            return `${chalk.gray(timestamp)} ${level}${insertOutput(scope, chalk.red)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
+            return `${chalk.gray(timestamp)}${insertOutput(pid)}${insertOutput(level)}${insertOutput(scope, chalk.red)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
               stack,
             )}${insertOutput(restStr)}`;
           }),

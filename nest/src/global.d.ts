@@ -1,21 +1,23 @@
 import { Request, Response } from 'express';
 import { TracerService } from './services/tracer/tracer.service';
-import { PromiseManager } from './aspects/middlewares/promise-manager/promise-manager.middleware';
-
-export {};
+import { PromiseManager } from './shared/utils/promise-manager';
 
 declare global {
-  interface Req extends Request {
+  interface MiddlewareInjected {
+    // 中间注入的对象，不一定真的存在，注意调用时间
+    stime: bigint;
+    clientId: string;
+    promiseManager: PromiseManager;
+    tracer: TracerService;
+    getCostNs: () => string;
+    getCookie: (key: CookieKeys) => string | undefined;
+    setCookie: (key: CookieKeys, value: string) => void;
+  }
+  interface Req extends Request, MiddlewareInjected {
     user?: any;
     userId?: string;
-
-    stime?: bigint;
-    tracer?: TracerService;
-    promiseManager?: PromiseManager;
   }
-  interface Res extends Response {
-    // ...
-  }
+  interface Res extends Response, MiddlewareInjected {}
 
   // 往原始类型上增加类型
   namespace Express {
