@@ -12,11 +12,11 @@ import { ResponseFormatterInterceptor } from './aspects/interceptors/response-fo
 import { TracerService } from './services/tracer/tracer.service';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import { RequestInfoInterceptor } from './aspects/interceptors/request-info/request-info.interceptor';
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor';
 import { DefaultFilter } from './aspects/filters/default/default.filter';
 import { HttpFilter } from './aspects/filters/http/http.filter';
 import { InjectRequestUtilsMiddleware } from './aspects/middlewares/inject-request-utils/inject-request-utils.middleware';
+import { LogInterceptor } from './aspects/interceptors/log/log.interceptor';
 
 @Module({
   imports: [
@@ -60,7 +60,7 @@ import { InjectRequestUtilsMiddleware } from './aspects/middlewares/inject-reque
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: RequestInfoInterceptor,
+      useClass: LogInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,

@@ -16,16 +16,19 @@ export class LogInterceptor implements NestInterceptor {
     const { method, originalUrl } = req;
     const userId = req.session.userId;
 
-    req.tracer.log(`+REQ：${userId ?? '@'} ${method} ${originalUrl}`);
-    // 生产环境不上报
-    req.tracer.debug('Incoming Data', {
+    req.tracer.log(`+REQ：${method} ${originalUrl}`, {
+      clientId: req.clientId,
+      userId: req.session.userId,
       body: req.body,
       query: req.query,
     });
+
     const data = await next.handle();
 
     req.tracer.log('-SUC', {
       cost: req.getCostNs(),
+      clientId: req.clientId,
+      userId: req.session.userId,
     });
 
     return data;
