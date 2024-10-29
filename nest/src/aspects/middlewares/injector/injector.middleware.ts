@@ -1,12 +1,15 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { customAlphabet } from 'nanoid';
 import { TracerService } from 'src/services/tracer/tracer.service';
 import { CookieKeys } from 'src/shared/constans/cookie';
 import { PromiseManager } from 'src/shared/utils/promise-manager';
 
 @Injectable()
-export class InjectRequestUtilsMiddleware implements NestMiddleware {
-  constructor(private readonly tracer: TracerService) {}
+export class InjectorMiddleware implements NestMiddleware {
+  @Inject(TracerService)
+  private readonly tracer: TracerService;
+
+  constructor() {}
 
   use(req: Req, res: Res, next: () => void) {
     this.useCost(req, res);

@@ -3,8 +3,6 @@ import { UserModule } from './user/user.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DbModule } from './db/db.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SocketV1Module } from './socketv1/socketv1.module';
 import { ServicesModule } from './services/services.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
@@ -15,8 +13,8 @@ import * as session from 'express-session';
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor';
 import { DefaultFilter } from './aspects/filters/default/default.filter';
 import { HttpFilter } from './aspects/filters/http/http.filter';
-import { InjectRequestUtilsMiddleware } from './aspects/middlewares/inject-request-utils/inject-request-utils.middleware';
 import { LogInterceptor } from './aspects/interceptors/log/log.interceptor';
+import { InjectorMiddleware } from './aspects/middlewares/injector/injector.middleware';
 
 @Module({
   imports: [
@@ -74,10 +72,7 @@ import { LogInterceptor } from './aspects/interceptors/log/log.interceptor';
       provide: APP_FILTER,
       useClass: HttpFilter,
     },
-    AppService,
   ],
-  exports: [],
-  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   constructor(
@@ -96,7 +91,7 @@ export class AppModule implements NestModule {
           saveUninitialized: false,
         }),
         // middleware中主要用来注入工具函数
-        InjectRequestUtilsMiddleware,
+        InjectorMiddleware,
       )
       .forRoutes('*');
   }
