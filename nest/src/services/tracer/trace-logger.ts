@@ -1,26 +1,26 @@
-import { isEmpty, omit } from 'lodash';
-import 'winston-daily-rotate-file';
-import { createLogger, format, transports } from 'winston';
-import { LEVEL, SPLAT, MESSAGE } from 'triple-beam';
-import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
-import * as chalk from 'chalk';
-import * as stringify from 'json-stringify-safe';
-import * as pkg from 'package.json';
-import { homedir } from 'os';
-import * as path from 'path';
+import type { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
+import { homedir } from 'node:os'
+import * as path from 'node:path'
+import * as process from 'node:process'
+import * as chalk from 'chalk'
+import * as stringify from 'json-stringify-safe'
+import { isEmpty, omit } from 'lodash'
+import * as pkg from 'package.json'
+import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
+import { createLogger, format, transports } from 'winston'
 
-const ERROR = Symbol('ERROR');
+const ERROR = Symbol('ERROR')
 
-type Format = ReturnType<typeof format.timestamp>;
+type Format = ReturnType<typeof format.timestamp>
 
 interface LogInfo {
-  name?: string;
-  pid?: number;
-  traceInfo?: string;
-  msgPrefix?: string;
-  stack?: string;
-  payload?: string;
-  [key: string | symbol]: unknown;
+  name?: string
+  pid?: number
+  traceInfo?: string
+  msgPrefix?: string
+  stack?: string
+  payload?: string
+  [key: string | symbol]: unknown
 }
 
 export function createRootLogger(level: string) {
@@ -33,7 +33,8 @@ export function createRootLogger(level: string) {
           format.timestamp({ format: 'HH:mm:ss.SSS' }),
           format.colorize(),
           format.printf((info: LogInfo) => {
-            if (!info) return '';
+            if (!info)
+              return ''
             const {
               timestamp,
               level,
@@ -44,12 +45,12 @@ export function createRootLogger(level: string) {
               stack,
               payload,
               ...rest
-            } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
+            } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE)
             // 错误日志特别输出
-            const restStr = isEmpty(rest) ? '' : stringify(rest);
+            const restStr = isEmpty(rest) ? '' : stringify(rest)
             return `${chalk.gray(timestamp)}${insertOutput(pid)}${insertOutput(level)}${insertOutput(scope, chalk.red)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
               stack,
-            )}${insertOutput(restStr)}`;
+            )}${insertOutput(restStr)}`
           }),
         ),
       }),
@@ -63,17 +64,17 @@ export function createRootLogger(level: string) {
         ...getCommonRotateFileOption('error'),
       }),
     ],
-  });
+  })
   return rootLogger.child({
     pid: process.pid,
-  });
+  })
 }
 
 function getCommonStyleFormat(): Format[] {
   return [
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     format.printf(formatOutput),
-  ];
+  ]
 }
 function getCommonRotateFileOption(
   level: string,
@@ -87,17 +88,19 @@ function getCommonRotateFileOption(
     maxSize: '20m',
     maxFiles: '7d',
     format: format.combine(...getCommonStyleFormat()),
-  };
+  }
 }
 
 function insertOutput(v: unknown, chalk?: chalk.Chalk) {
-  if (!v) return '';
-  const content = typeof v === 'object' ? stringify(v) : v;
-  return ` ${chalk ? chalk(content) : content}`;
+  if (!v)
+    return ''
+  const content = typeof v === 'object' ? stringify(v) : v
+  return ` ${chalk ? chalk(content) : content}`
 }
 
 function formatOutput(info: LogInfo) {
-  if (!info) return '';
+  if (!info)
+    return ''
   const {
     timestamp,
     level,
@@ -108,10 +111,10 @@ function formatOutput(info: LogInfo) {
     stack,
     payload,
     ...rest
-  } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE);
+  } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE)
   // 错误日志特别输出
-  const restStr = isEmpty(rest) ? '' : stringify(rest);
+  const restStr = isEmpty(rest) ? '' : stringify(rest)
   return `${[timestamp]}${insertOutput(pid)} ${level}${insertOutput(scope)}${insertOutput(name)}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
     stack,
-  )}${insertOutput(restStr)}`;
+  )}${insertOutput(restStr)}`
 }

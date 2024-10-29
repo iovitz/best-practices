@@ -4,7 +4,6 @@ import type {
   NestInterceptor,
 } from '@nestjs/common'
 import type { Observable } from 'rxjs'
-import type { TracerService } from 'src/services/tracer/tracer.service'
 import {
   Injectable,
 } from '@nestjs/common'

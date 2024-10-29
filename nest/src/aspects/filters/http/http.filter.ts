@@ -6,7 +6,6 @@ import {
   Catch,
   HttpException,
 } from '@nestjs/common'
-import * as stringify from 'json-stringify-safe'
 
 @Catch(HttpException)
 export class HttpFilter implements ExceptionFilter {

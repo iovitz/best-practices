@@ -1,22 +1,22 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    "incremental": true,
+    "target": "ESNext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ESNext",
-    "sourceMap": true,
-    "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
+    "module": "commonjs",
+    "resolveJsonModule": true,
     "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
+    "strictNullChecks": false,
     "noFallthroughCasesInSwitch": false,
-    "resolveJsonModule": true
+    "noImplicitAny": false,
+    "declaration": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": false,
+    "skipLibCheck": true
   }
 }
