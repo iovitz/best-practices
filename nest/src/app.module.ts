@@ -1,20 +1,23 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DbModule } from './db/db.module';
-import { SocketV1Module } from './socketv1/socketv1.module';
-import { ServicesModule } from './services/services.module';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor';
-import { TracerService } from './services/tracer/tracer.service';
-import * as cookieParser from 'cookie-parser';
-import * as session from 'express-session';
-import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor';
-import { DefaultFilter } from './aspects/filters/default/default.filter';
-import { HttpFilter } from './aspects/filters/http/http.filter';
-import { LogInterceptor } from './aspects/interceptors/log/log.interceptor';
-import { InjectorMiddleware } from './aspects/middlewares/injector/injector.middleware';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
+import type { ConfigService } from '@nestjs/config'
+import type { TracerService } from './services/tracer/tracer.service'
+import * as process from 'node:process'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import * as cookieParser from 'cookie-parser'
+import * as session from 'express-session'
+import { DefaultFilter } from './aspects/filters/default/default.filter'
+import { HttpFilter } from './aspects/filters/http/http.filter'
+import { LogInterceptor } from './aspects/interceptors/log/log.interceptor'
+import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor'
+import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
+import { InjectorMiddleware } from './aspects/middlewares/injector/injector.middleware'
+import { DbModule } from './db/db.module'
+import { ServicesModule } from './services/services.module'
+import { SocketV1Module } from './socketv1/socketv1.module'
+import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
@@ -30,10 +33,10 @@ import { InjectorMiddleware } from './aspects/middlewares/injector/injector.midd
       load: [
         // 可以加载远程配置
         async () => {
-          const isProd = process.env.NODE_ENV === 'prod';
-          const isPre = process.env.NODE_ENV === 'pre';
-          const isDev = process.env.NODE_ENV === 'dev';
-          const isOnline = isProd || isPre;
+          const isProd = process.env.NODE_ENV === 'prod'
+          const isPre = process.env.NODE_ENV === 'pre'
+          const isDev = process.env.NODE_ENV === 'dev'
+          const isOnline = isProd || isPre
 
           return {
             isProd,
@@ -41,7 +44,7 @@ import { InjectorMiddleware } from './aspects/middlewares/injector/injector.midd
             isDev,
             isOnline,
             ...process.env,
-          };
+          }
         },
       ],
     }),
@@ -81,7 +84,7 @@ export class AppModule implements NestModule {
   ) {}
 
   configure(consumer: MiddlewareConsumer) {
-    this.tracer.log('Initial middlewares');
+    this.tracer.log('Initial middlewares')
     consumer
       .apply(
         cookieParser(),
@@ -93,6 +96,6 @@ export class AppModule implements NestModule {
         // middleware中主要用来注入工具函数
         InjectorMiddleware,
       )
-      .forRoutes('*');
+      .forRoutes('*')
   }
 }

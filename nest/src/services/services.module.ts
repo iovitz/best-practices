@@ -1,8 +1,8 @@
-import { Global, Module } from '@nestjs/common';
-import { VerifyService } from './verify/verify.service';
-import { EncryptService } from './encrypt/encrypt.service';
-import { TracerService } from './tracer/tracer.service';
-import { HttpService } from './http/http.service';
+import { Global, Module } from '@nestjs/common'
+import { EncryptService } from './encrypt/encrypt.service'
+import { HttpService } from './http/http.service'
+import { TracerService } from './tracer/tracer.service'
+import { VerifyService } from './verify/verify.service'
 
 @Global()
 @Module({

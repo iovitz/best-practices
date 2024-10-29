@@ -1,7 +1,7 @@
-import { VerifyPipe } from './verify.pipe';
+import { VerifyPipe } from './verify.pipe'
 
-describe('VerifyPipe', () => {
+describe('verifyPipe', () => {
   it('should be defined', () => {
-    expect(new VerifyPipe()).toBeDefined();
-  });
-});
+    expect(new VerifyPipe()).toBeDefined()
+  })
+})

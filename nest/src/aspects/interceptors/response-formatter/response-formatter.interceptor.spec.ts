@@ -1,7 +1,7 @@
-import { ResponseFormatterInterceptor } from './response-formatter.interceptor';
+import { ResponseFormatterInterceptor } from './response-formatter.interceptor'
 
-describe('ResponseFormatterInterceptor', () => {
+describe('responseFormatterInterceptor', () => {
   it('should be defined', () => {
-    expect(new ResponseFormatterInterceptor()).toBeDefined();
-  });
-});
+    expect(new ResponseFormatterInterceptor()).toBeDefined()
+  })
+})

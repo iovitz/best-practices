@@ -1,7 +1,7 @@
-import { PreparePromiseInterceptor } from './prepare-promise.interceptor';
+import { PreparePromiseInterceptor } from './prepare-promise.interceptor'
 
-describe('PreparePromiseInterceptor', () => {
+describe('preparePromiseInterceptor', () => {
   it('should be defined', () => {
-    expect(new PreparePromiseInterceptor()).toBeDefined();
-  });
-});
+    expect(new PreparePromiseInterceptor()).toBeDefined()
+  })
+})

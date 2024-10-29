@@ -1,21 +1,21 @@
-import { Request, Response } from 'express';
-import { TracerService } from './services/tracer/tracer.service';
-import { PromiseManager } from './shared/utils/promise-manager';
+import type { Request, Response } from 'express'
+import type { TracerService } from './services/tracer/tracer.service'
+import type { PromiseManager } from './shared/utils/promise-manager'
 
 declare global {
   interface MiddlewareInjected {
     // 中间注入的对象，不一定真的存在，注意调用时间
-    stime: bigint;
-    clientId: string;
-    promiseManager: PromiseManager;
-    tracer: TracerService;
-    getCostNs: () => string;
-    getCookie: (key: CookieKeys) => string | undefined;
-    setCookie: (key: CookieKeys, value: string) => void;
+    stime: bigint
+    clientId: string
+    promiseManager: PromiseManager
+    tracer: TracerService
+    getCostNs: () => string
+    getCookie: (key: CookieKeys) => string | undefined
+    setCookie: (key: CookieKeys, value: string) => void
   }
   interface Req extends Request, MiddlewareInjected {
-    user?: any;
-    userId?: string;
+    user?: any
+    userId?: string
   }
   interface Res extends Response, MiddlewareInjected {}
 
@@ -28,6 +28,6 @@ declare global {
 
 declare module 'express-session' {
   interface SessionData {
-    userId: string;
+    userId: string
   }
 }

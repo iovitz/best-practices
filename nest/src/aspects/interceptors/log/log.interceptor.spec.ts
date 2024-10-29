@@ -1,7 +1,7 @@
-import { LogInterceptor } from './log.interceptor';
+import { LogInterceptor } from './log.interceptor'
 
-describe('LogInterceptor', () => {
+describe('logInterceptor', () => {
   it('should be defined', () => {
-    expect(new LogInterceptor()).toBeDefined();
-  });
-});
+    expect(new LogInterceptor()).toBeDefined()
+  })
+})

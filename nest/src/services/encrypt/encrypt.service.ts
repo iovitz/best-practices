@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { gzip, ungzip } from 'pako';
-import { AES } from 'crypto-js';
-import { compare, genSalt, hash } from 'bcrypt';
-import { ConfigService } from '@nestjs/config';
-import * as stringify from 'json-stringify-safe';
+import type { ConfigService } from '@nestjs/config'
+import { Buffer } from 'node:buffer'
+import { Injectable } from '@nestjs/common'
+import { compare, genSalt, hash } from 'bcrypt'
+import { AES } from 'crypto-js'
+import * as stringify from 'json-stringify-safe'
+import { gzip, ungzip } from 'pako'
 
 @Injectable()
 export class EncryptService {
@@ -12,38 +13,38 @@ export class EncryptService {
   ungzip(gzipBase64Str) {
     return JSON.parse(
       ungzip(Buffer.from(gzipBase64Str, 'base64'), { to: 'string' }),
-    );
+    )
   }
 
   gzip(data) {
-    return this.strToGzipBase64(stringify(data));
+    return this.strToGzipBase64(stringify(data))
   }
 
   strToGzipBase64(str) {
-    return Buffer.from(gzip(str, { level: 9 })).toString('base64');
+    return Buffer.from(gzip(str, { level: 9 })).toString('base64')
   }
 
   comparePassword(password, hash) {
-    return compare(password, hash);
+    return compare(password, hash)
   }
 
   async encryptPassword(password) {
-    const salt = await genSalt(10);
-    const pass = hash(password, salt);
-    return pass;
+    const salt = await genSalt(10)
+    const pass = hash(password, salt)
+    return pass
   }
 
   aesEncrypt(message) {
     return AES.encrypt(
       message,
       this.configService.getOrThrow('AES_ENCRYPT_KEY'),
-    ).toString();
+    ).toString()
   }
 
   aesDecrypt(encrypted) {
     return AES.decrypt(
       encrypted,
       this.configService.getOrThrow('AES_ENCRYPT_KEY'),
-    ).toString(CryptoJS.enc.Utf8);
+    ).toString(CryptoJS.enc.Utf8)
   }
 }

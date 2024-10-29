@@ -1,7 +1,7 @@
-import { DefaultFilter } from './default.filter';
+import { DefaultFilter } from './default.filter'
 
-describe('DefaultFilter', () => {
+describe('defaultFilter', () => {
   it('should be defined', () => {
-    expect(new DefaultFilter()).toBeDefined();
-  });
-});
+    expect(new DefaultFilter()).toBeDefined()
+  })
+})

@@ -1,7 +1,7 @@
-import { HttpFilter } from './http.filter';
+import { HttpFilter } from './http.filter'
 
-describe('HttpFilter', () => {
+describe('httpFilter', () => {
   it('should be defined', () => {
-    expect(new HttpFilter()).toBeDefined();
-  });
-});
+    expect(new HttpFilter()).toBeDefined()
+  })
+})

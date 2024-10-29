@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { SqliteService } from '../db/sqlite/sqlite.service';
+import type { SqliteService } from '../db/sqlite/sqlite.service'
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class UserService {
@@ -9,15 +9,15 @@ export class UserService {
     return this.prismaService.user.findMany({
       skip: (page - 1) * take,
       take,
-    });
+    })
   }
 
   getUserById(id: number) {
     return this.prismaService.user.findFirst({
       where: {
-        id: id,
+        id,
       },
-    });
+    })
   }
 
   createUser(name: string, age: number) {
@@ -26,6 +26,6 @@ export class UserService {
         name,
         age,
       },
-    });
+    })
   }
 }
