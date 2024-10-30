@@ -1,9 +1,9 @@
-import type {
-  ArgumentsHost,
-  ExceptionFilter,
-} from '@nestjs/common'
 import {
+  ArgumentsHost,
+
   Catch,
+
+  ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common'
 import stringify from 'json-stringify-safe'

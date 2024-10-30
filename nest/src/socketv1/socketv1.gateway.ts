@@ -1,14 +1,13 @@
-import type {
+import {
   OnGatewayConnection,
   OnGatewayDisconnect,
-} from '@nestjs/websockets'
-import type { Server, Socket } from 'socket.io'
-import type { TracerService } from 'src/services/tracer/tracer.service'
-import {
+
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
+import { Server, Socket } from 'socket.io'
+import { TracerService } from 'src/services/tracer/tracer.service'
 
 @WebSocketGateway({
   path: '/socket/v1',

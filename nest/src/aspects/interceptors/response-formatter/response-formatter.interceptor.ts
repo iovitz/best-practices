@@ -1,12 +1,12 @@
-import type {
+import {
   CallHandler,
   ExecutionContext,
+
+  Injectable,
+
   NestInterceptor,
 } from '@nestjs/common'
-import type { Observable } from 'rxjs'
-import {
-  Injectable,
-} from '@nestjs/common'
+import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { SKIP_RESPONSE_FORMAT_KEY } from 'src/shared/constans/meta-keys'
 

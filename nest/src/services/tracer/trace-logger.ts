@@ -1,4 +1,3 @@
-import type { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
 import { homedir } from 'node:os'
 import * as path from 'node:path'
 import * as process from 'node:process'
@@ -8,6 +7,7 @@ import { isEmpty, omit } from 'lodash'
 import * as pkg from 'package.json'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
 import { createLogger, format, transports } from 'winston'
+import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
 
 const ERROR = Symbol('ERROR')
 

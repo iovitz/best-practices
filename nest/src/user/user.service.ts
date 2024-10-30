@@ -1,5 +1,5 @@
-import type { SqliteService } from '../db/sqlite/sqlite.service'
 import { Injectable } from '@nestjs/common'
+import { SqliteService } from '../db/sqlite/sqlite.service'
 
 @Injectable()
 export class UserService {

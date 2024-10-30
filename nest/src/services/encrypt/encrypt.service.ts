@@ -1,6 +1,6 @@
-import type { ConfigService } from '@nestjs/config'
 import { Buffer } from 'node:buffer'
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { compare, genSalt, hash } from 'bcrypt'
 import { AES } from 'crypto-js'
 import * as stringify from 'json-stringify-safe'
