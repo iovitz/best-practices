@@ -32,16 +32,9 @@ import { UserModule } from './user/user.module'
         // 可以加载远程配置
         async () => {
           const isProd = process.env.NODE_ENV === 'prod'
-          const isPre = process.env.NODE_ENV === 'pre'
-          const isDev = process.env.NODE_ENV === 'dev'
-          const isOnline = isProd || isPre
 
           return {
             isProd,
-            isPre,
-            isDev,
-            isOnline,
-            ...process.env,
           }
         },
       ],
