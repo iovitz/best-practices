@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { compare, genSalt, hash } from 'bcrypt'
 import { AES } from 'crypto-js'
-import * as stringify from 'json-stringify-safe'
 import { gzip, ungzip } from 'pako'
+import { stringify } from 'safe-stable-stringify'
 
 @Injectable()
 export class EncryptService {

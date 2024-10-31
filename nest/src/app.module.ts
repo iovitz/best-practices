@@ -16,6 +16,7 @@ import { ServicesModule } from './services/services.module'
 import { TracerService } from './services/tracer/tracer.service'
 import { SocketV1Module } from './socketv1/socketv1.module'
 import { UserModule } from './user/user.module'
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UserModule } from './user/user.module'
     DbModule,
     SocketV1Module,
     UserModule,
+    HomeModule,
   ],
   providers: [
     {

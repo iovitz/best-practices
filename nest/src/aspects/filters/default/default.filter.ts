@@ -1,13 +1,11 @@
 import {
   ArgumentsHost,
-
   Catch,
-
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common'
-import stringify from 'json-stringify-safe'
-import status from 'statuses'
+import { stringify } from 'safe-stable-stringify'
+import * as status from 'statuses'
 
 @Catch(Error)
 export class DefaultFilter<Error> implements ExceptionFilter {

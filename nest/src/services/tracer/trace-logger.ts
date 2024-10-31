@@ -1,10 +1,9 @@
 import { homedir } from 'node:os'
 import * as path from 'node:path'
 import * as process from 'node:process'
-import * as chalk from 'chalk'
-import * as stringify from 'json-stringify-safe'
 import { isEmpty, omit } from 'lodash'
 import * as pkg from 'package.json'
+import { stringify } from 'safe-stable-stringify'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
 import { createLogger, format, transports } from 'winston'
 import { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
@@ -31,7 +30,6 @@ export function createRootLogger(level: string) {
         // 使用时间戳和nest样式
         format: format.combine(
           format.timestamp({ format: 'HH:mm:ss.SSS' }),
-          format.colorize(),
           format.printf((info: LogInfo) => {
             if (!info)
               return ''
@@ -48,7 +46,7 @@ export function createRootLogger(level: string) {
             } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE)
             // 错误日志特别输出
             const restStr = isEmpty(rest) ? '' : stringify(rest)
-            return `${chalk.gray(timestamp)}${insertOutput(pid)}${insertOutput(level)}${insertOutput(scope, chalk.red)}${insertOutput(name, chalk.blue)}${insertOutput(message, chalk.cyan)}${insertOutput(payload)}${insertOutput(
+            return `${timestamp}${insertOutput(pid)}${insertOutput(level)}${insertOutput(scope)}${insertOutput(name)}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
               stack,
             )}${insertOutput(restStr)}`
           }),
@@ -91,11 +89,11 @@ function getCommonRotateFileOption(
   }
 }
 
-function insertOutput(v: unknown, chalk?: chalk.Chalk) {
+function insertOutput(v: unknown) {
   if (!v)
     return ''
   const content = typeof v === 'object' ? stringify(v) : v
-  return ` ${chalk ? chalk(content) : content}`
+  return ` ${content}`
 }
 
 function formatOutput(info: LogInfo) {
