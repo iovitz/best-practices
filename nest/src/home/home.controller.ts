@@ -1,11 +1,11 @@
-import { Controller, Get, Render } from '@nestjs/common'
-import { SkipFormat } from 'src/shared/decorator/skip-format'
+import { Controller, Get, Header, Render } from '@nestjs/common'
+import { HeaderKeys } from 'src/shared/constans/header'
 
 @Controller()
 export class HomeController {
   @Get()
   @Render('index')
-  @SkipFormat()
+  @Header(HeaderKeys.ContentType, 'text/html;charset=urf-8')
   getIndex() {
     return {
       message: 'Hello, world!!!',
