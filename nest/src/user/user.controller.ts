@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { TracerService } from 'src/services/tracer/tracer.service'
-import { Tracer } from 'src/shared/decorator/tracer'
+import { TracerService } from 'src/global/tracer/tracer.service'
+import { Tracer } from 'src/shared/decorator/request'
 import { createUserDTO, getUserDTO, getUsersDTO } from './user.dto'
 import { UserService } from './user.service'
 
