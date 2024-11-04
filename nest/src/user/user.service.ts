@@ -1,31 +1,23 @@
-import { Injectable } from '@nestjs/common'
-import { SqliteService } from '../db/sqlite/sqlite.service'
+import { Inject, Injectable } from '@nestjs/common'
+import { eq } from 'drizzle-orm'
+import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
+import { SQLITE_CLIENT } from 'src/db/db.module'
+import { User } from 'src/schema'
 
 @Injectable()
 export class UserService {
-  constructor(private sqliteService: SqliteService) {}
+  @Inject(SQLITE_CLIENT)
+  sqliteClient: BetterSQLite3Database
 
-  getUserList(page: number, take: number) {
-    return this.sqliteService.user.findMany({
-      skip: (page - 1) * take,
-      take,
-    })
+  getUserList(offset: number, limit: number) {
+    return this.sqliteClient.select().from(User).limit(limit).offset(offset)
   }
 
   getUserById(id: number) {
-    return this.sqliteService.user.findFirst({
-      where: {
-        id,
-      },
-    })
+    return this.sqliteClient.select().from(User).where(eq(User.id, id))
   }
 
-  createUser(name: string, age: number) {
-    return this.sqliteService.user.create({
-      data: {
-        name,
-        age,
-      },
-    })
+  createUser(user: typeof User.$inferInsert) {
+    return this.sqliteClient.insert(User).values(user)
   }
 }

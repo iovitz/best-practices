@@ -1,9 +1,19 @@
 import { Global, Module } from '@nestjs/common'
-import { SqliteService } from './sqlite/sqlite.service'
+import { ConfigService } from '@nestjs/config'
+import * as Database from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
 
+export const SQLITE_CLIENT = 'SQLITE_CLIENT'
 @Global()
 @Module({
-  providers: [SqliteService],
-  exports: [SqliteService],
+  providers: [{
+    provide: SQLITE_CLIENT,
+    inject: [ConfigService],
+    useFactory: async () => {
+      const client = new Database('data.db')
+      return drizzle({ client })
+    },
+  }],
+  exports: [SQLITE_CLIENT],
 })
 export class DbModule {}

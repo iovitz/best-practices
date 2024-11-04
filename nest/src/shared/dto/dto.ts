@@ -9,8 +9,8 @@ export class PagingDTO {
   @IsNumberString({
     no_symbols: true,
   })
-  @StringNumberMin(1)
-  page?: string
+  @StringNumberMin(0)
+  offset?: string
 
   @IsOptional()
   @IsNumberString({
@@ -18,5 +18,5 @@ export class PagingDTO {
   })
   @StringNumberMin(0)
   @StringNumberMax(1000)
-  size?: string
+  limit?: string
 }

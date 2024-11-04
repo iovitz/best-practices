@@ -20,8 +20,8 @@ export class UserController {
   })
   async getUsers(@Query() query: getUsersDTO, @Tracer() tracer: TracerService) {
     const users = await this.userService.getUserList(
-      Number(query.page ?? 1),
-      Number(query.size ?? 10),
+      Number(query.offset ?? 1),
+      Number(query.limit ?? 10),
     )
     tracer.error('信息中携带Error', new Error('123123'))
     tracer.warn('打印警告')
@@ -44,7 +44,10 @@ export class UserController {
 
   @Post('/create')
   async createUser(@Body(VerifyPipe) body: createUserDTO) {
-    const user = await this.userService.createUser(body.name, body.age)
+    const user = await this.userService.createUser({
+      name: body.name,
+      age: 18,
+    })
     return user
   }
 }

@@ -2,10 +2,10 @@
 
 ### getAllUser
 GET {{prefix}}/list
-  ?page=1
+  ?offset=0&limit=20
 
 ### getUserById
-GET {{prefix}}/52
+GET {{prefix}}/4
 
 ### createUser
 @username = {{$random.alphabetic(10)}}
