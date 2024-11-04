@@ -1,15 +1,15 @@
-@prefix = {{host}}/api/user
+@prefix = {{host}}/api
 
 ### getAllUser
-GET {{prefix}}/list
+GET {{prefix}}/user/list
   ?offset=0&limit=20
 
 ### getUserById
-GET {{prefix}}/4
+GET {{prefix}}/user/1
 
 ### createUser
 @username = {{$random.alphabetic(10)}}
-POST {{prefix}}/create
+POST {{prefix}}/user/create
 content-type: application/json
 
 {
