@@ -4,6 +4,7 @@ import * as Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
 export const SQLITE_CLIENT = 'SQLITE_CLIENT'
+
 @Global()
 @Module({
   providers: [{

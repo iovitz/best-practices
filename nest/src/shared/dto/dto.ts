@@ -1,22 +1,29 @@
-import { IsNumberString, IsOptional } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNumberString } from 'class-validator'
 import {
   NumberStringMax,
   NumberStringMin,
 } from '../validator/string-number.validator'
 
 export class PagingDTO {
-  @IsOptional()
+  @ApiProperty({
+    example: '1',
+    description: '查看第几页的数据',
+  })
   @IsNumberString({
     no_symbols: true,
   })
   @NumberStringMin(0)
-  offset?: string
+  page: string
 
-  @IsOptional()
+  @ApiProperty({
+    example: '10',
+    description: '每页拉取的数据数量',
+  })
   @IsNumberString({
     no_symbols: true,
   })
   @NumberStringMin(0)
-  @NumberStringMax(1000)
-  limit?: string
+  @NumberStringMax(5000)
+  per_page: string
 }

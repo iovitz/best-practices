@@ -1,0 +1,17 @@
+@prefix = {{host}}/api
+
+### getBookList
+GET {{prefix}}/book
+  ?page=0&per_page=10
+
+### getBook
+GET {{prefix}}/book/2
+
+### createBook
+@bookname = {{$random.alphabetic(10)}}
+POST {{prefix}}/book
+content-type: application/json
+
+{
+  "name": "{{bookname}}"
+}
