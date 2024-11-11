@@ -36,7 +36,7 @@ export function createRootLogger() {
       }),
     ],
   })
-  console.log(process.env.NODE_ENV)
+
   if (process.env.NODE_ENV === 'development') {
     rootLogger.add(
       new transports.Console({
