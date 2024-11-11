@@ -6,9 +6,9 @@
   "author": "",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nest start --watch",
+    "dev": "cross-env NODE_ENV=development nest start --watch",
     "start": "nest start",
-    "start:debug": "cross-env NODE_ENV=dev nest start --debug --watch",
+    "start:debug": "cross-env NODE_ENV=production nest start --debug --watch",
     "start:prod": "node dist/main",
     "build": "nest build",
     "lint": "eslint .",
@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "compodoc": "pnpx @compodoc/compodoc -p tsconfig.json -s -o -c .compodoc.json",
-    "yac": "node_modules/.bin/httpyac -e dev -o body ./rest.http",
+    "yac": "node_modules/.bin/httpyac -e development -o body ./rest.http",
     "sqlite": "pnpm drizzle-kit --config sqlite.drizzle.config.ts"
   },
   "dependencies": {
@@ -40,6 +40,7 @@
     "drizzle-orm": "^0.36.0",
     "ejs": "^3.1.10",
     "express-session": "^1.18.0",
+    "ioredis": "^5.4.1",
     "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
     "moment": "^2.30.1",

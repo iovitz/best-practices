@@ -22,11 +22,25 @@ interface LogInfo {
   [key: string | symbol]: unknown
 }
 
-export function createRootLogger(level: string) {
+export function createRootLogger() {
   const rootLogger = createLogger({
     transports: [
+      new transports.DailyRotateFile({
+        ...getCommonRotateFileOption('info'),
+      }),
+      new transports.DailyRotateFile({
+        ...getCommonRotateFileOption('warn'),
+      }),
+      new transports.DailyRotateFile({
+        ...getCommonRotateFileOption('error'),
+      }),
+    ],
+  })
+  console.log(process.env.NODE_ENV)
+  if (process.env.NODE_ENV === 'development') {
+    rootLogger.add(
       new transports.Console({
-        level,
+        level: 'debug',
         // 使用时间戳和nest样式
         format: format.combine(
           format.timestamp({ format: 'HH:mm:ss.SSS' }),
@@ -52,17 +66,8 @@ export function createRootLogger(level: string) {
           }),
         ),
       }),
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('info'),
-      }),
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('warn'),
-      }),
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('error'),
-      }),
-    ],
-  })
+    )
+  }
   return rootLogger.child({
     pid: process.pid,
   })

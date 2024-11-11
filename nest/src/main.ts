@@ -49,7 +49,7 @@ async function bootstrap() {
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup('doc', app, swaggerDocument)
 
-  const appPort = Number.parseInt(configService.getOrThrow('SERVER_PORT')) || 11000
+  const appPort = Number.parseInt(configService.getOrThrow('APP_NAME_PORT'))
   await app.listen(appPort)
 
   appTracer.log(`Server running in http://127.0.0.1:${appPort}`)

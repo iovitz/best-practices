@@ -22,13 +22,9 @@ import { UtilModule } from './util/util.module'
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        '.env', // 默认配置文件
-        // 选择配置类型
-        ['prod', 'pre'].includes(process.env.APP_NAME_NODE_ENV)
-          ? '.env.prod'
-          : '.env.dev', // 环境配置文件
-      ],
+      envFilePath:
+      // 开发环境才加载配置数据
+      ['production'].includes(process.env.NODE_ENV) ? [] : ['.env.development'],
       load: [
         // 可以加载远程配置
         async () => {
@@ -82,7 +78,7 @@ export class AppModule implements NestModule {
       .apply(
         cookieParser(),
         session({
-          secret: this.config.getOrThrow('SESSION_SECRET'),
+          secret: this.config.getOrThrow('APP_NAME_SESSION_SECRET'),
           resave: false,
           saveUninitialized: false,
         }),

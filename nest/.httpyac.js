@@ -8,10 +8,10 @@ module.exports = {
   environments: {
     $shared: {
     },
-    dev: {
+    development: {
       host: 'http://localhost:3333',
     },
-    prod: {
+    production: {
       host: 'http://localhost:3333',
     },
   },
