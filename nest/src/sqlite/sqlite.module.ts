@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import * as Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
-export const SQLITE_CLIENT = 'SQLITE_CLIENT'
+export const SQLITE_CLIENT = Symbol('SQLITE_CLIENT')
 
 @Module({
   providers: [{
