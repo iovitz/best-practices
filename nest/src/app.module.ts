@@ -15,7 +15,6 @@ import { BookModule } from './book/book.module'
 import { HomeModule } from './home/home.module'
 import { RedisModule } from './redis/redis.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
-import { SqliteModule } from './sqlite/sqlite.module'
 import { TracerService } from './util/tracer/tracer.service'
 import { UtilModule } from './util/util.module'
 
