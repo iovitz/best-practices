@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { eq } from 'drizzle-orm'
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
-import { SQLITE_CLIENT } from 'src/db/db.module'
-import { Book } from 'src/db/sqlite.schema'
+import { SQLITE_CLIENT } from 'src/sqlite/sqlite.module'
+import { Book } from 'src/sqlite/sqlite.schema'
 
 @Injectable()
 export class BookService {

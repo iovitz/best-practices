@@ -1,11 +1,10 @@
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
 export const SQLITE_CLIENT = 'SQLITE_CLIENT'
 
-@Global()
 @Module({
   providers: [{
     provide: SQLITE_CLIENT,
@@ -17,4 +16,5 @@ export const SQLITE_CLIENT = 'SQLITE_CLIENT'
   }],
   exports: [SQLITE_CLIENT],
 })
-export class DbModule {}
+export class SqliteModule {
+}

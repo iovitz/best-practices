@@ -12,11 +12,12 @@ import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promis
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
 import { InjectorMiddleware } from './aspects/middlewares/injector/injector.middleware'
 import { BookModule } from './book/book.module'
-import { DbModule } from './db/db.module'
-import { GlobalModule } from './global/global.module'
-import { TracerService } from './global/tracer/tracer.service'
 import { HomeModule } from './home/home.module'
+import { RedisModule } from './redis/redis.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
+import { SqliteModule } from './sqlite/sqlite.module'
+import { TracerService } from './util/tracer/tracer.service'
+import { UtilModule } from './util/util.module'
 
 @Module({
   imports: [
@@ -40,9 +41,9 @@ import { SocketV1Module } from './socketv1/socketv1.module'
         },
       ],
     }),
-    GlobalModule,
     EventEmitterModule.forRoot(),
-    DbModule,
+    UtilModule,
+    RedisModule,
     SocketV1Module,
     HomeModule,
     BookModule,

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { TracerService } from 'src/global/tracer/tracer.service'
 import { Tracer } from 'src/shared/decorator/request'
+import { TracerService } from 'src/util/tracer/tracer.service'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
