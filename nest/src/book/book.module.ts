@@ -4,7 +4,7 @@ import { BookController } from './book.controller'
 import { BookService } from './book.service'
 
 @Module({
-  imports: [SqliteModule],
+  imports: [],
   controllers: [BookController],
   providers: [BookService],
 })
