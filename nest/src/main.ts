@@ -4,7 +4,6 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as pkg from '../package.json'
 import { AppModule } from './app.module'
-import { SocketIoAdapter } from './aspects/adaptors/socket.io.adaptor'
 import { TracerService } from './util/tracer/tracer.service'
 
 async function bootstrap() {
@@ -24,8 +23,6 @@ async function bootstrap() {
   })
 
   const configService = app.get(ConfigService)
-
-  app.useWebSocketAdapter(new SocketIoAdapter(app, appTracer))
 
   app.useStaticAssets('public', {
     // 虚拟路径为 static
