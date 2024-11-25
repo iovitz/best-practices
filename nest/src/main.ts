@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
@@ -5,6 +6,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as pkg from '../package.json'
 import { AppModule } from './app.module'
 import { TracerService } from './util/tracer/tracer.service'
+
+// 防止未捕获异常导致进程退出
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('###Unhandle Rejection Promise', promise)
+  console.error('###Unhandle Rejection Reason', reason)
+})
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
