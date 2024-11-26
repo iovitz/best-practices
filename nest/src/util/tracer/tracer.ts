@@ -128,7 +128,7 @@ function formatOutput(info: LogInfo) {
   )}${insertOutput(restStr)}`
 }
 
-export function formatNestJSLog(context?: LogContext): FormatedContext {
+export function formatLogContext(context?: LogContext): FormatedContext {
   if (context === void 0) {
     return {
       payload: '',
