@@ -10,7 +10,7 @@ import { HttpFilter } from './aspects/filters/http/http.filter'
 import { LogInterceptor } from './aspects/interceptors/log/log.interceptor'
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor'
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
-import { InjectorMiddleware } from './aspects/middlewares/injector/injector.middleware'
+import { InjectUtilsMiddleware } from './aspects/middlewares/inject-utils/inject-utils.middleware'
 import { BookModule } from './book/book.module'
 import { HomeModule } from './home/home.module'
 import { RedisModule } from './redis/redis.module'
@@ -84,7 +84,7 @@ export class AppModule implements NestModule {
       .apply(
         cookieParser(),
         // middleware中主要用来注入工具函数
-        InjectorMiddleware,
+        InjectUtilsMiddleware,
       )
       .forRoutes('*')
   }

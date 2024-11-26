@@ -6,7 +6,7 @@ import { PromiseManager } from 'src/shared/utils/promise-manager'
 import { TracerService } from 'src/util/tracer/tracer.service'
 
 @Injectable()
-export class InjectorMiddleware implements NestMiddleware {
+export class InjectUtilsMiddleware implements NestMiddleware {
   @Inject(TracerService)
   private readonly tracer: TracerService
 
