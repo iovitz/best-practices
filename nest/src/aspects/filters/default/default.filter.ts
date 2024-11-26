@@ -4,7 +4,6 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common'
-import { stringify } from 'safe-stable-stringify'
 import * as status from 'statuses'
 
 @Catch(Error)
