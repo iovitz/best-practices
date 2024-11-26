@@ -1,7 +1,7 @@
-import { InjectUtilsMiddleware } from './inject-utils.middleware';
+import { InjectUtilsMiddleware } from './inject-utils.middleware'
 
-describe('InjectUtilsMiddleware', () => {
+describe('injectUtilsMiddleware', () => {
   it('should be defined', () => {
-    expect(new InjectUtilsMiddleware()).toBeDefined();
-  });
-});
+    expect(new InjectUtilsMiddleware()).toBeDefined()
+  })
+})

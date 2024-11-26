@@ -1,11 +1,8 @@
-import * as process from 'node:process'
 import { Injectable, LoggerService } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Logger } from 'winston'
-import { createRootLogger, formatNestJSLog } from './tracer'
+import { appLogger, formatNestJSLog } from './tracer'
 import { LogContext } from './tracer.types'
-
-export const rootLogger = createRootLogger(process.env.NODE_ENV === 'production' ? 'info' : 'debug')
 
 class BaseTracer implements LoggerService {
   constructor(private logger: Logger) {}
@@ -38,6 +35,6 @@ class BaseTracer implements LoggerService {
 @Injectable()
 export class TracerService extends BaseTracer {
   constructor(private config: ConfigService) {
-    super(rootLogger)
+    super(appLogger)
   }
 }
