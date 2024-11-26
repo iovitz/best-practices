@@ -5,12 +5,11 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as pkg from '../package.json'
 import { AppModule } from './app.module'
-import { TracerService } from './util/tracer/tracer.service'
+import { rootLogger, TracerService } from './util/tracer/tracer.service'
 
 // 防止未捕获异常导致进程退出
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('###Unhandle Rejection Promise', promise)
-  console.error('###Unhandle Rejection Reason', reason)
+process.on('unhandledRejection', (reason) => {
+  rootLogger.error('###Unhandle Rejection Promise', reason)
 })
 
 async function bootstrap() {
