@@ -41,7 +41,10 @@ async function bootstrap() {
   app.setViewEngine('ejs')
 
   // 允许跨域
-  // app.enableCors({});
+  app.enableCors({
+    origin: (_, callback) => callback(null, true),
+    credentials: true,
+  })
 
   // swagger
   const swaggerConfig = new DocumentBuilder()
