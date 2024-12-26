@@ -22,6 +22,7 @@ const logLevelColors = {
 }
 
 export const appLogger = createRootLogger()
+
 export function createRootLogger() {
   const rootLogger = createLogger({
     transports: [
