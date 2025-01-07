@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nest start --watch",
+    "pi": "pnpm install",
+    "pi:prod": "pnpm install --prod",
     "start": "nest start",
     "start:debug": "cross-env NODE_ENV=production nest start --debug --watch",
     "start:prod": "node dist/main",
