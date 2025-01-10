@@ -1,0 +1,23 @@
+services:
+  nest-app-mysql:
+    image: mysql:8.4.3
+    container_name: nest-app-mysql
+    restart: always
+    command:
+      - --mysql-native-password=on
+    environment:
+      MYSQL_ROOT_PASSWORD: <YOUR_PASSWORD>
+      TZ: Asia/Shanghai
+    ports:
+      - 3306:3306
+
+  nest-app-mysql-adminer:
+    image: adminer
+    container_name: nest-app-mysql-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      # 把容器内的文件映射到文件外部
+      - ~/sqlite:/sqlite/
+      - ~/etc/adminer:/var/www/html/plugins-enabled/

@@ -1,7 +1,7 @@
 services:
-  redis:
+  nest-app-redis:
     image: bitnami/redis:latest
-    container_name: app_redis
+    container_name: nest-app-redis
     restart: always
     environment:
       - REDIS_PASSWORD=<YOUR_PASSWORD>

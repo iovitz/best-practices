@@ -1,0 +1,44 @@
+services:
+  nest-app-mongo:
+    image: mongo
+    container_name: nest-app-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: <YOUR_PASSWORD>
+    ports:
+      - 27017:27017
+
+  nest-app-mongo-express:
+    image: mongo-express
+    container_name: nest-app-mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: <YOUR_PASSWORD>
+      ME_CONFIG_MONGODB_URL: mongodb://root:<YOUR_PASSWORD>@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+
+  # nest-app-mongo1:
+  #   image: mongo
+  #   container_name: nest-app-mongo1
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: <YOUR_PASSWORD>
+  #   ports:
+  #     - 27018:27017
+
+  # nest-app-mongo-express1:
+  #   image: mongo-express
+  #   container_name: nest-app-mongo-express1
+  #   restart: always
+  #   ports:
+  #     - 8082:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: <YOUR_PASSWORD>
+  #     ME_CONFIG_MONGODB_URL: mongodb://root:<YOUR_PASSWORD>@mongo1:27017/
+  #     ME_CONFIG_BASICAUTH: false

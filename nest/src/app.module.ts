@@ -1,4 +1,5 @@
 import * as process from 'node:process'
+import { CacheModule } from '@nestjs/cache-manager'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
@@ -40,6 +41,11 @@ import { UtilModule } from './util/util.module'
     EventEmitterModule.forRoot(),
     UtilModule,
     DatabaseModule,
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 3 * 1000,
+      max: 10,
+    }),
     SqliteModule,
     SocketV1Module,
     HomeModule,
