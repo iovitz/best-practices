@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common'
-import { CookieKeys } from '../constans/cookie'
-import { SKIP_RESPONSE_FORMAT_KEY } from '../constans/meta-keys'
+import { CookieKeys } from '../../shared/constans/cookie'
+import { SKIP_RESPONSE_FORMAT_KEY } from '../../shared/constans/meta-keys'
 
 // 创建一个自定义装饰器来设置响应元数据
 export function SkipFormat() {
