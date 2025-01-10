@@ -12,8 +12,8 @@ import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promis
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
 import { InjectUtilsMiddleware } from './aspects/middlewares/inject-utils/inject-utils.middleware'
 import { BookModule } from './book/book.module'
+import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
-import { RedisModule } from './redis/redis.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
 import { SqliteModule } from './sqlite/sqlite.module'
 import { TracerService } from './util/tracer/tracer.service'
@@ -39,7 +39,7 @@ import { UtilModule } from './util/util.module'
     }),
     EventEmitterModule.forRoot(),
     UtilModule,
-    RedisModule,
+    DatabaseModule,
     SqliteModule,
     SocketV1Module,
     HomeModule,

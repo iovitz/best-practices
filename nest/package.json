@@ -20,11 +20,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "compodoc": "pnpx @compodoc/compodoc -p tsconfig.json -s -o -c .compodoc.json",
     "yac": "node_modules/.bin/httpyac -e development -o body ./rest.http",
     "sqlite": "pnpm drizzle-kit --config sqlite.drizzle.config.ts"
   },
   "dependencies": {
+    "@nestjs-modules/ioredis": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
@@ -42,7 +42,7 @@
     "crypto-js": "^4.2.0",
     "drizzle-orm": "^0.38.3",
     "ejs": "^3.1.10",
-    "ioredis": "^5.4.1",
+    "ioredis": "^5.4.2",
     "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
     "moment": "^2.30.1",
@@ -61,7 +61,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
-    "@compodoc/compodoc": "^1.1.26",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
