@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { RedisModule } from '@nestjs-modules/ioredis'
-import { SqliteModule } from './drizzle/sqlite/sqlite.module'
+import { DrizzleModule } from './drizzle/drizzle.module'
 import { TypeormModule } from './typeorm/typeorm.module'
 
 @Global()
@@ -21,8 +21,8 @@ import { TypeormModule } from './typeorm/typeorm.module'
         })
       },
     }),
-    SqliteModule,
     TypeormModule,
+    DrizzleModule,
   ],
 })
 export class DatabaseModule {}

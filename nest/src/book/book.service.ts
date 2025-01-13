@@ -1,23 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { eq } from 'drizzle-orm'
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
-import { SQLITE_CLIENT } from 'src/database/drizzle/sqlite/sqlite.module'
-import { Book } from 'src/database/drizzle/sqlite/sqlite.schema'
+import { DRIZZLE_SQLITE } from 'src/database/drizzle/drizzle.module'
+import { User } from 'src/database/drizzle/sqlite.drizzle'
 
 @Injectable()
 export class BookService {
-  @Inject(SQLITE_CLIENT)
+  @Inject(DRIZZLE_SQLITE)
   sqliteClient: BetterSQLite3Database
 
   getBookList(page: number, limit: number) {
-    return this.sqliteClient.select().from(Book).limit(limit).offset((page - 1) * limit)
+    return this.sqliteClient.select().from(User).limit(limit).offset((page - 1) * limit)
   }
 
   getBookById(id: number) {
-    return this.sqliteClient.select().from(Book).where(eq(Book.id, id))
+    return this.sqliteClient.select().from(User).where(eq(User.id, id))
   }
 
-  createBook(data: typeof Book.$inferInsert) {
-    return this.sqliteClient.insert(Book).values(data)
+  createBook(data: typeof User.$inferInsert) {
+    return this.sqliteClient.insert(User).values(data)
   }
 }

@@ -59,7 +59,8 @@ export class BookController {
   @Post()
   async createBook(@Body(VerifyPipe) body: CreateBookDTO) {
     const book = await this.bookService.createBook({
-      name: body.name,
+      email: body.name,
+      password: '',
     })
     if (book.changes > 0) {
       return true

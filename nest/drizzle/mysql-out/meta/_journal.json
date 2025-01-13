@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1736768854229,
+      "tag": "0000_heavy_sunset_bain",
+      "breakpoints": true
+    }
+  ]
+}

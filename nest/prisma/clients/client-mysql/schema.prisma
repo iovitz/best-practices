@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("NEST_APP_ENV_PRISMA_MYSQL_DB_HOST")
+  url      = env("NEST_APP_ENV_PRISMA_MYSQL_CONNECT_URL")
 }
 
 model User {
