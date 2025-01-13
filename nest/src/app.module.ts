@@ -16,7 +16,6 @@ import { BookModule } from './book/book.module'
 import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
-import { SqliteModule } from './sqlite/sqlite.module'
 import { TracerService } from './util/tracer/tracer.service'
 import { UtilModule } from './util/util.module'
 
@@ -46,7 +45,6 @@ import { UtilModule } from './util/util.module'
       ttl: 3 * 1000,
       max: 10,
     }),
-    SqliteModule,
     SocketV1Module,
     HomeModule,
     BookModule,
