@@ -17,7 +17,7 @@ export class LogInterceptor implements NestInterceptor {
     const req: Req = context.switchToHttp().getRequest()
     const { method, originalUrl } = req
 
-    req.tracer.info(`+REQ：${method} ${originalUrl}`, {
+    req.tracer.log(`+REQ：${method} ${originalUrl}`, {
       clientId: req.clientId,
       body: req.body,
       query: req.query,
@@ -25,7 +25,7 @@ export class LogInterceptor implements NestInterceptor {
 
     const data = await next.handle()
 
-    req.tracer.info('-SUC', {
+    req.tracer.log('-SUC', {
       cost: req.getCostNs(),
       clientId: req.clientId,
     })

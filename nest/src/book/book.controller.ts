@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { REQUEST_TRACER } from 'src/utils/tracer/tracer.service'
-import { Logger } from 'winston'
+import { REQUEST_TRACER, TracerService } from 'src/utils/tracer/tracer.service'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
@@ -10,7 +9,7 @@ import { BookService } from './book.service'
 @Controller('api/book')
 export class BookController {
   @Inject(REQUEST_TRACER)
-  tracer: Logger
+  tracer: TracerService
 
   constructor(private bookService: BookService) {}
 
@@ -29,9 +28,9 @@ export class BookController {
       Number(query.page),
       Number(query.per_page),
     )
-    this.tracer.error('信息中携带Error', new Error('123123'))
+    this.tracer.error('信息中携带Error', new Error('Some Error'))
     this.tracer.warn('打印警告')
-    this.tracer.info('普通信息')
+    this.tracer.log('普通信息')
     return books
   }
 
