@@ -2,7 +2,7 @@ import * as path from 'node:path'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { appLogger } from 'src/util/tracer/tracer'
+import { appLogger } from 'src/utils/tracer/tracer'
 import { Logger } from 'typeorm'
 
 @Module({

@@ -16,8 +16,8 @@ import { BookModule } from './book/book.module'
 import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
-import { TracerService } from './util/tracer/tracer.service'
-import { UtilModule } from './util/util.module'
+import { TracerService } from './utils/tracer/tracer.service'
+import { UtilModule } from './utils/util.module'
 
 @Module({
   imports: [

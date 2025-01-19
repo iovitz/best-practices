@@ -2,7 +2,7 @@ import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/commo
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Tracer } from 'src/aspects/decorators/request'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { TracerService } from 'src/util/tracer/tracer.service'
+import { TracerService } from 'src/utils/tracer/tracer.service'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
