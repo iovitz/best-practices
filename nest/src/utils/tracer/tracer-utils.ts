@@ -2,12 +2,13 @@ import type { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
 import { homedir } from 'node:os'
 import * as path from 'node:path'
 import * as process from 'node:process'
+import { LoggerService, Scope } from '@nestjs/common'
 import * as chalk from 'chalk'
 import { isEmpty, omit } from 'lodash'
 import * as pkg from 'package.json'
 import { stringify } from 'safe-stable-stringify'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
-import { createLogger, format, transports } from 'winston'
+import { createLogger, format, Logger, transports } from 'winston'
 import { Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
 import 'winston-daily-rotate-file'
 
@@ -23,7 +24,7 @@ const logLevelColors = {
 
 export const appLogger = createRootLogger()
 
-export function createRootLogger() {
+function createRootLogger() {
   const rootLogger = createLogger({
     transports: [
       new transports.DailyRotateFile({

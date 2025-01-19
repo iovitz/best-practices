@@ -22,7 +22,7 @@ export class ResponseFormatterInterceptor implements NestInterceptor {
       map((data) => {
         // 跳过format
         if (skipFormat || res.getHeader(HeaderKeys.ContentType)) {
-          req.tracer.log(`Skip Response Format`)
+          req.tracer.info(`Skip Response Format`)
           return data
         }
         return {

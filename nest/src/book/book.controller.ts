@@ -1,14 +1,17 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { Tracer } from 'src/aspects/decorators/request'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { TracerService } from 'src/utils/tracer/tracer.service'
+import { REQUEST_TRACER } from 'src/utils/tracer/tracer.service'
+import { Logger } from 'winston'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
 @ApiTags('图书')
 @Controller('api/book')
 export class BookController {
+  @Inject(REQUEST_TRACER)
+  tracer: Logger
+
   constructor(private bookService: BookService) {}
 
   @Get()
@@ -21,14 +24,14 @@ export class BookController {
     description: '分页筛选之后的图书列表',
     type: [GetBookResponseDTO],
   })
-  async getBooks(@Query() query: GetBookListDTO, @Tracer() tracer: TracerService) {
+  async getBooks(@Query() query: GetBookListDTO) {
     const books = await this.bookService.getBookList(
       Number(query.page),
       Number(query.per_page),
     )
-    tracer.error('信息中携带Error', new Error('123123'))
-    tracer.warn('打印警告')
-    tracer.log('普通信息')
+    this.tracer.error('信息中携带Error', new Error('123123'))
+    this.tracer.warn('打印警告')
+    this.tracer.info('普通信息')
     return books
   }
 

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { Logger } from 'winston'
 import { PromiseManager } from './shared/utils/promise-manager'
 import { TracerService } from './utils/tracer/tracer.service'
 
@@ -8,7 +9,7 @@ declare global {
     stime: bigint
     clientId: string
     promiseManager: PromiseManager
-    tracer: TracerService
+    tracer: Logger
     getCostNs: () => string
     getCookie: (key: CookieKeys) => string | undefined
     setCookie: (key: CookieKeys, value: string) => void

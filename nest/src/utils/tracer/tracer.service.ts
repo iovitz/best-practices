@@ -1,8 +1,9 @@
-import { Injectable, LoggerService } from '@nestjs/common'
+import { Injectable, LoggerService, Provider, Scope } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { REQUEST } from '@nestjs/core'
 import { Logger } from 'winston'
-import { appLogger, formatLogContext } from './tracer'
 import { LogContext } from './tracer.types'
+import { appLogger, formatLogContext } from './tracer-utils'
 
 class BaseTracer implements LoggerService {
   constructor(private logger: Logger) {}
@@ -37,4 +38,20 @@ export class TracerService extends BaseTracer {
   constructor(private config: ConfigService) {
     super(appLogger)
   }
+}
+
+export const REQUEST_TRACER = Symbol('REQUEST_TRACER')
+
+export const RequestTracerProvider: Provider = {
+  provide: REQUEST_TRACER,
+  scope: Scope.REQUEST, // 确保每个请求都会生成一个新的实例
+  inject: [REQUEST],
+  useFactory: (req: Req) => {
+    if (!req.tracer) {
+      req.tracer = appLogger.child({
+        scope: req.clientId ?? 'UNKNOWN_CLIENT_ID',
+      })
+    }
+    return req.tracer
+  },
 }

@@ -1,21 +1,14 @@
 import * as process from 'node:process'
-import { Inject, Injectable, NestMiddleware } from '@nestjs/common'
+import { Injectable, NestMiddleware } from '@nestjs/common'
 import { customAlphabet } from 'nanoid'
 import { CookieKeys } from 'src/shared/constans/cookie'
 import { PromiseManager } from 'src/shared/utils/promise-manager'
-import { TracerService } from 'src/utils/tracer/tracer.service'
 
 @Injectable()
 export class InjectUtilsMiddleware implements NestMiddleware {
-  @Inject(TracerService)
-  private readonly tracer: TracerService
-
-  constructor() {}
-
   use(req: Req, res: Res, next: () => void) {
     this.useCost(req, res)
     this.useCookie(req, res)
-    this.useTracer(req, res)
     this.useClientId(req, res)
     this.usePromiseManager(req, res)
     // 获取请求耗时（ns）
@@ -67,19 +60,6 @@ export class InjectUtilsMiddleware implements NestMiddleware {
       sameSite: 'strict',
       httpOnly: true,
     })
-  }
-
-  /**
-   * 使用Tracer
-   */
-  useTracer(req: Req, res: Res) {
-    const rid = req.headers['x-trace-id'] ?? this.idGenerator()
-    const requestTracer = this.tracer.child(`${rid}`)
-
-    // 请求对象和响应对象上都挂上Tracer
-    res.tracer = req.tracer = requestTracer
-
-    res.setHeader('x-trace-id', rid)
   }
 
   /**
