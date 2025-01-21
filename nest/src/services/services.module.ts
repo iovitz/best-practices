@@ -10,4 +10,4 @@ import { RequestTracerProvider, TracerService } from './tracer/tracer.service'
   providers: [EncryptService, HttpService, TracerService, RequestTracerProvider, IoService],
   exports: [EncryptService, HttpService, TracerService, RequestTracerProvider, IoService],
 })
-export class UtilModule {}
+export class ServicesModule {}
