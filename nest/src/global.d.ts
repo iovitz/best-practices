@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
+import { SyncManager } from './services/sync-manager/sync-manager'
 import { TracerService } from './services/tracer/tracer.service'
-import { PromiseManager } from './shared/utils/promise-manager'
 
 declare global {
   interface MiddlewareInjected {
     // 中间注入的对象，不一定真的存在，注意调用时间
     stime: bigint
     clientId: string
-    promiseManager: PromiseManager
+    syncManager: SyncManager
     tracer: TracerService
     getCostNs: () => string
     getCookie: (key: CookieKeys) => string | undefined
