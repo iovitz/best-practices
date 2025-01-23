@@ -52,11 +52,11 @@ import { SocketV1Module } from './socketv1/socketv1.module'
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: ResponseFormatterInterceptor,
+      useClass: LogInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: LogInterceptor,
+      useClass: ResponseFormatterInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,

@@ -6,7 +6,7 @@ import {
 
   NestInterceptor,
 } from '@nestjs/common'
-import { Observable } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { Tracer } from 'src/services/tracer/tracer.service'
 
 @Injectable()
@@ -26,6 +26,14 @@ export class LogInterceptor implements NestInterceptor {
       query: req.query,
     })
 
-    return next.handle()
+    return next.handle().pipe(
+      map((data) => {
+        this.tracer.log('-REQ', {
+          tracerId: req.tracerId,
+          cost: req.getCostNs(),
+        })
+        return data
+      }),
+    )
   }
 }
