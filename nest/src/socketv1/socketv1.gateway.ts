@@ -1,30 +1,30 @@
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
-
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
-import { TracerService } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/services/tracer/tracer.service'
 
 @WebSocketGateway({
   path: '/ws/v1',
 })
 export class SocketV1Gateway
 implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket> {
-  constructor(private readonly log: TracerService) {}
+  private readonly tracer = new Tracer(SocketV1Gateway.name)
+  constructor() {}
 
   @WebSocketServer() server: Server
   users = 0
 
   async handleConnection(client: Socket) {
-    this.log.log('@Socket connect', { id: client.id })
+    this.tracer.log('@Socket connect', { id: client.id })
   }
 
   async handleDisconnect(client: Socket) {
-    this.log.log('@Socket disconnect', { id: client.id })
+    this.tracer.log('@Socket disconnect', { id: client.id })
   }
 
   @SubscribeMessage('events')
@@ -34,7 +34,7 @@ implements OnGatewayConnection<Socket>, OnGatewayDisconnect<Socket> {
 
   @SubscribeMessage('hello')
   async handleMessage(client: Socket, payload: string) {
-    this.log.log('socket hello', {
+    this.tracer.log('socket hello', {
       payload,
     })
 

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { REQUEST_TRACER, TracerService } from 'src/services/tracer/tracer.service'
+import { REQUEST_TRACER, Tracer } from 'src/services/tracer/tracer.service'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
@@ -9,7 +9,7 @@ import { BookService } from './book.service'
 @Controller('api/book')
 export class BookController {
   @Inject(REQUEST_TRACER)
-  tracer: TracerService
+  tracer: Tracer
 
   constructor(private bookService: BookService) {}
 

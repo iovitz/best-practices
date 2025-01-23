@@ -3,12 +3,12 @@ import { EncryptService } from './encrypt/encrypt.service'
 import { HttpService } from './http/http.service'
 import { IoService } from './io/io.service'
 import { SyncManagerProvider } from './sync-manager/sync-manager.service'
-import { RequestTracerProvider, TracerService } from './tracer/tracer.service'
+import { RequestTracerProvider } from './tracer/tracer.service'
 
 @Global()
 @Module({
   // 全局使用的一些Service
-  providers: [EncryptService, HttpService, TracerService, RequestTracerProvider, IoService, SyncManagerProvider],
-  exports: [EncryptService, HttpService, TracerService, RequestTracerProvider, IoService, SyncManagerProvider],
+  providers: [EncryptService, HttpService, RequestTracerProvider, IoService, SyncManagerProvider],
+  exports: [EncryptService, HttpService, RequestTracerProvider, IoService, SyncManagerProvider],
 })
 export class ServicesModule {}

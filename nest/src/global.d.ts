@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SyncManager } from './services/sync-manager/sync-manager'
-import { TracerService } from './services/tracer/tracer.service'
+import { Tracer } from './services/tracer/tracer.service'
 
 declare global {
   interface MiddlewareInjected {
@@ -9,7 +9,7 @@ declare global {
     clientId: string
     tracerId: string
     syncManager: SyncManager
-    tracer: TracerService
+    tracer: Tracer
     getCostNs: () => string
     getCookie: (key: CookieKeys) => string | undefined
     setCookie: (key: CookieKeys, value: string) => void

@@ -16,7 +16,7 @@ import { BookModule } from './book/book.module'
 import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
 import { ServicesModule } from './services/services.module'
-import { TracerService } from './services/tracer/tracer.service'
+import { Tracer } from './services/tracer/tracer.service'
 import { SocketV1Module } from './socketv1/socketv1.module'
 
 @Module({
@@ -77,9 +77,7 @@ import { SocketV1Module } from './socketv1/socketv1.module'
   ],
 })
 export class AppModule implements NestModule {
-  constructor(
-    private tracer: TracerService,
-  ) {}
+  private tracer = new Tracer(AppModule.name)
 
   configure(consumer: MiddlewareConsumer) {
     this.tracer.log('Initial middlewares')
