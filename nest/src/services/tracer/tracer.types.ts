@@ -4,6 +4,8 @@ export type LogContext =
   | string
   | Error
   | {
+    tracerId?: string
+    error?: Error
     [key: string]: unknown
   }
 
@@ -28,4 +30,9 @@ export interface LogInfo {
   stack?: string
   payload?: string
   [key: string | symbol]: unknown
+}
+
+export interface ErrorContext {
+  error: Error
+  [key: string]: unknown
 }

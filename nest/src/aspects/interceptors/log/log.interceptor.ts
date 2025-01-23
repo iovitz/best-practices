@@ -7,9 +7,11 @@ import {
   NestInterceptor,
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
+import { Tracer } from 'src/services/tracer/tracer.service'
 
 @Injectable()
 export class LogInterceptor implements NestInterceptor {
+  private tracer = new Tracer(LogInterceptor.name)
   async intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -17,19 +19,13 @@ export class LogInterceptor implements NestInterceptor {
     const req: Req = context.switchToHttp().getRequest()
     const { method, originalUrl } = req
 
-    req.tracer.log(`+REQ：${method} ${originalUrl}`, {
+    this.tracer.log(`+REQ：${method} ${originalUrl}`, {
+      tracerId: req.tracerId,
       clientId: req.clientId,
       body: req.body,
       query: req.query,
     })
 
-    const data = await next.handle()
-
-    req.tracer.log('-SUC', {
-      cost: req.getCostNs(),
-      clientId: req.clientId,
-    })
-
-    return data
+    return next.handle()
   }
 }

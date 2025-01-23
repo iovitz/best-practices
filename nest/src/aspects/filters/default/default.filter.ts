@@ -4,15 +4,21 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common'
+import { Tracer } from 'src/services/tracer/tracer.service'
 import * as status from 'statuses'
 
 @Catch(Error)
 export class DefaultFilter implements ExceptionFilter {
+  private tracer = new Tracer(DefaultFilter.name)
+
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Res>()
 
-    res.tracer.error('- ERR 500', exception)
+    this.tracer.error('- ERR 500', {
+      error: exception,
+      tracerId: res.tracerId,
+    })
 
     const errorResponse = {
       code: 50000,
