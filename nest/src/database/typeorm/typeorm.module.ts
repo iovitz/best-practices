@@ -1,3 +1,4 @@
+import { homedir } from 'node:os'
 import * as path from 'node:path'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -32,10 +33,10 @@ import { Logger } from 'typeorm'
       useFactory: async (configService: ConfigService) => {
         return {
           type: 'better-sqlite3',
-          database: configService.getOrThrow('NEST_APP_ENV_TYPEORM_SQLITE_DB_FILE'),
+          database: path.join(homedir(), configService.getOrThrow('NEST_APP_ENV_TYPEORM_SQLITE_DB_FILE')),
           entities: [path.join(__dirname, 'sqlite', '*.entity{.ts,.js}')], // 实体路径
           autoLoadEntities: true,
-          synchronize: configService.get('NEST_APP_ENV_TYPEORM_SQLITE_DB_SYNC') === 'on',
+          synchronize: configService.get('NEST_APP_ENV_TYPEORM_SQLITE_DB_SYNC'),
           logging: true,
           logger: getTypeOrmLogger('Typeorm-Sqlite'),
         }
