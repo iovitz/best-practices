@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { RedisModule } from '@nestjs-modules/ioredis'
+import { ConfigService } from 'src/services/config/config.service'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { TypeormModule } from './typeorm/typeorm.module'
 
@@ -14,9 +14,9 @@ import { TypeormModule } from './typeorm/typeorm.module'
           type: 'single',
           url: configService.getOrThrow('NEST_APP_ENV_REDIS_DB_URL'),
           options: {
-            port: Number(configService.getOrThrow('NEST_APP_ENV_REDIS_DB_PORT')) || 6709,
-            username: configService.getOrThrow('NEST_APP_ENV_REDIS_DB_USER'),
-            password: configService.getOrThrow('NEST_APP_ENV_REDIS_DB_PSWD'),
+            port: Number(configService.get('NEST_APP_ENV_REDIS_DB_PORT')),
+            username: configService.get('NEST_APP_ENV_REDIS_DB_USER'),
+            password: configService.get('NEST_APP_ENV_REDIS_DB_PSWD'),
           },
         })
       },

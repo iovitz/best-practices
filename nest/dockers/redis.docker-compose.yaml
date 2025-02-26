@@ -4,6 +4,6 @@ services:
     container_name: nest-app-redis
     restart: always
     environment:
-      - REDIS_PASSWORD=<YOUR_PASSWORD>
+      - REDIS_PASSWORD=123123
     ports:
       - 6379:6379

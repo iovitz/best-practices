@@ -1,10 +1,10 @@
 import { Buffer } from 'node:buffer'
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { compare, genSalt, hash } from 'bcrypt'
 import { AES } from 'crypto-js'
 import { gzip, ungzip } from 'pako'
 import { stringify } from 'safe-stable-stringify'
+import { ConfigService } from 'src/services/config/config.service'
 
 @Injectable()
 export class EncryptService {

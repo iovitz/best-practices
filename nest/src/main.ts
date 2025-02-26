@@ -1,12 +1,13 @@
 import * as process from 'node:process'
-import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { ConfigService } from 'src/services/config/config.service'
 import * as pkg from '../package.json'
 import { AppModule } from './app.module'
 import { appLogger, formatLogContext } from './services/tracer/tracer'
 import { Tracer } from './services/tracer/tracer.service'
+import 'config'
 
 // 防止未捕获异常导致进程退出
 process.on('unhandledRejection', (reason: Error) => {

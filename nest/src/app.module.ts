@@ -1,7 +1,6 @@
 import * as process from 'node:process'
 import { CacheModule } from '@nestjs/cache-manager'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import * as cookieParser from 'cookie-parser'
@@ -21,22 +20,6 @@ import { SocketV1Module } from './socketv1/socketv1.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath:
-      // 开发环境才加载配置数据
-      ['production'].includes(process.env.NODE_ENV) ? [] : ['.env.development'],
-      load: [
-        // 可以加载远程配置
-        async () => {
-          const isProd = process.env.NODE_ENV === 'prod'
-
-          return {
-            isProd,
-          }
-        },
-      ],
-    }),
     EventEmitterModule.forRoot(),
     ServicesModule,
     DatabaseModule,
