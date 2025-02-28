@@ -1,4 +1,4 @@
-import { Global, Module, Scope } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { ConfigService } from './config/config.service'
 import { EncryptService } from './encrypt/encrypt.service'
 import { HttpService } from './http/http.service'

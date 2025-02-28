@@ -1,4 +1,4 @@
-import { Injectable, Provider, Scope } from '@nestjs/common'
+import { Provider, Scope } from '@nestjs/common'
 import { REQUEST } from '@nestjs/core'
 import { SyncManager } from './sync-manager'
 

@@ -6,4 +6,7 @@ export default antfu({
       'ts/consistent-type-imports': 0,
     },
   },
+
+}, {
+  ignores: ['prisma/*', 'node_modules/*', 'drizzle/*.json', '**/*.yaml'],
 })
