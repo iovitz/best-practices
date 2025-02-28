@@ -12,7 +12,7 @@ import { TypeormModule } from './typeorm/typeorm.module'
       useFactory: (configService: ConfigService) => {
         return ({
           type: 'single',
-          url: configService.getOrThrow('NEST_APP_ENV_REDIS_DB_URL'),
+          url: configService.get('NEST_APP_ENV_REDIS_DB_URL'),
           options: {
             port: Number(configService.get('NEST_APP_ENV_REDIS_DB_PORT')),
             username: configService.get('NEST_APP_ENV_REDIS_DB_USER'),

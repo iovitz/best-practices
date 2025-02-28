@@ -24,7 +24,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const connection = await mysql.createConnection({
-          uri: configService.getOrThrow('NEST_APP_ENV_DRIZZLE_MYSQL_CONNECT_URL'),
+          uri: configService.get('NEST_APP_ENV_DRIZZLE_MYSQL_CONNECT_URL'),
         })
         const db = drizzle({ client: connection })
         return db

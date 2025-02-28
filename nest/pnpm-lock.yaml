@@ -50,9 +50,6 @@ importers:
       '@prisma/client-sqlite':
         specifier: file:./prisma/clients/client-mysql
         version: prisma-client-55f501593a5e2733a17589875517728644b5f907efd89f6f45fae41284fc383b@file:prisma/clients/client-mysql
-      '@types/config':
-        specifier: ^3.3.5
-        version: 3.3.5
       bcrypt:
         specifier: 5.1.1
         version: 5.1.1
@@ -71,9 +68,6 @@ importers:
       class-validator:
         specifier: 0.14.1
         version: 0.14.1
-      config:
-        specifier: 3.3.12
-        version: 3.3.12
       cookie-parser:
         specifier: 1.4.6
         version: 1.4.6
@@ -110,6 +104,9 @@ importers:
       pako:
         specifier: 2.1.0
         version: 2.1.0
+      rc:
+        specifier: ^1.2.8
+        version: 1.2.8
       reflect-metadata:
         specifier: 0.1.13
         version: 0.1.13
@@ -192,6 +189,9 @@ importers:
       '@types/pako':
         specifier: 2.0.3
         version: 2.0.3
+      '@types/rc':
+        specifier: ^1.2.4
+        version: 1.2.4
       '@types/statuses':
         specifier: 2.0.5
         version: 2.0.5
@@ -1371,9 +1371,6 @@ packages:
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
-  '@types/config@3.3.5':
-    resolution: {integrity: sha512-itq2HtXQBrNUKwMNZnb9mBRE3T99VYCdl1gjST9rq+9kFaB1iMMGuDeZnP88qid73DnpAMKH9ZolqDpS1Lz7+w==}
-
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
@@ -1458,6 +1455,9 @@ packages:
   '@types/mime@3.0.4':
     resolution: {integrity: sha512-iJt33IQnVRkqeqC7PzBHPTC6fDlRNRW8vjrgqtScAhrmMwe8c4Eo7+fUGTa+XdWrpEgpyKWMYmi2dIwMAYRzPw==}
 
+  '@types/minimist@1.2.5':
+    resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
+
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
@@ -1478,6 +1478,9 @@ packages:
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
+
+  '@types/rc@1.2.4':
+    resolution: {integrity: sha512-xD6+epQoMH79A1uwmJIq25D+XZ57jUzCQ1DGSvs3tGKdx7QDYOOaMh6m5KBkEIW4+Cy5++bZ7NLDfdpNiYVKYA==}
 
   '@types/readable-stream@4.0.15':
     resolution: {integrity: sha512-oAZ3kw+kJFkEqyh7xORZOku1YAKvsFTogRY8kVl4vHpEKiDkfnSA/My8haRE7fvmix5Zyy+1pwzOi7yycGLBJw==}
@@ -2155,10 +2158,6 @@ packages:
 
   confbox@0.1.8:
     resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
-
-  config@3.3.12:
-    resolution: {integrity: sha512-Vmx389R/QVM3foxqBzXO8t2tUikYZP64Q6vQxGrsMpREeJc/aWRnPRERXWsYzOHAumx/AOoILWe6nU3ZJL+6Sw==}
-    engines: {node: '>= 10.0.0'}
 
   consola@2.15.3:
     resolution: {integrity: sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==}
@@ -6544,8 +6543,6 @@ snapshots:
       '@types/node': 20.3.1
       '@types/responselike': 1.0.3
 
-  '@types/config@3.3.5': {}
-
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 20.3.1
@@ -6639,6 +6636,8 @@ snapshots:
 
   '@types/mime@3.0.4': {}
 
+  '@types/minimist@1.2.5': {}
+
   '@types/ms@0.7.34': {}
 
   '@types/node@20.3.1': {}
@@ -6652,6 +6651,10 @@ snapshots:
   '@types/qs@6.9.11': {}
 
   '@types/range-parser@1.2.7': {}
+
+  '@types/rc@1.2.4':
+    dependencies:
+      '@types/minimist': 1.2.5
 
   '@types/readable-stream@4.0.15':
     dependencies:
@@ -7449,10 +7452,6 @@ snapshots:
       typedarray: 0.0.6
 
   confbox@0.1.8: {}
-
-  config@3.3.12:
-    dependencies:
-      json5: 2.2.3
 
   consola@2.15.3: {}
 

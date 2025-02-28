@@ -7,7 +7,6 @@ import pkg from '../package.json'
 import { AppModule } from './app.module'
 import { appLogger, formatLogContext } from './services/tracer/tracer'
 import { Tracer } from './services/tracer/tracer.service'
-import 'config'
 
 // 防止未捕获异常导致进程退出
 process.on('unhandledRejection', (reason: Error) => {
@@ -26,6 +25,7 @@ async function bootstrap() {
 
   appTracer.log('Application Running', {
     version: pkg.version,
+    env: JSON.stringify({}),
   })
 
   const configService = app.get(ConfigService)
@@ -55,7 +55,7 @@ async function bootstrap() {
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup('doc', app, swaggerDocument)
 
-  const appPort = Number.parseInt(configService.getOrThrow('NEST_APP_ENV_PORT'))
+  const appPort = configService.get('APP_PORT')
   await app.listen(appPort)
 
   appTracer.log(`Server running in http://127.0.0.1:${appPort}`)
