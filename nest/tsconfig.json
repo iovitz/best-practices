@@ -4,6 +4,7 @@
     "target": "ESNext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "baseUrl": "./",
     "module": "commonjs",
     "resolveJsonModule": true,

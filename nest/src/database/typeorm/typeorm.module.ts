@@ -1,5 +1,5 @@
 import { homedir } from 'node:os'
-import * as path from 'node:path'
+import path from 'node:path'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigService } from 'src/services/config/config.service'

@@ -1,8 +1,8 @@
 import { Global, Module } from '@nestjs/common'
-import * as Database from 'better-sqlite3'
+import Database from 'better-sqlite3'
 import { drizzle as drizzleSqlite } from 'drizzle-orm/better-sqlite3'
 import { drizzle } from 'drizzle-orm/mysql2'
-import * as mysql from 'mysql2/promise'
+import mysql from 'mysql2/promise'
 import { ConfigService } from 'src/services/config/config.service'
 
 export const DRIZZLE_SQLITE = Symbol('DRIZZLE_SQLITE')
