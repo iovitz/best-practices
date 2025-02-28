@@ -44,7 +44,7 @@ const defaultConfig = {
 
 type ConfigType = typeof defaultConfig
 
-const RcConfig = rc(AppName, defaultConfig)
+export const RcConfig: Readonly<ConfigType> = rc(AppName, defaultConfig)
 
 export class Config {
   get<T extends keyof ConfigType>(key: T): ConfigType[T] {

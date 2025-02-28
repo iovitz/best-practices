@@ -7,6 +7,7 @@ import pkg from '../package.json'
 import { AppModule } from './app.module'
 import { appLogger, formatLogContext } from './services/tracer/tracer'
 import { Tracer } from './services/tracer/tracer.service'
+import { RcConfig } from './shared/config'
 
 // 防止未捕获异常导致进程退出
 process.on('unhandledRejection', (reason: Error) => {
@@ -25,7 +26,7 @@ async function bootstrap() {
 
   appTracer.log('Application Running', {
     version: pkg.version,
-    env: JSON.stringify({}),
+    env: JSON.stringify(RcConfig),
   })
 
   const configService = app.get(ConfigService)
