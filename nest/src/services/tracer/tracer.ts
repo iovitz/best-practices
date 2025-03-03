@@ -6,6 +6,7 @@ import chalk from 'chalk'
 import { isEmpty, isNil, omit } from 'lodash'
 import pkg from 'package.json'
 import { stringify } from 'safe-stable-stringify'
+import { RcConfig } from 'src/shared/config'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
 import { createLogger, format, transports } from 'winston'
 import { ErrorContext, Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
@@ -24,24 +25,13 @@ const logLevelColors = {
 export const appLogger = createRootLogger()
 export function createRootLogger() {
   const rootLogger = createLogger({
-    transports: [
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('info'),
-      }),
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('warn'),
-      }),
-      new transports.DailyRotateFile({
-        ...getCommonRotateFileOption('error'),
-      }),
-    ],
+    level: RcConfig.LOG_LEVEL,
   })
 
   // 开发环境启用控制台日志
   if (!isProd) {
     rootLogger.add(
       new transports.Console({
-        level: 'debug',
         // 使用时间戳和nest样式
         format: format.combine(
           format.timestamp({ format: 'HH:mm:ss.SSS' }),
@@ -71,6 +61,13 @@ export function createRootLogger() {
       }),
     )
   }
+  else {
+    // 生产环境使用日志轮转
+    rootLogger.add(getRotateLogTransport('info'))
+    rootLogger.add(getRotateLogTransport('warn'))
+    rootLogger.add(getRotateLogTransport('error'))
+    rootLogger.info('Log with winston rotate!')
+  }
   return rootLogger.child({
     pid: process.pid,
   })
@@ -82,19 +79,20 @@ function getCommonStyleFormat(): Format[] {
     format.printf(formatOutput),
   ]
 }
-function getCommonRotateFileOption(
+
+function getRotateLogTransport(
   level: string,
-): DailyRotateFileTransportOptions {
-  return {
+) {
+  return new transports.DailyRotateFile({
     level,
-    dirname: path.join(homedir(), 'logs', pkg.name),
-    filename: `${level}-%DATE%.log`,
-    datePattern: 'YYYY-MM-DD',
-    zippedArchive: true,
-    maxSize: '20m',
-    maxFiles: '3d',
+    dirname: path.join('/var/log', pkg.name),
+    filename: `${level}.log`,
+    datePattern: RcConfig.LOG_DATA_PATTERN,
+    zippedArchive: RcConfig.LOG_ZIPPED_ARCHIVE,
+    maxSize: RcConfig.LOG_MAX_SIZE,
+    maxFiles: RcConfig.LOG_MAX_FILES,
     format: format.combine(...getCommonStyleFormat()),
-  }
+  })
 }
 
 function insertOutput(v: unknown) {

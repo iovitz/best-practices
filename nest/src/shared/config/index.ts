@@ -10,9 +10,13 @@ const defaultConfig = {
 
   ENCRYPT_AES_ENCRYPT_KEY: '',
 
-  LOG_FILE_ROTATE: false,
-  LOG_FILE_LOGGING: false,
+  LOG_LEVEL: 'info',
+  // 是否启用压缩
+  LOG_ZIPPED_ARCHIVE: true,
+  LOG_MAX_SIZE: '30M',
+  LOG_MAX_FILES: '3d',
   LOG_CONSOLE_LOGGING: true,
+  LOG_DATA_PATTERN: 'DD-MM-YYYY',
 
   NEST_APP_ENV_SESSION_SECRET: 'ngK3ksUQ9ITvNKX1fTHs4',
 
