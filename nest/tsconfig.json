@@ -12,10 +12,10 @@
     "strictNullChecks": false,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
-    "declaration": true,
+    "declaration": false,
     "outDir": "./dist",
     "removeComments": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": false,
     "skipLibCheck": true

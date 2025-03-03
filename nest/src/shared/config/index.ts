@@ -6,6 +6,8 @@ const AppName = process.env.npm_package_name ?? 'nestapp'
 const defaultConfig = {
   APP_PORT: process.env.PORT ?? 3333,
 
+  SWAGGER_ENABLE: true,
+
   ENCRYPT_AES_ENCRYPT_KEY: '',
 
   LOG_FILE_ROTATE: false,
