@@ -39,6 +39,9 @@ const bootstrap: BootstrapFn = async (appTracer) => {
     SwaggerModule.setup('doc', app, swaggerDocument)
   }
 
+  // 不要用，否则中间件会报错
+  // app.setGlobalPrefix('/noa')
+
   const appPort = RcConfig.APP_PORT
   await app.listen(appPort)
 
