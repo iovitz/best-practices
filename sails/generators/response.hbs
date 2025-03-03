@@ -1,0 +1,23 @@
+/**
+ * {{name}} response
+ *
+ * @description :: {{description}}
+ * @usage       ::
+ * ```
+ *     exits: {
+ *       somethingHappened: {
+ *         responseType: '{{name}}'
+ *       }
+ *     }
+ * ```
+ */
+
+module.exports = function (data, code = 0) {
+  // ...
+
+  return this.res.status(200).send({
+    code,
+    data: optionalData,
+    message: 'success',
+  });
+};

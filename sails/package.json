@@ -1,0 +1,48 @@
+{
+  "name": "sails",
+  "version": "0.0.0",
+  "private": true,
+  "description": "a Sails application",
+  "author": "bytedance",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bytedance/sails.git"
+  },
+  "keywords": [],
+  "main": "app.js",
+  "engines": {
+    "node": "^20.17"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "dev": "nodemon",
+    "test": "npm run lint && npm run custom-tests && echo 'Done.'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "custom-tests": "echo \"(No other custom tests yet.)\" && echo",
+    "generate": "plop",
+    "g": "plop"
+  },
+  "dependencies": {
+    "@sailshq/connect-redis": "^6.1.3",
+    "@sailshq/lodash": "^3.10.6",
+    "@sailshq/socket.io-redis": "^6.1.2",
+    "chalk": "2.3.0",
+    "grunt": "1.0.4",
+    "plop": "^4.0.1",
+    "sails": "^1.5.14",
+    "sails-hook-grunt": "^5.0.0",
+    "sails-hook-orm": "^4.0.3",
+    "sails-hook-sockets": "^3.0.0",
+    "sqlite3": "^5.1.7",
+    "triple-beam": "^1.4.1",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "4.4.0",
+    "eslint": "9.21.0",
+    "nodemon": "^3.1.9"
+  }
+}
