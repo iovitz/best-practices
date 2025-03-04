@@ -10,7 +10,6 @@
  */
 
 module.exports.bootstrap = async function () {
-
   // By convention, this is a good place to set up fake data during development.
   //
   // For example:
@@ -20,11 +19,13 @@ module.exports.bootstrap = async function () {
   //   return;
   // }
   //
+
   // await User.createEach([
   //   { emailAddress: 'ry@example.com', fullName: 'Ryan Dahl', },
   //   { emailAddress: 'rachael@example.com', fullName: 'Rachael Shaw', },
   //   // etc.
   // ]);
   // ```
-
+  sails.log.info('Server Running Success')
+  RequestService.getName()
 }

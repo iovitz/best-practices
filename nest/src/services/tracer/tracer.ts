@@ -26,6 +26,9 @@ export const appLogger = createRootLogger()
 export function createRootLogger() {
   const rootLogger = createLogger({
     level: RcConfig.LOG_LEVEL,
+    defaultMeta: {
+      pid: process.pid,
+    },
   })
 
   // 开发环境启用控制台日志
@@ -68,9 +71,7 @@ export function createRootLogger() {
     rootLogger.add(getRotateLogTransport('error'))
     rootLogger.info('Log with winston rotate!')
   }
-  return rootLogger.child({
-    pid: process.pid,
-  })
+  return rootLogger
 }
 
 function getCommonStyleFormat(): Format[] {

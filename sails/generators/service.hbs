@@ -10,9 +10,12 @@ const Service = {
   getName() {
     // ...
 
-    return '{{name}}';
+    return '{{name}}'
   },
 
-};
+}
 
-module.exports = Service;
+// For LSP
+globalThis.{{name}} = Service
+
+module.exports = Service

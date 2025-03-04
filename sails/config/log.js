@@ -11,6 +11,7 @@
  */
 
 const chalk = require('chalk')
+const { stringify } = require('safe-stable-stringify')
 const { createLogger, format, transports } = require('winston')
 require('winston-daily-rotate-file')
 
@@ -21,17 +22,17 @@ function formatObject(param) {
     return param.stack.split('\n').join('\\n')
   }
   if (_.isObject(param)) {
-    return JSON.stringify(param)
+    return stringify(param)
   }
   return param
 }
 
 // Ignore log messages if they have { private: true }
 const all = format((info) => {
-  const splat = info[SPLAT] || []
+  const splat = info[SPLAT] ?? []
   const message = formatObject(info.message)
   const rest = splat.map(formatObject).join('\\n')
-
+  // console.log(info)
   info.message = `${message}`
   if (!_.isEmpty(rest)) {
     info.message += ` ${rest}`
@@ -44,56 +45,64 @@ const consoleTransport = new transports.Console({
   // 使用时间戳和nest样式
   format: format.combine(
     all(),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    format.printf((i) => {
-      const t = chalk.gray(i.timestamp)
-      const message = chalk.blue(i.message)
-      return `${[t]} ${i.level} ${message} ${i.context || ''}`
-    }),
+    format.timestamp({ format: 'HH:mm:ss.SSS' }),
+    format.printf(getOutputFormatter(false)),
   ),
 })
 
-const infoTransport = new transports.DailyRotateFile({
-  dirname: 'logs/info',
-  filename: '%DATE%.log',
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  maxSize: '20m',
-  maxFiles: '14d',
+const levelColorMap = {
+  debug: chalk.gray,
+  info: chalk.blue,
+  warn: chalk.orange,
+  error: chalk.red,
+}
+
+function getOutputFormatter(isProd) {
+  return function (logInfo) {
+    if (isProd) {
+      return `${logInfo.pid} ${logInfo.timestamp} ${[logInfo.scope]} ${logInfo.level} ${logInfo.message} ${logInfo.context || ''}`
+    }
+    const logLevelColor = levelColorMap[logInfo.level] ?? chalk.gray
+    return `${chalk.gray(logInfo.pid)} ${chalk.gray(logInfo.timestamp)} ${[chalk.gray(logInfo.scope)]} ${logLevelColor(logInfo.level)} ${logInfo.message} ${logInfo.context || ''}`
+  }
+}
+
+function getCommonOutput() {
+  return [
+    all(),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+    format.printf(getOutputFormatter(true)),
+  ]
+}
+
+function getFileLoggingTransport(level) {
+  return new transports.DailyRotateFile({
+    dirname: `logs/${level}`,
+    filename: '%DATE%.log',
+    datePattern: 'YYYY-MM-DD',
+    zippedArchive: true,
+    maxSize: '20m',
+    maxFiles: '14d',
+    level,
+    format: format.combine(...getCommonOutput()),
+  })
+}
+
+globalThis.rootLogger = createLogger({
   level: 'info',
-  format: format.combine(
-    all(),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    format.printf((i) => {
-      const t = i.timestamp
-      const { message } = i
-      return `${[t]} ${i.level} ${message} ${i.context || ''}`
-    }),
-  ),
+  defaultMeta: {
+    pid: process.pid,
+  },
+})
+rootLogger.add(consoleTransport)
+rootLogger.add(getFileLoggingTransport('info'))
+rootLogger.add(getFileLoggingTransport('warn'))
+rootLogger.add(getFileLoggingTransport('error'))
+
+const customLogger = rootLogger.child({
+  scope: 'APP',
 })
 
-const errorTransport = new transports.DailyRotateFile({
-  dirname: 'logs/error',
-  filename: '%DATE%.log',
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  maxSize: '20m',
-  maxFiles: '14d',
-  level: 'error',
-  format: format.combine(
-    all(),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    format.printf((i) => {
-      const t = i.timestamp
-      const { message } = i
-      return `${[t]} ${i.level} ${message} ${i.context || ''}`
-    }),
-  ),
-})
-
-const customLogger = createLogger({
-  transports: [consoleTransport, infoTransport, errorTransport],
-})
 module.exports.log = {
 
   custom: customLogger,
@@ -114,5 +123,5 @@ module.exports.log = {
    **************************************************************************
    */
 
-  // level: 'info'
+  level: 'silly',
 }

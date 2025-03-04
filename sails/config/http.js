@@ -9,6 +9,8 @@
  * https://sailsjs.com/config/http
  */
 
+const { ulid } = require('ulid')
+
 module.exports.http = {
 
   /****************************************************************************
@@ -29,16 +31,18 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
+    order: [
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'www',
+      'favicon',
+      'logger',
+      'requestInfo',
+      'router',
+    ],
 
     /***************************************************************************
     *                                                                          *
@@ -48,11 +52,34 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // bodyParser: (function _configureBodyParser(){
-    //   var skipper = require('skipper');
-    //   var middlewareFn = skipper({ strict: true });
-    //   return middlewareFn;
-    // })(),
+    logger: (function () {
+      return function (req, res, next) {
+        req.logger = res.logger = rootLogger.child({
+          scope: ulid(),
+        })
+        return next()
+      }
+    })(),
+
+    requestInfo: (function () {
+      return async function (req, res, next) {
+        const startTime = process.hrtime.bigint()
+        res.logger.info(`Request Incoming: ${req.method} ${req.url}`, {
+          ua: req.header('user-agent'),
+        })
+
+        res.on('finish', () => {
+          const cost = process.hrtime.bigint() - startTime
+          res.logger.info(`Connection finished With Status Code ${res.statusCode}`, { cost: cost.toString() })
+        })
+
+        res.on('close', () => {
+          const cost = process.hrtime.bigint() - startTime
+          res.logger.info(`Connection Closed With Status Code ${res.statusCode}`, { cost: cost.toString() })
+        })
+        next()
+      }
+    })(),
 
   },
 

@@ -19,7 +19,6 @@ module.exports = async function (err) {
   const message = _.get(err, 'message')
 
   return this.res.status(404).send({
-    ...(sails.config.isProd ? {} : await sails.helpers.request.getRequestInfo(this.res)),
     code: code || 40004,
     message: message || statuses(404),
   })

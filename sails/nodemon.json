@@ -1,9 +1,4 @@
 {
-  "verbose": true,
-  "watch": ["src/", "config/"],
-  "ignore": ["src/tests/", "src/static/"],
-  "ext": "js,json",
-  "script": "app.js",
   "env": {
     "NODE_ENV": "development",
     "PORT": 9999
@@ -11,6 +6,10 @@
   "execMap": {
     "js": "node --inspect"
   },
-  "delay": "1000",
-  "legacyWatch": true
+  "delay": "400",
+  "legacyWatch": true,
+  "watch": ["api", "config", "tasks", "views"],
+  "ext": "js",
+  "ignore": ["node_modules/*", "assets/*"],
+  "exec": "node app.js"
 }

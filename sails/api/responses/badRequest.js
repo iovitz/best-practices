@@ -16,10 +16,9 @@ const statuses = require('statuses')
 
 module.exports = async function (err, code = 40000, statusCode = 400) {
   const message = typeof err === 'object' ? _.get(err, 'message') : err
-  console.info(this.res, '客户端请求错误', err)
+  sails.log(this.res, '客户端请求错误', err)
 
   return this.res.status(statusCode).send({
-    ...(sails.config.isProd ? {} : await sails.helpers.request.getRequestInfo(this.res)),
     code,
     message: message ?? statuses(404),
   })

@@ -22,7 +22,7 @@ module.exports = function (sails) {
 
   require('./user')(sequelize)
 
-  sails.mysql = sequelize
+  sails.sequelize = sequelize
 
   return {
 
@@ -34,6 +34,7 @@ module.exports = function (sails) {
       if (sails.config.environment === 'development') {
         await sequelize.sync() // 同步模型和数据库
       }
+
       sails.log.info('Initializing custom hook (`sequelize`)')
     },
 
