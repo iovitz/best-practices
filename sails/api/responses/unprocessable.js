@@ -1,12 +1,12 @@
 /**
- * forbidden response
+ * tooManyRequest response
  *
- * @description :: 无权限访问资源
+ * @description :: 请求过多触发限流
  * @usage       ::
  * ```
  *     exits: {
  *       somethingHappened: {
- *         responseType: 'forbidden'
+ *         responseType: 'tooManyRequest'
  *       }
  *     }
  * ```
@@ -17,10 +17,10 @@ const statuses = require('statuses')
 module.exports = async function (err) {
   const code = _.get(err, 'code')
   const message = _.get(err, 'message')
-  this.res.logger.warn('No Permission', err)
+  console.error(this.res, '服务端内部错误', err)
 
-  return this.res.status(403).send({
-    code: code || 40003,
-    message: message || statuses(403),
+  return this.res.status(422).send({
+    code: code ?? 0,
+    message: message ?? statuses(422),
   })
 }

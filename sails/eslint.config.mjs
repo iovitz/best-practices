@@ -4,7 +4,7 @@ export default antfu({
   javascript: {
     overrides: {
       'no-undef': 0,
-      'node/prefer-global/process': 'off',
+      'no-throw-literal': 'off',
     },
   },
   rules: {

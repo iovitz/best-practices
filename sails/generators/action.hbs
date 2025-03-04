@@ -19,14 +19,7 @@ module.exports = {
     // },
   },
 
-  exits: {
-    ok: {
-      responseType: 'ok',
-    },
-    badRequest: {
-      responseType: 'badRequest',
-    },
-  },
+  exits: sails.config.http.responses,
 
   async fn(input, exits) {
     const data = 'success'

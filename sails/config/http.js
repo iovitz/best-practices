@@ -85,4 +85,24 @@ module.exports.http = {
 
   trustProxy: true,
 
+  responses: {
+    ok: {
+      responseType: 'ok',
+    },
+    serverError: {
+      responseType: 'serverError',
+    },
+    badRequest: {
+      responseType: 'badRequest',
+    },
+    forbidden: {
+      responseType: 'forbidden',
+    },
+    tooManyRequest: {
+      responseType: 'tooManyRequest',
+    },
+    unprocessable: {
+      responseType: 'unprocessable',
+    },
+  },
 }
