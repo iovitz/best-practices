@@ -30,7 +30,6 @@ export class LogInterceptor implements NestInterceptor {
       map((data) => {
         this.tracer.log('-REQ', {
           tracerId: req.tracerId,
-          cost: req.getCostNs(),
         })
         return data
       }),
