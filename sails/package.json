@@ -38,6 +38,7 @@
     "sails-hook-grunt": "^5.0.0",
     "sails-hook-orm": "^4.0.3",
     "sails-hook-sockets": "^3.0.0",
+    "sails-mysql": "^3.0.1",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7",
     "triple-beam": "^1.4.1",

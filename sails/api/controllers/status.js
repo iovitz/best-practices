@@ -7,21 +7,26 @@
 module.exports = {
 
   inputs: {
-    name: {
-      type: 'string',
-      example: 'zhangsan',
-      description: 'Someone\'s name',
-      required: true,
-      custom() {
-        return true
-      },
-    },
+    // name: {
+    //   type: 'string',
+    //   example: 'zhangsan',
+    //   description: 'Someone\'s name',
+    //   required: true,
+    //   custom() {
+    //     return true
+    //   },
+    // },
   },
 
   exits: sails.config.http.responses,
 
   async fn(input, exits) {
-    const data = 'success'
+    const data = await User.create({
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john2222.doe@example.com',
+      age: 25,
+    }).fetch()
 
     return exits.ok(data)
   },
