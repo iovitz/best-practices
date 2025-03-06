@@ -1,31 +1,47 @@
-import type { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file'
-import { homedir } from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
+import { LoggerService } from '@nestjs/common'
 import chalk from 'chalk'
 import { isEmpty, isNil, omit } from 'lodash'
 import pkg from 'package.json'
 import { stringify } from 'safe-stable-stringify'
 import { RcConfig } from 'src/shared/config'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
-import { createLogger, format, transports } from 'winston'
+import { createLogger, format, Logger, transports } from 'winston'
 import { ErrorContext, Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
 import 'winston-daily-rotate-file'
 
 const ERROR = Symbol('ERROR')
 const isProd = process.env.NODE_ENV === 'production'
 
-const logLevelColors = {
-  debug: chalk.bgGray,
-  info: chalk.bgBlue,
-  warn: chalk.bgYellow,
-  error: chalk.bgRed,
+const logLevels = {
+  fatal: 50,
+  notice: 51,
+  bootstrap: 99,
+  error: 100,
+  warn: 200,
+  info: 300,
+  http: 400,
+  verbose: 500,
+  debug: 600,
+  silly: Number.MAX_SAFE_INTEGER,
 }
 
+const logColorMap = {
+  fatal: chalk.magentaBright, // 进程错误
+  bootstrap: chalk.green, // 启动日志
+  error: chalk.red, // 业务错误
+  warn: chalk.yellow, // 业务警告
+  info: chalk.blue, // 业务日志
+  http: chalk.cyanBright, // http日志
+  verbose: chalk.black, // 调试日志
+  debug: chalk.blackBright, // 啊我额发我额发我额发我
+}
 export const appLogger = createRootLogger()
 export function createRootLogger() {
   const rootLogger = createLogger({
     level: RcConfig.LOG_LEVEL,
+    levels: logLevels,
     defaultMeta: {
       pid: process.pid,
     },
@@ -55,7 +71,7 @@ export function createRootLogger() {
             } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE)
             // 错误日志特别输出
             const restStr = isEmpty(rest) ? '' : stringify(rest)
-            const levelChalk = logLevelColors[level as string] ?? chalk.blue
+            const levelChalk = logColorMap[level as string] ?? chalk.blue
             return `${levelChalk(level)} ${chalk.gray(timestamp)}${chalk.blue(insertOutput(scope))}${chalk.yellow(insertOutput(tracerId))}${chalk.green(insertOutput(name))}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
               stack,
             )}${insertOutput(restStr)}`.replace(/[\r\n]+/g, '↵')
@@ -176,5 +192,50 @@ export function formatLogContext(context?: LogContext): FormatedContext {
   return {
     tracerId,
     payload: isEmpty(payload) ? void 0 : objectToString(payload),
+  }
+}
+
+export class Tracer implements LoggerService {
+  private logger: Logger
+
+  constructor(scope?: string) {
+    this.logger = scope ? appLogger.child({ scope }) : appLogger
+  }
+
+  fatal(message: string, context?: LogContext) {
+    (this.logger as any).fatal(message, formatLogContext(context))
+  }
+
+  bootstrap(message: string, context?: LogContext) {
+    (this.logger as any).bootstrap(message, formatLogContext(context))
+  }
+
+  error(message: string, context?: LogContext) {
+    this.logger.error(message, formatLogContext(context))
+  }
+
+  warn(message: string, context?: LogContext) {
+    this.logger.warn(message, formatLogContext(context))
+  }
+
+  info(message: string, context?: LogContext) {
+    this.logger.info(message, formatLogContext(context))
+  }
+
+  /**
+   * @deprecated 使用 `tracer.info` 替代，这个方法只给NestJS内部调用
+   * @param message
+   * @param context
+   */
+  log(message: string, context?: LogContext) {
+    this.logger.info(message, formatLogContext(context))
+  }
+
+  verbose(message: string, context?: LogContext) {
+    this.logger.verbose(message, formatLogContext(context))
+  }
+
+  debug(message: string, context?: LogContext) {
+    this.logger.debug(message, formatLogContext(context))
   }
 }

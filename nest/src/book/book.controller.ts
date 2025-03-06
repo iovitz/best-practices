@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
-import { REQUEST_TRACER, Tracer } from 'src/services/tracer/tracer.service'
+import { REQUEST_TRACER } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/shared/tracer/tracer'
 import { CreateBookDTO, GetBookDTO, GetBookListDTO, GetBookResponseDTO } from './book.dto'
 import { BookService } from './book.service'
 
@@ -30,7 +31,7 @@ export class BookController {
     )
     this.tracer.error('信息中携带Error', new Error('Some Error'))
     this.tracer.warn('打印警告')
-    this.tracer.log('普通信息')
+    this.tracer.info('普通信息')
     return books
   }
 

@@ -1,8 +1,8 @@
 import process from 'node:process'
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { customAlphabet } from 'nanoid'
-import { Tracer } from 'src/services/tracer/tracer.service'
 import { CookieKeys } from 'src/shared/constans/cookie'
+import { Tracer } from 'src/shared/tracer/tracer'
 
 @Injectable()
 export class InjectUtilsMiddleware implements NestMiddleware {
@@ -23,7 +23,7 @@ export class InjectUtilsMiddleware implements NestMiddleware {
     const startNs = process.hrtime.bigint()
     res.on('finish', () => {
       const cost = process.hrtime.bigint() - startNs
-      this.tracer.log(`Connection finished With Status Code ${res.statusCode}`, {
+      this.tracer.info(`Connection finished With Status Code ${res.statusCode}`, {
         cost: cost.toString(),
         tracerId: req.tracerId,
       })
@@ -31,7 +31,7 @@ export class InjectUtilsMiddleware implements NestMiddleware {
 
     res.on('close', () => {
       const cost = process.hrtime.bigint() - startNs
-      this.tracer.log(`Connection Closed With Status Code ${res.statusCode}`, { cost: cost.toString(), tracerId: req.tracerId })
+      this.tracer.info(`Connection Closed With Status Code ${res.statusCode}`, { cost: cost.toString(), tracerId: req.tracerId })
     })
   }
 

@@ -3,6 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import cookieParser from 'cookie-parser'
+import { Tracer } from 'src/shared/tracer/tracer'
 import { BadRequestFilter } from './aspects/filters/bad-request/bad-request.filter'
 import { DefaultFilter } from './aspects/filters/default/default.filter'
 import { HttpFilter } from './aspects/filters/http/http.filter'
@@ -14,7 +15,6 @@ import { BookModule } from './book/book.module'
 import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
 import { ServicesModule } from './services/services.module'
-import { Tracer } from './services/tracer/tracer.service'
 import { SocketV1Module } from './socketv1/socketv1.module'
 
 @Module({
@@ -62,7 +62,7 @@ export class AppModule implements NestModule {
   private tracer = new Tracer(AppModule.name)
 
   configure(consumer: MiddlewareConsumer) {
-    this.tracer.log('Initial middlewares')
+    this.tracer.info('Initial middlewares')
     consumer
       .apply(
         cookieParser(),

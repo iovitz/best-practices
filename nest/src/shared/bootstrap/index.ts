@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { stringify } from 'safe-stable-stringify'
-import { Tracer } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/shared/tracer/tracer'
 import { RcConfig } from '../config'
 
 export type BootstrapFn = (appTracer: Tracer) => Promise<unknown>
@@ -12,10 +12,10 @@ export async function startNestApp(bootstrapFN: BootstrapFn) {
   checkBootstrapEnv(appTracer)
   try {
     const startNs = process.hrtime.bigint()
-    appTracer.log('APP Running Start', { time: new Date().toLocaleString() })
+    appTracer.info('APP Running Start', { time: new Date().toLocaleString() })
     await bootstrapFN(appTracer)
     const cost = Number(process.hrtime.bigint() - startNs).toLocaleString()
-    appTracer.log('APP Running Success', { cost })
+    appTracer.info('APP Running Success', { cost })
   }
   catch (e) {
     appTracer.error('### APP Exit With Error!!!!', e)
@@ -26,18 +26,18 @@ export async function startNestApp(bootstrapFN: BootstrapFn) {
 export function setUpErrorHandler(appTracer: Tracer) {
   // 防止未捕获异常导致进程退出
   process.on('unhandledRejection', (reason: Error) => {
-    appTracer.error('### Unhandle Rejection Promise', reason)
+    appTracer.fatal('### Unhandle Rejection Promise', reason)
   })
 
   process.on('uncaughtException', (error) => {
-    appTracer.error('### Unhandle Exception', error)
+    appTracer.fatal('### Unhandle Exception', error)
   })
 }
 
 export function checkBootstrapEnv(appTracer: Tracer) {
-  appTracer.log('Application Environment', { config: stringify(process.env) })
-  appTracer.log('Application Config', { env: stringify(RcConfig) })
+  appTracer.bootstrap('Application Environment', { config: stringify(process.env) })
+  appTracer.bootstrap('Application Config', { env: stringify(RcConfig) })
   if (process.env.NODE_ENV !== 'production') {
-    appTracer.error('App Not Running In Production Mode!!!')
+    appTracer.bootstrap('App Not Running In Production Mode!!!')
   }
 }

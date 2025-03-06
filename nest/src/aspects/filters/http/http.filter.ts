@@ -6,7 +6,7 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common'
-import { Tracer } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/shared/tracer/tracer'
 import { DefaultFilter } from '../default/default.filter'
 
 @Catch(HttpException)
@@ -24,7 +24,7 @@ export class HttpFilter implements ExceptionFilter {
       message: exception.message,
     }
 
-    this.tracer.log(`-ERR[${status}] ${exception.message}`, {
+    this.tracer.info(`-ERR[${status}] ${exception.message}`, {
       status,
       code: errorResponse.code,
       cost: res.getCostNs(),

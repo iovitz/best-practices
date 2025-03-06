@@ -1,33 +1,7 @@
-import { LoggerService, Provider, Scope } from '@nestjs/common'
+import { Provider, Scope } from '@nestjs/common'
 import { REQUEST } from '@nestjs/core'
-import { Logger } from 'winston'
-import { appLogger, formatLogContext } from './tracer'
-import { LogContext } from './tracer.types'
-import 'winston-daily-rotate-file'
+import { Tracer } from '../../shared/tracer/tracer'
 
-export class Tracer implements LoggerService {
-  private logger: Logger
-
-  constructor(scope?: string) {
-    this.logger = scope ? appLogger.child({ scope }) : appLogger
-  }
-
-  log(message: string, context?: LogContext) {
-    this.logger.info(message, formatLogContext(context))
-  }
-
-  error(message: string, context?: LogContext) {
-    this.logger.error(message, formatLogContext(context))
-  }
-
-  warn(message: string, context?: LogContext) {
-    this.logger.warn(message, formatLogContext(context))
-  }
-
-  debug(message: string, context?: LogContext) {
-    this.logger.debug(message, formatLogContext(context))
-  }
-}
 export const REQUEST_TRACER = Symbol('REQUEST_TRACER')
 
 export const RequestTracerProvider: Provider = {

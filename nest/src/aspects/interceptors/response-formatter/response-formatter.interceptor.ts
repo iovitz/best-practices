@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Tracer } from 'src/services/tracer/tracer.service'
 import { HeaderKeys } from 'src/shared/constans/header'
 import { SKIP_RESPONSE_FORMAT_KEY } from 'src/shared/constans/meta-keys'
+import { Tracer } from 'src/shared/tracer/tracer'
 
 @Injectable()
 export class ResponseFormatterInterceptor implements NestInterceptor {
@@ -22,7 +22,7 @@ export class ResponseFormatterInterceptor implements NestInterceptor {
       map((data) => {
         // 跳过format
         if (skipFormat || res.getHeader(HeaderKeys.ContentType)) {
-          this.tracer.log(`Skip Response Format`, {
+          this.tracer.info(`Skip Response Format`, {
             tracerId: res.tracerId,
           })
           return data

@@ -4,7 +4,7 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common'
-import { Tracer } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/shared/tracer/tracer'
 import status from 'statuses'
 
 @Catch(Error)

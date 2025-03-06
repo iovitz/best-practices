@@ -7,7 +7,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common'
 import { map, Observable } from 'rxjs'
-import { Tracer } from 'src/services/tracer/tracer.service'
+import { Tracer } from 'src/shared/tracer/tracer'
 
 @Injectable()
 export class LogInterceptor implements NestInterceptor {
@@ -19,7 +19,7 @@ export class LogInterceptor implements NestInterceptor {
     const req: Req = context.switchToHttp().getRequest()
     const { method, originalUrl } = req
 
-    this.tracer.log(`+REQ：${method} ${originalUrl}`, {
+    this.tracer.info(`+REQ：${method} ${originalUrl}`, {
       tracerId: req.tracerId,
       clientId: req.clientId,
       body: req.body,
@@ -28,7 +28,7 @@ export class LogInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
-        this.tracer.log('-REQ', {
+        this.tracer.info('-REQ', {
           tracerId: req.tracerId,
         })
         return data

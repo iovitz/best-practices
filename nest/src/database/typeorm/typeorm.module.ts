@@ -3,7 +3,7 @@ import path from 'node:path'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigService } from 'src/services/config/config.service'
-import { appLogger } from 'src/services/tracer/tracer'
+import { appLogger } from 'src/shared/tracer/tracer'
 import { Logger } from 'typeorm'
 
 @Module({
@@ -53,20 +53,25 @@ function getTypeOrmLogger(name: string) {
 
   const logger: Logger = {
     logQuery(query: string) {
-      typeormTracer.debug(query)
+      typeormTracer.info(query)
     },
+
     logQueryError(error: string | Error, query: string) {
       typeormTracer.error(query, error)
     },
+
     logQuerySlow(time: number, query: string) {
-      typeormTracer.log('Query Slow', { time, query })
+      typeormTracer.info('Query Slow', { time, query })
     },
+
     logSchemaBuild(message: string) {
       typeormTracer.debug(`Schema Build: ${message}`)
     },
+
     logMigration(message: string) {
-      typeormTracer.debug(`Schema Build: ${message}`)
+      typeormTracer.info(`Schema Build: ${message}`)
     },
+
     log(level: 'log' | 'info' | 'warn', message: any) {
       typeormTracer.debug('LOG', message)
     },
