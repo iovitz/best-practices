@@ -41,6 +41,22 @@ const all = format((info) => {
   return info
 })
 
+// 定义自定义日志级别
+const customLevels = {
+  levels: {
+    fatal: 50,
+    notice: 51,
+    bootstrap: 99,
+    error: 100,
+    warn: 200,
+    info: 300,
+    http: 400,
+    verbose: 500,
+    debug: 600,
+    silly: Number.MAX_SAFE_INTEGER,
+  },
+}
+
 const consoleTransport = new transports.Console({
   level: 'debug',
   // 使用时间戳和nest样式
@@ -52,10 +68,14 @@ const consoleTransport = new transports.Console({
 })
 
 const levelColorMap = {
-  debug: chalk.gray,
-  info: chalk.blue,
-  warn: chalk.orange,
-  error: chalk.red,
+  fatal: chalk.magentaBright, // 进程错误
+  bootstrap: chalk.green, // 启动日志
+  error: chalk.red, // 业务错误
+  warn: chalk.yellow, // 业务警告
+  info: chalk.blue, // 业务日志
+  http: chalk.cyanBright, // http日志
+  verbose: chalk.black, // 调试日志
+  debug: chalk.blackBright, // 啊我额发我额发我额发我
 }
 
 function getOutputFormatter(isProd) {
@@ -64,7 +84,7 @@ function getOutputFormatter(isProd) {
       return `${logInfo.pid} ${logInfo.timestamp} ${[logInfo.scope]} ${logInfo.level} ${logInfo.message} ${logInfo.context || ''}`
     }
     const logLevelColor = levelColorMap[logInfo.level] ?? chalk.gray
-    return `${chalk.gray(logInfo.pid)} ${chalk.gray(logInfo.timestamp)} ${[chalk.gray(logInfo.scope)]} ${logLevelColor(logInfo.level)} ${logInfo.message} ${logInfo.context || ''}`
+    return `${chalk.gray(logInfo.pid)} ${chalk.gray(logInfo.timestamp)} ${[chalk.gray(logInfo.scope ?? 'GLOBAL')]} ${logLevelColor(logInfo.level)} ${logInfo.message} ${logInfo.context || ''}`
   }
 }
 
@@ -91,10 +111,21 @@ function getFileLoggingTransport(level) {
 
 globalThis.rootLogger = createLogger({
   level: 'info',
+  levels: customLevels.levels,
   defaultMeta: {
     pid: process.pid,
   },
 })
+rootLogger.fatal('123123')
+rootLogger.bootstrap('123123')
+rootLogger.error('123123')
+rootLogger.warn('123123')
+rootLogger.info('123123')
+rootLogger.http('123123')
+rootLogger.verbose('123123')
+rootLogger.debug('123123')
+rootLogger.silly('123123')
+
 rootLogger.add(consoleTransport)
 rootLogger.add(getFileLoggingTransport('info'))
 rootLogger.add(getFileLoggingTransport('warn'))
@@ -103,6 +134,15 @@ rootLogger.add(getFileLoggingTransport('error'))
 const customLogger = rootLogger.child({
   scope: 'APP',
 })
+customLogger.fatal('123123')
+customLogger.bootstrap('123123')
+customLogger.error('123123')
+customLogger.warn('123123')
+customLogger.info('123123')
+customLogger.http('123123')
+customLogger.verbose('123123')
+customLogger.debug('123123')
+customLogger.silly('123123')
 
 module.exports.log = {
 

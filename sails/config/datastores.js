@@ -35,12 +35,6 @@ module.exports.datastores = {
   // },
   default: {
 
-    adapter: 'sails-mysql',
-    host: 'mysql.sqlpub.com', // MySQL主机地址
-    user: 'nest_db_typeorm', // MySQL用户名
-    password: '9AWwCAQhAgUtlQZg', // MySQL密码
-    database: 'nest_db_typeorm', // 数据库名
-    port: 3306, // MySQL端口，默认是3306
     /***************************************************************************
     *                                                                          *
     * Want to use a different database during development?                     *
@@ -57,6 +51,13 @@ module.exports.datastores = {
     ***************************************************************************/
     // adapter: 'sails-mysql',
     // url: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
+
+    adapter: 'sails-mysql',
+    host: 'mysql.sqlpub.com', // MySQL主机地址
+    user: 'nest_db_typeorm', // MySQL用户名
+    password: '9AWwCAQhAgUtlQZg', // MySQL密码
+    database: 'nest_db_typeorm', // 数据库名
+    port: 3306, // MySQL端口，默认是3306
   },
 
 }
