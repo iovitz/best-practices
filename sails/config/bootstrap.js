@@ -8,6 +8,8 @@
  * For more information on seeding your app with fake data, check out:
  * https://sailsjs.com/config/bootstrap
  */
+const { stringify } = require('safe-stable-stringify')
+
 module.exports.bootstrap = async function () {
   // By convention, this is a good place to set up fake data during development.
   //
@@ -25,7 +27,13 @@ module.exports.bootstrap = async function () {
   //   // etc.
   // ]);
   // ```
-  // sails.log.fatal('App Configs', sails.config)
-  // sails.log.bootstrap('Server Running Success')
+
+  // 打印启动日志方便排查问题
+  rootLogger.bootstrap('Hooks initial success')
+  if (__isProd) {
+    rootLogger.bootstrap('App Environment', stringify(process.env))
+    rootLogger.bootstrap('App Config', stringify(sails.config))
+  }
+  rootLogger.bootstrap(`Server will running in http://127.0.0.1:${sails.config.port}`)
   RequestService.getName()
 }

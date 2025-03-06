@@ -8,7 +8,7 @@
   },
   "delay": "400",
   "legacyWatch": true,
-  "watch": ["api", "config", "tasks", "views"],
+  "watch": ["api", "config", "tasks", "views", "app.js"],
   "ext": "js",
   "ignore": ["node_modules/*", "assets/*"],
   "exec": "node app.js"

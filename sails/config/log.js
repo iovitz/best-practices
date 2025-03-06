@@ -107,7 +107,7 @@ function getFileLoggingTransport(level) {
   })
 }
 
-globalThis.rootLogger = createLogger({
+const rootLogger = createLogger({
   level: 'info',
   levels: customLevels,
   defaultMeta: {
@@ -115,14 +115,20 @@ globalThis.rootLogger = createLogger({
   },
 })
 
-rootLogger.add(consoleTransport)
-rootLogger.add(getFileLoggingTransport('info'))
-rootLogger.add(getFileLoggingTransport('warn'))
-rootLogger.add(getFileLoggingTransport('error'))
+if (__isProd) {
+  rootLogger.add(getFileLoggingTransport('info'))
+  rootLogger.add(getFileLoggingTransport('error'))
+}
+else {
+  rootLogger.add(consoleTransport)
+}
 
 module.exports.log = {
+  rootLogger,
 
-  custom: rootLogger,
+  custom: rootLogger.child({
+    scope: 'SAILS',
+  }),
 
   inspect: false,
 

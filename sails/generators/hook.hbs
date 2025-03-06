@@ -13,7 +13,9 @@ module.exports = function defineLimiterHook(sails) {
      * Runs when this Sails app loads/lifts.
      */
     async initialize() {
-      sails.log.info('Initializing custom hook (`{{name}}`)');
+
+      const cost = Number(process.hrtime.bigint() - startTime).toLocaleString()
+      LoggerService.bootstrap(`Initializing custom hook (\`{{name}}\`), cost: ${cost}`)
     },
 
   }

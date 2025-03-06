@@ -7,6 +7,7 @@
 const { Sequelize } = require('sequelize')
 
 module.exports = function (sails) {
+  const startTime = process.hrtime.bigint()
   // 配置连接参数
   const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -35,7 +36,8 @@ module.exports = function (sails) {
         await sequelize.sync() // 同步模型和数据库
       }
 
-      sails.log.info('Initializing custom hook (`sequelize`)')
+      const cost = Number(process.hrtime.bigint() - startTime).toLocaleString()
+      LoggerService.bootstrap(`Initializing custom hook (\`sequelize\`), cost: ${cost}`)
     },
 
   }

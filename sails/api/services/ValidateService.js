@@ -4,11 +4,11 @@
  * @description :: 校验规则
  * @usage       :: ValidateService.[methodName]()
  */
-const Ajv = require('ajv');
-const ajvFormats = require('ajv-formats');
+const Ajv = require('ajv')
+const ajvFormats = require('ajv-formats')
 
-const ajv = new Ajv();
-ajvFormats(ajv);
+const ajv = new Ajv()
+ajvFormats(ajv)
 
 const Service = {
   email: (() => ajv.compile({
@@ -38,9 +38,9 @@ const Service = {
     minLength: 4,
     maxLength: 4,
   }))(),
-};
+}
 
 // For LSP
 globalThis.ValidateService = Service
 
-module.exports = Service;
+module.exports = Service
