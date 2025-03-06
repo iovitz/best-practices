@@ -3,8 +3,8 @@ import path from 'node:path'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigService } from 'src/services/config/config.service'
-import { appLogger } from 'src/shared/tracer/tracer'
 import { Logger } from 'typeorm'
+import { appLogger } from 'src/shared/tracer/logger'
 
 @Module({
 

@@ -7,6 +7,11 @@ export default antfu({
     },
   },
 
+  rules: {
+    'node/prefer-global/process': 'off',
+    'perfectionist/sort-imports': 0,
+  },
+
 }, {
   ignores: ['prisma/*', 'node_modules/*', 'drizzle/*.json', '**/*.yaml'],
 })

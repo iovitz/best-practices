@@ -28,4 +28,5 @@ declare global {
   }
 
   type ConfigType = ConfigJSONType
+  const __isProd: boolean
 }

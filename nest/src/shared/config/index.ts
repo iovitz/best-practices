@@ -1,4 +1,3 @@
-import process from 'node:process'
 import rc from 'rc'
 
 const AppName = process.env.npm_package_name ?? 'nestapp'

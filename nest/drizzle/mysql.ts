@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({

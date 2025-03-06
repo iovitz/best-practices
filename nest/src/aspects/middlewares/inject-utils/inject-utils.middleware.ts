@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { customAlphabet } from 'nanoid'
 import { CookieKeys } from 'src/shared/constans/cookie'

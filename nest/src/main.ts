@@ -1,3 +1,4 @@
+import 'src/shared/bootstrap/inject-global' // 注入全局变量
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
