@@ -8,7 +8,6 @@
  * For more information on seeding your app with fake data, check out:
  * https://sailsjs.com/config/bootstrap
  */
-console.error('######')
 module.exports.bootstrap = async function () {
   // By convention, this is a good place to set up fake data during development.
   //
@@ -26,6 +25,7 @@ module.exports.bootstrap = async function () {
   //   // etc.
   // ]);
   // ```
-  sails.log.info('Server Running Success')
+  // sails.log.fatal('App Configs', sails.config)
+  // sails.log.bootstrap('Server Running Success')
   RequestService.getName()
 }
