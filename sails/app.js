@@ -43,6 +43,11 @@ process.on('unhandledRejection', (reason, promise) => {
   rootLogger.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
+setInterval(() => {
+  const memoryUsage = process.memoryUsage();
+  rootLogger.bootstrap(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`);
+}, 1000 * 10);
+
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 function bootstrap() {
   let sails
