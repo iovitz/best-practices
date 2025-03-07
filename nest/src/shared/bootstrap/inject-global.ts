@@ -18,5 +18,5 @@ process.on('uncaughtException', (error) => {
 
 setInterval(() => {
   const memoryUsage = process.memoryUsage()
-  appTracer.bootstrap(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`)
+  appTracer.info(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`)
 }, 1000 * 10)

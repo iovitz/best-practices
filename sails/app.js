@@ -34,19 +34,19 @@ globalThis.rootLogger = rootLogger
 
 // 捕获未处理的异常
 process.on('uncaughtException', (err) => {
-  rootLogger.error('Uncaught Exception:', err);
+  rootLogger.error('Uncaught Exception:', err)
   // process.exit(1); // 如果需要终止进程可以调用此行代码
-});
+})
 
 // 捕获未处理的 Promise 拒绝
 process.on('unhandledRejection', (reason, promise) => {
-  rootLogger.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
+  rootLogger.error('Unhandled Rejection at:', promise, 'reason:', reason)
+})
 
 setInterval(() => {
-  const memoryUsage = process.memoryUsage();
-  rootLogger.bootstrap(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`);
-}, 1000 * 10);
+  const memoryUsage = process.memoryUsage()
+  rootLogger.info(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`)
+}, 1000 * 10)
 
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 function bootstrap() {
