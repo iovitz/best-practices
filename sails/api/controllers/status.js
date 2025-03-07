@@ -21,14 +21,18 @@ module.exports = {
   exits: sails.config.http.responses,
 
   async fn(input, exits) {
-    const data = await User.create({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john2222.doe@example.com',
-      age: 25,
-    }).fetch()
-
-    return exits.ok(data)
+    try {
+      // const data = await User.create({
+      //   id: '1',
+      //   firstName: 'John',
+      //   lastName: 'Doe',
+      //   email: 'na12412me1@qq.com',
+      //   age: 25,
+      // }).fetch()
+      return exits.ok('da')
+    }
+    catch (e) {
+      return exits.serverError(e.cause)
+    }
   },
-
 }

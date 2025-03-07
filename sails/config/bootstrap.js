@@ -28,12 +28,19 @@ module.exports.bootstrap = async function () {
   // ]);
   // ```
 
+  // 监听 Sails 的错误事件
+  sails.on('error', (error) => {
+    console.error('11111111111111Caught Error in Sails:', error)
+    // 可以在这里做一些错误日志记录或通知
+  })
+
   // 打印启动日志方便排查问题
   rootLogger.bootstrap('Hooks initial success')
   if (__isProd) {
     rootLogger.bootstrap('App Environment', stringify(process.env))
     rootLogger.bootstrap('App Config', stringify(sails.config))
   }
+
   rootLogger.bootstrap(`Server will running in http://127.0.0.1:${sails.config.port}`)
   RequestService.getName()
 }

@@ -32,6 +32,17 @@ process.chdir(__dirname)
 // 初始化一些全局变量
 globalThis.rootLogger = rootLogger
 
+// 捕获未处理的异常
+process.on('uncaughtException', (err) => {
+  rootLogger.error('Uncaught Exception:', err);
+  // process.exit(1); // 如果需要终止进程可以调用此行代码
+});
+
+// 捕获未处理的 Promise 拒绝
+process.on('unhandledRejection', (reason, promise) => {
+  rootLogger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 function bootstrap() {
   let sails

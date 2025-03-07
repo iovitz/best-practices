@@ -31,6 +31,8 @@
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "chalk": "2.3.0",
+    "limiter": "^2.1.0",
+    "lru-cache": "^11.0.2",
     "plop": "^4.0.1",
     "safe-stable-stringify": "^2.5.0",
     "sails": "^1.5.14",

@@ -17,6 +17,6 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': ['inject', 'request-log'],
+  '*': ['access-log', 'block', 'limiter'],
 
 }

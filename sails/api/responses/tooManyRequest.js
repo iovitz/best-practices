@@ -15,9 +15,8 @@
 const statuses = require('statuses')
 
 module.exports = async function () {
-  console.warn(this.req, '请求过多')
   return this.res.status(429).send({
-    code: 0,
+    code: 42900,
     message: statuses(429),
   })
 }

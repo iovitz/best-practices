@@ -89,6 +89,29 @@ module.exports = function (plop) {
     },
   })
 
+  plop.setGenerator('model', {
+    description: 'Data Model',
+    prompts: [{
+      type: 'input',
+      name: 'name',
+      message: 'Model name please',
+      required: true,
+    }, {
+      type: 'input',
+      name: 'description',
+      message: 'Service description please',
+    }],
+    actions: (data) => {
+      // 替换名字
+      data.name = camelcase(data.name, { pascalCase: true })
+      return [{
+        type: 'add',
+        path: 'api/models/{{name}}.js',
+        templateFile: 'generators/model.hbs',
+      }]
+    },
+  })
+
   plop.setGenerator('helper', {
     description: 'App Helper',
     prompts: [{

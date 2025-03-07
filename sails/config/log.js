@@ -108,7 +108,7 @@ function getFileLoggingTransport(level) {
 }
 
 const rootLogger = createLogger({
-  level: 'info',
+  level: __isProd ? 'info' : 'debug',
   levels: customLevels,
   defaultMeta: {
     pid: process.pid,
@@ -146,5 +146,5 @@ module.exports.log = {
    **************************************************************************
    */
 
-  level: 'silly',
+  level: 'warn',
 }

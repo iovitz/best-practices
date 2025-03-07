@@ -11,6 +11,9 @@
 
 const { ulid } = require('ulid')
 
+const COOKIE_CLIENT_ID_KEY = 'client-id'
+const HEADER_TRACE_ID_KEY = 'x-sails-log-id'
+
 module.exports.http = {
 
   /****************************************************************************
@@ -40,7 +43,6 @@ module.exports.http = {
       'www',
       'favicon',
       'logger',
-      'requestInfo',
       'router',
     ],
 
@@ -54,30 +56,22 @@ module.exports.http = {
 
     logger: (function () {
       return function (req, res, next) {
-        req.logger = res.logger = rootLogger.child({
-          scope: ulid(),
+        const clientId = req.cookies[COOKIE_CLIENT_ID_KEY] ?? ulid()
+        res.cookie(COOKIE_CLIENT_ID_KEY, clientId, {
+          signed: false,
+          maxAge: 360 * 24 * 60 * 60 * 1000,
+          sameSite: 'strict',
+          httpOnly: true,
+        })
+        // TODO 校验Log ID是否合法
+        const traceId = req.header(HEADER_TRACE_ID_KEY) ?? `${clientId}-${ulid()}`
+
+        req.clientId = res.clientId =clientId
+        req.traceId = res.traceId = traceId
+        req.logger = res.logger = globalThis.rootLogger.child({
+          scope: traceId,
         })
         return next()
-      }
-    })(),
-
-    requestInfo: (function () {
-      return async function (req, res, next) {
-        const startTime = process.hrtime.bigint()
-        res.logger.info(`Request Incoming: ${req.method} ${req.url}`, {
-          ua: req.header('user-agent'),
-        })
-
-        res.on('finish', () => {
-          const cost = process.hrtime.bigint() - startTime
-          res.logger.info(`Connection finished With Status Code ${res.statusCode}`, { cost: cost.toString() })
-        })
-
-        res.on('close', () => {
-          const cost = process.hrtime.bigint() - startTime
-          res.logger.info(`Connection Closed With Status Code ${res.statusCode}`, { cost: cost.toString() })
-        })
-        next()
       }
     })(),
 
