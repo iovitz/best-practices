@@ -2,14 +2,6 @@
  * forbidden response
  *
  * @description :: 无权限访问资源
- * @usage       ::
- * ```
- *     exits: {
- *       somethingHappened: {
- *         responseType: 'forbidden'
- *       }
- *     }
- * ```
  */
 
 const statuses = require('statuses')

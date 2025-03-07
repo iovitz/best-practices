@@ -2,14 +2,6 @@
  * badRequest response
  *
  * @description :: 错误请求
- * @usage       ::
- * ```
- *     exits: {
- *       somethingHappened: {
- *         responseType: 'badRequest'
- *       }
- *     }
- * ```
  */
 
 const statuses = require('statuses')

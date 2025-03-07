@@ -2,14 +2,6 @@
  * ok response
  *
  * @description :: 请求成功
- * @usage       ::
- * ```
- *     exits: {
- *       somethingHappened: {
- *         responseType: 'ok'
- *       }
- *     }
- * ```
  */
 
 module.exports = function (optionalData, status = 200) {

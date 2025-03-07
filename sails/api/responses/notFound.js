@@ -2,14 +2,6 @@
  * notFound response
  *
  * @description :: 资源不存在
- * @usage       ::
- * ```
- *     exits: {
- *       somethingHappened: {
- *         responseType: 'notFound'
- *       }
- *     }
- * ```
  */
 
 const statuses = require('statuses')

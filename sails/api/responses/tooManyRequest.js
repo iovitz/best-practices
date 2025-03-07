@@ -2,14 +2,6 @@
  * tooManyRequest response
  *
  * @description :: 请求过多触发限流
- * @usage       ::
- * ```
- *     exits: {
- *       somethingHappened: {
- *         responseType: 'tooManyRequest'
- *       }
- *     }
- * ```
  */
 
 const statuses = require('statuses')
