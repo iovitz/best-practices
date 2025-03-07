@@ -15,3 +15,8 @@ process.on('unhandledRejection', (reason: Error) => {
 process.on('uncaughtException', (error) => {
   appTracer.fatal('### Unhandle Exception', error)
 })
+
+setInterval(() => {
+  const memoryUsage = process.memoryUsage()
+  appTracer.bootstrap(`Memory Usage: ${memoryUsage.rss / 1024 / 1024} MB`)
+}, 1000 * 10)
