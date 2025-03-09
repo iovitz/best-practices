@@ -11,6 +11,10 @@ export function SkipFormat() {
 export const ClientIP = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
     const req = ctx.switchToHttp().getRequest<Req>()
+    const clientIp = req.header('x-forward-for') ?? req.ip
+    if (!clientIp) {
+      return '0.0.0.0'
+    }
     return req.ip.match(/\d+\.\d+\.\d+\.\d+/)?.[0]
   },
 )
