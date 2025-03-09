@@ -15,7 +15,7 @@ export const ClientIP = createParamDecorator(
     if (!clientIp) {
       return '0.0.0.0'
     }
-    return req.ip.match(/\d+\.\d+\.\d+\.\d+/)?.[0]
+    return clientIp.match(/\d+\.\d+\.\d+\.\d+/)?.[0]
   },
 )
 
