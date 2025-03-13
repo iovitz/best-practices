@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common'
-import { customAlphabet } from 'nanoid'
+import { ulid } from 'ulid'
 import { CookieKeys } from 'src/shared/constans/cookie'
 import { Tracer } from 'src/shared/tracer/tracer'
 
@@ -34,11 +34,6 @@ export class InjectUtilsMiddleware implements NestMiddleware {
     })
   }
 
-  private idGenerator = customAlphabet(
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    10,
-  )
-
   /**
    * 注入Cookie的快捷操作方法
    */
@@ -61,8 +56,8 @@ export class InjectUtilsMiddleware implements NestMiddleware {
    * 使用客户端ID
    */
   useTracerId(req: Req, res: Res) {
-    req.clientId = req.getCookie(CookieKeys.ClientId) ?? this.idGenerator()
-    req.tracerId = res.tracerId = `${req.clientId}-${this.idGenerator()}`
+    req.clientId = req.getCookie(CookieKeys.ClientId) ?? ulid()
+    req.tracerId = res.tracerId = `${req.clientId}-${ulid()}`
     res.cookie(CookieKeys.ClientId, req.clientId, {
       // 可以放到配置中
       signed: false,

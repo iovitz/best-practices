@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import { LoggerService } from '@nestjs/common'
-import chalk from 'chalk'
+import ansis from 'ansis'
 import { isEmpty, isNil, omit } from 'lodash'
 import pkg from 'package.json'
 import { stringify } from 'safe-stable-stringify'
@@ -27,14 +27,14 @@ const logLevels = {
 }
 
 const logColorMap = {
-  fatal: chalk.magentaBright, // 进程错误
-  bootstrap: chalk.green, // 启动日志
-  error: chalk.red, // 业务错误
-  warn: chalk.yellow, // 业务警告
-  info: chalk.blue, // 业务日志
-  http: chalk.cyanBright, // http日志
-  verbose: chalk.black, // 调试日志
-  debug: chalk.blackBright, // 啊我额发我额发我额发我
+  fatal: ansis.magentaBright, // 进程错误
+  bootstrap: ansis.green, // 启动日志
+  error: ansis.red, // 业务错误
+  warn: ansis.yellow, // 业务警告
+  info: ansis.blue, // 业务日志
+  http: ansis.cyanBright, // http日志
+  verbose: ansis.black, // 调试日志
+  debug: ansis.blackBright, // 啊我额发我额发我额发我
 }
 export const appLogger = createRootLogger()
 export function createRootLogger() {
@@ -70,8 +70,8 @@ export function createRootLogger() {
             } = omit(info, ERROR, SPLAT, LEVEL, MESSAGE)
             // 错误日志特别输出
             const restStr = isEmpty(rest) ? '' : stringify(rest)
-            const levelChalk = logColorMap[level as string] ?? chalk.blue
-            return `${levelChalk(level)} ${chalk.gray(timestamp)}${chalk.blue(insertOutput(scope))}${chalk.yellow(insertOutput(tracerId))}${chalk.green(insertOutput(name))}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
+            const levelansis = logColorMap[level as string] ?? ansis.blue
+            return `${levelansis(level)} ${ansis.gray(timestamp)}${ansis.blue(insertOutput(scope))}${ansis.yellow(insertOutput(tracerId))}${ansis.green(insertOutput(name))}${insertOutput(message)}${insertOutput(payload)}${insertOutput(
               stack,
             )}${insertOutput(restStr)}`.replace(/[\r\n]+/g, '↵')
           }),
