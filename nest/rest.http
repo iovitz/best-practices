@@ -1,4 +1,11 @@
-@prefix = {{host}}/api
+@prefix = http://localhost:3333/api
+{{
+  exports.defaultHeaders = {
+    'Content-Type': 'text/html',
+    'x-test-user': 1,
+    'u'
+  };
+}}
 
 ### getBookList
 GET {{prefix}}/book
