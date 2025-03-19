@@ -3,6 +3,7 @@ import rc from 'rc'
 const AppName = process.env.npm_package_name ?? 'nestapp'
 
 const defaultConfig = {
+  APP_NAME: 'nest-app',
   APP_PORT: process.env.PORT ?? 3333,
 
   SWAGGER_ENABLE: true,
@@ -49,11 +50,11 @@ const defaultConfig = {
 
 type ConfigType = typeof defaultConfig
 
-export const RcConfig: Readonly<ConfigType> = rc(AppName, defaultConfig)
+export const AppConfig: Readonly<ConfigType> = rc(AppName, defaultConfig)
 
 export class Config {
   get<T extends keyof ConfigType>(key: T): ConfigType[T] {
-    return RcConfig[key]
+    return AppConfig[key]
   }
 }
 

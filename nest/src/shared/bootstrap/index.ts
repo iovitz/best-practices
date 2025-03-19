@@ -1,6 +1,6 @@
 import { stringify } from 'safe-stable-stringify'
 import { Tracer } from 'src/shared/tracer/tracer'
-import { RcConfig } from '../config'
+import { AppConfig } from '../config'
 
 export type BootstrapFn = (appTracer: Tracer) => Promise<unknown>
 
@@ -23,7 +23,7 @@ export async function startNestApp(bootstrapFN: BootstrapFn) {
 
 export function checkBootstrapEnv(appTracer: Tracer) {
   appTracer.bootstrap('Application Environment', { config: stringify(process.env) })
-  appTracer.bootstrap('Application Config', { env: stringify(RcConfig) })
+  appTracer.bootstrap('Application Config', { env: stringify(AppConfig) })
   if (!__isProd) {
     appTracer.bootstrap('App Not Running In Production Mode!!!')
   }

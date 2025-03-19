@@ -1,13 +1,11 @@
 import path from 'node:path'
 
-import { LoggerService } from '@nestjs/common'
 import ansis from 'ansis'
 import { isEmpty, isNil, omit } from 'lodash'
-import pkg from 'package.json'
 import { stringify } from 'safe-stable-stringify'
-import { RcConfig } from 'src/shared/config'
+import { config, AppConfig } from 'src/shared/config'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
-import { createLogger, format, Logger, transports } from 'winston'
+import { createLogger, format,  transports } from 'winston'
 import { ErrorContext, Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
 import 'winston-daily-rotate-file'
 
@@ -39,7 +37,7 @@ const logColorMap = {
 export const appLogger = createRootLogger()
 export function createRootLogger() {
   const rootLogger = createLogger({
-    level: RcConfig.LOG_LEVEL,
+    level: AppConfig.LOG_LEVEL,
     levels: logLevels,
     defaultMeta: {
       pid: process.pid,
@@ -101,12 +99,12 @@ function getRotateLogTransport(
 ) {
   return new transports.DailyRotateFile({
     level,
-    dirname: path.join('/var/log', pkg.name),
+    dirname: path.join('/var/log', AppConfig.APP_NAME),
     filename: `${level}.log`,
-    datePattern: RcConfig.LOG_DATA_PATTERN,
-    zippedArchive: RcConfig.LOG_ZIPPED_ARCHIVE,
-    maxSize: RcConfig.LOG_MAX_SIZE,
-    maxFiles: RcConfig.LOG_MAX_FILES,
+    datePattern: AppConfig.LOG_DATA_PATTERN,
+    zippedArchive: AppConfig.LOG_ZIPPED_ARCHIVE,
+    maxSize: AppConfig.LOG_MAX_SIZE,
+    maxFiles: AppConfig.LOG_MAX_FILES,
     format: format.combine(...getCommonStyleFormat()),
   })
 }
