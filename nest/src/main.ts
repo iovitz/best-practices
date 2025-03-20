@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { BootstrapFn, startNestApp } from './shared/bootstrap'
 import { AppConfig } from './shared/config'
+import { VersioningType } from '@nestjs/common'
 
 const bootstrap: BootstrapFn = async (appTracer) => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -25,6 +26,11 @@ const bootstrap: BootstrapFn = async (appTracer) => {
   app.enableCors({
     origin: (_, callback) => callback(null, true),
     credentials: true,
+  })
+
+  app.enableVersioning({
+    type: VersioningType.HEADER, // 设置请求头版本化
+    header: 'Accept-Version', // 请求头版本化的字段
   })
 
   if (AppConfig.SWAGGER_ENABLE) {

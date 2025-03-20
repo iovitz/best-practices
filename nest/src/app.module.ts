@@ -11,11 +11,11 @@ import { LogInterceptor } from './aspects/interceptors/log/log.interceptor'
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor'
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
 import { InjectUtilsMiddleware } from './aspects/middlewares/inject-utils/inject-utils.middleware'
-import { BookModule } from './book/book.module'
 import { DatabaseModule } from './database/database.module'
 import { HomeModule } from './home/home.module'
 import { ServicesModule } from './services/services.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
+import { DemoModule } from './demo/demo.module'
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { SocketV1Module } from './socketv1/socketv1.module'
     }),
     SocketV1Module,
     HomeModule,
-    BookModule,
+    DemoModule,
   ],
   providers: [
     {

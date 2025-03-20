@@ -5,7 +5,7 @@ import {
   NumberStringMin,
 } from '../validator/string-number.validator'
 
-export class PagingDTO {
+export class PaginationDto {
   @ApiProperty({
     example: '1',
     description: '查看第几页的数据',
@@ -25,5 +25,5 @@ export class PagingDTO {
   })
   @NumberStringMin(0)
   @NumberStringMax(5000)
-  per_page: string
+  perPage: string
 }

@@ -15,7 +15,7 @@
     "declaration": false,
     "outDir": "./dist",
     "removeComments": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": false,
     "skipLibCheck": true

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 3
+    },
+    "auditLog": "~/log/nest-app/.ceafcacbb173fcfbe431c9667f230084b3dff237-audit.json",
+    "files": [
+        {
+            "date": 1742474996675,
+            "name": "~/log/nest-app/error.log.20-03-2025",
+            "hash": "e4229869c135600e2b42e1f65f3bda13ea32d87f7b5bd15ae9d8f9d77be5cf1f"
+        }
+    ],
+    "hashType": "sha256"
+}

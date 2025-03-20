@@ -27,7 +27,6 @@ export class HttpFilter implements ExceptionFilter {
     this.tracer.info(`-ERR[${status}] ${exception.message}`, {
       status,
       code: errorResponse.code,
-      cost: res.getCostNs(),
       cid: res.clientId,
     })
 

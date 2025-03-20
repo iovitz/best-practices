@@ -3,9 +3,9 @@ import path from 'node:path'
 import ansis from 'ansis'
 import { isEmpty, isNil, omit } from 'lodash'
 import { stringify } from 'safe-stable-stringify'
-import { config, AppConfig } from 'src/shared/config'
+import { AppConfig, config } from 'src/shared/config'
 import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
-import { createLogger, format,  transports } from 'winston'
+import { createLogger, format, transports } from 'winston'
 import { ErrorContext, Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
 import 'winston-daily-rotate-file'
 
@@ -99,7 +99,7 @@ function getRotateLogTransport(
 ) {
   return new transports.DailyRotateFile({
     level,
-    dirname: path.join('/var/log', AppConfig.APP_NAME),
+    dirname: path.join('~/log', AppConfig.APP_NAME),
     filename: `${level}.log`,
     datePattern: AppConfig.LOG_DATA_PATTERN,
     zippedArchive: AppConfig.LOG_ZIPPED_ARCHIVE,
