@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Version } from '@nestjs/common'
-import { eq } from 'drizzle-orm'
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Version } from '@nestjs/common'
+import { eq, gte } from 'drizzle-orm'
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
 import { DRIZZLE_MYSQL, DRIZZLE_SQLITE } from 'src/database/drizzle/drizzle.module'
 import { drizzleSqliteDemos } from 'src/database/drizzle/sqlite.model'
-import { CreateDemoBodyDTO, DeleteDemoParamsDTO, GetDemoParamsDTO, GetDemosParamsDTO, UpdateDemoBodyDTO, UpdateDemoParamsDTO } from './demo.dto'
+import { CreateDemoBodyDTO, DeleteDemoParamsDTO, GetDemoParamsDTO, GetDemosQueryDTO, UpdateDemoBodyDTO, UpdateDemoParamsDTO } from './demo.dto'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
 import { MySql2Database } from 'drizzle-orm/mysql2'
-import { mysqlDemos } from 'src/database/drizzle/mysql.model'
+import { drizzleMysqlDemos } from 'src/database/drizzle/mysql.model'
 
 @Controller('api/demo')
 export class DemoController {
@@ -22,14 +22,17 @@ export class DemoController {
 
   @Get()
   @Version('drizzle:sqlite')
-  getDrizzleSqliteDemos(@Param(VerifyPipe) { page, perPage }: GetDemosParamsDTO) {
+  getDrizzleSqliteDemos(@Param(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
     return this.drizzleSqlite.select({
       id: drizzleSqliteDemos.id,
       name: drizzleSqliteDemos.name,
     })
       .from(drizzleSqliteDemos)
-      .limit(Number(page))
-      .offset((Number(page) - 1) * Number(perPage))
+      .where(gte(drizzleSqliteDemos.id, 0))
+      .orderBy(drizzleSqliteDemos.id)
+      .limit(Number(perPage))
+      .offset((Number(page)) * Number(perPage))
+      .execute()
   }
 
   @Post()
@@ -61,44 +64,47 @@ export class DemoController {
   drizzleMysql: MySql2Database
 
   @Get(':id')
-  @Version('drizzle:sqlite')
+  @Version('drizzle:mysql')
   getDrizzleMysqlDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
-    return this.drizzleMysql.select().from(mysqlDemos).where(eq(mysqlDemos.id, id))
+    return this.drizzleMysql.select().from(drizzleMysqlDemos).where(eq(drizzleMysqlDemos.id, id))
   }
 
   @Get()
-  @Version('drizzle:sqlite')
-  getDrizzleMysqlDemos(@Param(VerifyPipe) { page, perPage }: GetDemosParamsDTO) {
+  @Version('drizzle:mysql')
+  getDrizzleMysqlDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
     return this.drizzleMysql.select({
-      id: mysqlDemos.id,
-      name: mysqlDemos.name,
+      id: drizzleMysqlDemos.id,
+      name: drizzleMysqlDemos.name,
     })
-      .from(mysqlDemos)
-      .limit(Number(page))
-      .offset((Number(page) - 1) * Number(perPage))
+      .from(drizzleMysqlDemos)
+      .where(gte(drizzleMysqlDemos.id, 0))
+      .orderBy(drizzleMysqlDemos.id)
+      .limit(Number(perPage))
+      .offset((Number(page)) * Number(perPage))
+      .execute()
   }
 
   @Post()
-  @Version('drizzle:sqlite')
+  @Version('drizzle:mysql')
   crateDrizzleMysqlDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
-    return this.drizzleMysql.insert(mysqlDemos).values({ name }).execute()
+    return this.drizzleMysql.insert(drizzleMysqlDemos).values({ name }).execute()
   }
 
   @Patch(':id')
-  @Version('drizzle:sqlite')
+  @Version('drizzle:mysql')
   updateDrizzleMysqlDemo(
     @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
     @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
   ) {
-    return this.drizzleMysql.update(mysqlDemos).set({
+    return this.drizzleMysql.update(drizzleMysqlDemos).set({
       name,
-    }).where(eq(mysqlDemos.id, id))
+    }).where(eq(drizzleMysqlDemos.id, id))
   }
 
   @Delete(':id')
-  @Version('drizzle:sqlite')
+  @Version('drizzle:mysql')
   deleteDrizzleMysqlDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
-    return this.drizzleMysql.delete(mysqlDemos).where(eq(mysqlDemos.id, id))
+    return this.drizzleMysql.delete(drizzleMysqlDemos).where(eq(drizzleMysqlDemos.id, id))
   }
   // #endregion
 }

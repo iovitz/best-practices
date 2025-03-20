@@ -11,7 +11,7 @@ export class GetDemoParamsDTO {
   id: number
 }
 
-export class GetDemosParamsDTO extends PaginationDto {}
+export class GetDemosQueryDTO extends PaginationDto {}
 
 export class CreateDemoBodyDTO {
   @ApiProperty({

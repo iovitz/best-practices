@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "78a83d9b-a1b5-4367-a155-e23b21d46fc9",
+  "id": "faec861a-b2de-4f91-988a-6d1466b7183d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "demos": {
@@ -14,8 +14,8 @@
           "notNull": true,
           "autoincrement": true
         },
-        "title": {
-          "name": "title",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
