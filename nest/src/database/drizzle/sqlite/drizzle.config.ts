@@ -1,9 +1,10 @@
 import { defineConfig } from 'drizzle-kit'
+import { join } from 'node:path'
 
 export default defineConfig({
   dialect: 'sqlite',
-  schema: './src/database/drizzle/sqlite.model.ts',
-  out: './src/database/drizzle/sqlite-migrate',
+  schema: join(__dirname, 'model.ts'),
+  out: join(__dirname, 'migrate'),
   dbCredentials: {
     url: 'data.db',
   },

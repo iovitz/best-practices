@@ -3,7 +3,7 @@ import { RedisModule } from '@nestjs-modules/ioredis'
 import { ConfigService } from 'src/services/config/config.service'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { TypeormModule } from './typeorm/typeorm.module'
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './prisma/prisma.module'
 
 @Global()
 @Module({

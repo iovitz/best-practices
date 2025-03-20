@@ -2,11 +2,11 @@ import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Versi
 import { eq, gte } from 'drizzle-orm'
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
 import { DRIZZLE_MYSQL, DRIZZLE_SQLITE } from 'src/database/drizzle/drizzle.module'
-import { drizzleSqliteDemos } from 'src/database/drizzle/sqlite.model'
+import { drizzleSqliteDemos } from 'src/database/drizzle/sqlite/model'
 import { CreateDemoBodyDTO, DeleteDemoParamsDTO, GetDemoParamsDTO, GetDemosQueryDTO, UpdateDemoBodyDTO, UpdateDemoParamsDTO } from './demo.dto'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
 import { MySql2Database } from 'drizzle-orm/mysql2'
-import { drizzleMysqlDemos } from 'src/database/drizzle/mysql.model'
+import { drizzleMysqlDemos } from 'src/database/drizzle/mysql/model'
 
 @Controller('api/demo')
 export class DemoController {
