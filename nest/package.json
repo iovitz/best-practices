@@ -23,10 +23,6 @@
     "yac": "node_modules/.bin/httpyac -e development -o body ./rest.http",
     "drizzle:mysql": "dotenv -e .env.development -- drizzle-kit --config ./src/database/drizzle/mysql/drizzle.config.ts",
     "drizzle:sqlite": "dotenv -e .env.development -- drizzle-kit --config ./src/database/drizzle/sqlite/drizzle.config.ts",
-    "prisma:sqlite:generate": "dotenv -e .env.development -- prisma generate --schema=./prisma/sqlite.prisma",
-    "prisma:sqlite:sync": "dotenv -e .env.development -- prisma db push --schema=./prisma/sqlite.prisma",
-    "prisma:mysql:generate": "dotenv -e .env.development -- prisma generate --schema=./prisma/mysql.prisma",
-    "prisma:mysql:sync": "dotenv -e .env.development -- prisma db push --schema=./prisma/mysql.prisma",
     "update:dependence": "pnpx npm-check-updates"
   },
   "dependencies": {
@@ -41,9 +37,6 @@
     "@nestjs/swagger": "11.0.6",
     "@nestjs/typeorm": "11.0.0",
     "@nestjs/websockets": "11.0.11",
-    "@prisma/client": "6.5.0",
-    "@prisma/client-mysql": "file:./prisma/clients/client-mysql",
-    "@prisma/client-sqlite": "file:./prisma/clients/client-mysql",
     "ansis": "^3.17.0",
     "bcrypt": "5.1.1",
     "better-sqlite3": "11.8.1",

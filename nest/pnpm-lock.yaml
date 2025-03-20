@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@nestjs-modules/ioredis':
         specifier: 2.0.2
-        version: 2.0.2(ckuyxbof3bbutlw7rszpah4bym)
+        version: 2.0.2(daa58d2ff49e108bbdbb366655788dcd)
       '@nestjs/cache-manager':
         specifier: 3.0.0
         version: 3.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(cache-manager@6.4.1)(rxjs@7.8.2)
@@ -41,15 +41,6 @@ importers:
       '@nestjs/websockets':
         specifier: 11.0.11
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(@nestjs/platform-socket.io@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@prisma/client':
-        specifier: 6.5.0
-        version: 6.5.0(prisma@6.5.0(typescript@5.8.2))(typescript@5.8.2)
-      '@prisma/client-mysql':
-        specifier: file:./prisma/clients/client-mysql
-        version: prisma-client-55f501593a5e2733a17589875517728644b5f907efd89f6f45fae41284fc383b@file:prisma/clients/client-mysql
-      '@prisma/client-sqlite':
-        specifier: file:./prisma/clients/client-mysql
-        version: prisma-client-55f501593a5e2733a17589875517728644b5f907efd89f6f45fae41284fc383b@file:prisma/clients/client-mysql
       ansis:
         specifier: ^3.17.0
         version: 3.17.0
@@ -4621,9 +4612,6 @@ packages:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  prisma-client-55f501593a5e2733a17589875517728644b5f907efd89f6f45fae41284fc383b@file:prisma/clients/client-mysql:
-    resolution: {directory: prisma/clients/client-mysql, type: directory}
-
   prisma@6.5.0:
     resolution: {integrity: sha512-yUGXmWqv5F4PByMSNbYFxke/WbnyTLjnJ5bKr8fLkcnY7U5rU9rUTh/+Fja+gOrRxEgtCbCtca94IeITj4j/pg==}
     engines: {node: '>=18.18'}
@@ -6739,13 +6727,13 @@ snapshots:
     dependencies:
       sparse-bitfield: 3.0.3
 
-  '@nestjs-modules/ioredis@2.0.2(ckuyxbof3bbutlw7rszpah4bym)':
+  '@nestjs-modules/ioredis@2.0.2(daa58d2ff49e108bbdbb366655788dcd)':
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.0.11)(@nestjs/websockets@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       ioredis: 5.6.0
     optionalDependencies:
-      '@nestjs/terminus': 10.2.0(nqmvjiarzq677fj6pmckoc4ery)
+      '@nestjs/terminus': 10.2.0(3f63e409758bf72ce78195b9b701741c)
     transitivePeerDependencies:
       - '@grpc/grpc-js'
       - '@grpc/proto-loader'
@@ -6905,7 +6893,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.1
 
-  '@nestjs/terminus@10.2.0(nqmvjiarzq677fj6pmckoc4ery)':
+  '@nestjs/terminus@10.2.0(3f63e409758bf72ce78195b9b701741c)':
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.0.11)(@nestjs/websockets@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -6978,6 +6966,7 @@ snapshots:
     optionalDependencies:
       prisma: 6.5.0(typescript@5.8.2)
       typescript: 5.8.2
+    optional: true
 
   '@prisma/config@6.5.0':
     dependencies:
@@ -10706,8 +10695,6 @@ snapshots:
       '@jest/schemas': 29.6.3
       ansi-styles: 5.2.0
       react-is: 18.2.0
-
-  prisma-client-55f501593a5e2733a17589875517728644b5f907efd89f6f45fae41284fc383b@file:prisma/clients/client-mysql: {}
 
   prisma@6.5.0(typescript@5.8.2):
     dependencies:
