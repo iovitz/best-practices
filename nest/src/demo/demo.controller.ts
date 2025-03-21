@@ -7,6 +7,9 @@ import { CreateDemoBodyDTO, DeleteDemoParamsDTO, GetDemoParamsDTO, GetDemosQuery
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
 import { MySql2Database } from 'drizzle-orm/mysql2'
 import { drizzleMysqlDemos } from 'src/database/drizzle/mysql/model'
+import { InjectRepository } from '@nestjs/typeorm'
+import { TypeormMysqlDemo } from 'src/database/typeorm/mysql/demo.entity'
+import { Repository } from 'typeorm'
 
 @Controller('api/demo')
 export class DemoController {
@@ -30,8 +33,8 @@ export class DemoController {
       .from(drizzleSqliteDemos)
       .where(gte(drizzleSqliteDemos.id, 0))
       .orderBy(drizzleSqliteDemos.id)
-      .limit(Number(perPage))
-      .offset((Number(page)) * Number(perPage))
+      .limit(perPage)
+      .offset((page) * perPage)
       .execute()
   }
 
@@ -79,8 +82,8 @@ export class DemoController {
       .from(drizzleMysqlDemos)
       .where(gte(drizzleMysqlDemos.id, 0))
       .orderBy(drizzleMysqlDemos.id)
-      .limit(Number(perPage))
-      .offset((Number(page)) * Number(perPage))
+      .limit(perPage)
+      .offset((page) * perPage)
       .execute()
   }
 
@@ -105,6 +108,42 @@ export class DemoController {
   @Version('drizzle:mysql')
   deleteDrizzleMysqlDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
     return this.drizzleMysql.delete(drizzleMysqlDemos).where(eq(drizzleMysqlDemos.id, id))
+  }
+  // #endregion
+
+  // #region Typeorm MySQL
+  @InjectRepository(TypeormMysqlDemo)
+  private typeormMysqlDemo: Repository<TypeormMysqlDemo>
+
+  @Get(':id')
+  @Version('typeorm:mysql')
+  getTypeormMysqlDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
+  }
+
+  @Get()
+  @Version('typeorm:mysql')
+  getTypeormMysqlDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
+
+  }
+
+  @Post()
+  @Version('typeorm:mysql')
+  crateTypeormMysqlDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
+  }
+
+  @Patch(':id')
+  @Version('typeorm:mysql')
+  updateTypeormMysqlDemo(
+    @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
+    @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
+  ) {
+
+  }
+
+  @Delete(':id')
+  @Version('typeorm:mysql')
+  deleteTypeormMysqlDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
+
   }
   // #endregion
 }

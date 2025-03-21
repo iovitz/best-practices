@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('demos')
-export class Demo {
+export class TypeormMysqlDemo {
   @PrimaryGeneratedColumn()
   id: number
 

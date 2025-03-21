@@ -7,20 +7,20 @@ import { TypeormModule } from './typeorm/typeorm.module'
 @Global()
 @Module({
   imports: [
-    RedisModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return ({
-          type: 'single',
-          url: configService.get('NEST_APP_ENV_REDIS_DB_URL'),
-          options: {
-            port: Number(configService.get('NEST_APP_ENV_REDIS_DB_PORT')),
-            username: configService.get('NEST_APP_ENV_REDIS_DB_USER'),
-            password: configService.get('NEST_APP_ENV_REDIS_DB_PSWD'),
-          },
-        })
-      },
-    }),
+    // RedisModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => {
+    //     return ({
+    //       type: 'single',
+    //       url: configService.get('NEST_APP_ENV_REDIS_DB_URL'),
+    //       options: {
+    //         port: Number(configService.get('NEST_APP_ENV_REDIS_DB_PORT')),
+    //         username: configService.get('NEST_APP_ENV_REDIS_DB_USER'),
+    //         password: configService.get('NEST_APP_ENV_REDIS_DB_PSWD'),
+    //       },
+    //     })
+    //   },
+    // }),
     TypeormModule,
     DrizzleModule,
   ],
