@@ -20,10 +20,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "update:dependence": "pnpx npm-check-updates",
     "yac": "node_modules/.bin/httpyac -e development -o body ./rest.http",
     "drizzle:mysql": "dotenv -e .env.development -- drizzle-kit --config ./src/database/drizzle/mysql/drizzle.config.ts",
     "drizzle:sqlite": "dotenv -e .env.development -- drizzle-kit --config ./src/database/drizzle/sqlite/drizzle.config.ts",
-    "update:dependence": "pnpx npm-check-updates"
+    "typeorm:mysql:migration": "typeorm-ts-node-commonjs migration:generate src/database/typeorm/mysql/migrations/migration --dataSource src/database/typeorm/mysql/typeorm.ts",
+    "typeorm:mysql:migration:run": "typeorm-ts-node-commonjs migration:run --dataSource src/database/typeorm/mysql/typeorm.ts",
+    "typeorm:sqlite:migration": "typeorm-ts-node-commonjs migration:generate src/database/typeorm/sqlite/migrations/migration --dataSource src/database/typeorm/sqlite/typeorm.ts",
+    "typeorm:sqlite:migration:run": "typeorm-ts-node-commonjs migration:run --dataSource src/database/typeorm/sqlite/typeorm.ts"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "2.0.2",

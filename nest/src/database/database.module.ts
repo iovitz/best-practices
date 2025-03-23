@@ -3,6 +3,8 @@ import { RedisModule } from '@nestjs-modules/ioredis'
 import { ConfigService } from 'src/services/config/config.service'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { TypeormModule } from './typeorm/typeorm.module'
+import { TypeormMysqlDemo } from './typeorm/mysql/demo.entity'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Global()
 @Module({

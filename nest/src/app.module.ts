@@ -16,6 +16,7 @@ import { HomeModule } from './home/home.module'
 import { ServicesModule } from './services/services.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
 import { DemoModule } from './demo/demo.module'
+import { DesensitizeInterceptor } from './aspects/interceptors/desensitize/desensitize.interceptor'
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { DemoModule } from './demo/demo.module'
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseFormatterInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DesensitizeInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,

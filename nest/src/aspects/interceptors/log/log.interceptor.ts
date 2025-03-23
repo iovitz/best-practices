@@ -18,6 +18,7 @@ export class LogInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const req: Req = context.switchToHttp().getRequest()
     const { method, originalUrl } = req
+    const startNs = process.hrtime.bigint()
 
     this.tracer.info(`+REQ：${method} ${originalUrl}`, {
       tracerId: req.tracerId,
@@ -28,8 +29,10 @@ export class LogInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
+        const cost = process.hrtime.bigint() - startNs
         this.tracer.info('-REQ', {
           tracerId: req.tracerId,
+          cost,
         })
         return data
       }),

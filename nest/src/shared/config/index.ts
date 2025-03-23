@@ -32,14 +32,10 @@ const defaultConfig = {
   NEST_APP_ENV_TYPEORM_SQLITE_DB_FILE: 'sqlite/NEST_APP_TYPEORM.db',
   NEST_APP_ENV_TYPEORM_SQLITE_DB_SYNC: true,
 
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_HOST: 'mysql.sqlpub.com',
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_PORT: 3306,
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_NAME: 'nest_db_typeorm',
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_USER: 'nest_db_typeorm',
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_PSWD: '9AWwCAQhAgUtlQZg',
+  NEST_APP_ENV_TYPEORM_MYSQL_URL: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
   NEST_APP_ENV_TYPEORM_MYSQL_DB_SYNC: 'off',
 
-  NEST_APP_ENV_DRIZZLE_MYSQL_CONNECT_URL: 'postgres://nest_db_drizzle:AK8vdjpyquG63vcz@mysql.sqlpub.com:3306/nest_db_drizzle',
+  NEST_APP_ENV_DRIZZLE_MYSQL_CONNECT_URL: 'mysql://nest_db_drizzle:AK8vdjpyquG63vcz@mysql.sqlpub.com:3306/nest_db_drizzle',
 
   NEST_APP_ENV_Mongoose_MONGO_DB_HOST: 'mysql.sqlpub.com',
   NEST_APP_ENV_Mongoose_MONGO_DB_PORT: 3306,

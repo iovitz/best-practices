@@ -112,23 +112,32 @@ export class DemoController {
   // #endregion
 
   // #region Typeorm MySQL
-  @InjectRepository(TypeormMysqlDemo)
+  @InjectRepository(TypeormMysqlDemo, 'mysql')
   private typeormMysqlDemo: Repository<TypeormMysqlDemo>
 
   @Get(':id')
   @Version('typeorm:mysql')
   getTypeormMysqlDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
+    return this.typeormMysqlDemo.findOne({
+      where: { id },
+    })
   }
 
   @Get()
   @Version('typeorm:mysql')
   getTypeormMysqlDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
-
+    return this.typeormMysqlDemo.find({
+      skip: page * perPage,
+      take: perPage
+    })
   }
 
   @Post()
   @Version('typeorm:mysql')
   crateTypeormMysqlDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
+    return this.typeormMysqlDemo.save({
+      name
+    })
   }
 
   @Patch(':id')
@@ -137,12 +146,20 @@ export class DemoController {
     @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
     @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
   ) {
+    return this.typeormMysqlDemo.update({
+      id,
+    }, {
+      name
+    })
 
   }
 
   @Delete(':id')
   @Version('typeorm:mysql')
   deleteTypeormMysqlDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
+    return this.typeormMysqlDemo.delete({
+      id,
+    })
 
   }
   // #endregion
