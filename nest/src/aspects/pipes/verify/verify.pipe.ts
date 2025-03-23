@@ -11,10 +11,10 @@ import { validate, ValidationError } from 'class-validator'
 
 @Injectable()
 export class VerifyPipe implements PipeTransform {
-  async transform(value: any, metadata: ArgumentMetadata) {
+  async transform(_value: any, metadata: ArgumentMetadata) {
     const { metatype } = metadata
-    const object = plainToClass(metatype, value)
-    const errors = await validate(object, {
+    const value = plainToClass(metatype, _value)
+    const errors = await validate(value, {
       whitelist: true,
       forbidNonWhitelisted: true,
     })
