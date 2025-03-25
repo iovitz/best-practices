@@ -10,6 +10,7 @@ import { drizzleMysqlDemos } from 'src/database/drizzle/mysql/model'
 import { InjectRepository } from '@nestjs/typeorm'
 import { TypeormMysqlDemo } from 'src/database/typeorm/mysql/demo.entity'
 import { Repository } from 'typeorm'
+import { TypeormSqliteDemo } from 'src/database/typeorm/sqlite/demo.entity'
 
 @Controller('api/demo')
 export class DemoController {
@@ -128,7 +129,7 @@ export class DemoController {
   getTypeormMysqlDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
     return this.typeormMysqlDemo.find({
       skip: page * perPage,
-      take: perPage
+      take: perPage,
     })
   }
 
@@ -136,7 +137,7 @@ export class DemoController {
   @Version('typeorm:mysql')
   crateTypeormMysqlDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
     return this.typeormMysqlDemo.save({
-      name
+      name,
     })
   }
 
@@ -149,9 +150,8 @@ export class DemoController {
     return this.typeormMysqlDemo.update({
       id,
     }, {
-      name
+      name,
     })
-
   }
 
   @Delete(':id')
@@ -160,7 +160,57 @@ export class DemoController {
     return this.typeormMysqlDemo.delete({
       id,
     })
+  }
+  // #endregion
 
+  // #region Typeorm Sqlite
+  @InjectRepository(TypeormSqliteDemo, 'sqlite')
+  private typeormSqliteDemo: Repository<TypeormSqliteDemo>
+
+  @Get(':id')
+  @Version('typeorm:sqlite')
+  getTypeormSqliteDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
+    return this.typeormSqliteDemo.findOne({
+      where: { id },
+    })
+  }
+
+  @Get()
+  @Version('typeorm:sqlite')
+  getTypeormSqliteDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
+    return this.typeormSqliteDemo.find({
+      skip: page * perPage,
+      take: perPage,
+    })
+  }
+
+  @Post()
+  @Version('typeorm:sqlite')
+  crateTypeormSqliteDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
+    return this.typeormSqliteDemo.save({
+      name,
+    })
+  }
+
+  @Patch(':id')
+  @Version('typeorm:sqlite')
+  updateTypeorSqliteDemo(
+    @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
+    @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
+  ) {
+    return this.typeormSqliteDemo.update({
+      id,
+    }, {
+      name,
+    })
+  }
+
+  @Delete(':id')
+  @Version('typeorm:sqlite')
+  deleteTypeormSqliteDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
+    return this.typeormSqliteDemo.delete({
+      id,
+    })
   }
   // #endregion
 }

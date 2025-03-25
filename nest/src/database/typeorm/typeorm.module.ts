@@ -8,7 +8,6 @@ import { getTypeOrmLogger } from './typeorm.logger'
 @Module({
 
   imports: [
-    // 默认连接
     TypeOrmModule.forRootAsync({
       name: 'mysql',
       inject: [ConfigService],
