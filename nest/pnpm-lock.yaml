@@ -89,6 +89,9 @@ importers:
       mysql2:
         specifier: 3.13.0
         version: 3.13.0
+      nanoid:
+        specifier: ^3.3.7
+        version: 3.3.7
       pako:
         specifier: 2.1.0
         version: 2.1.0

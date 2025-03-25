@@ -6,7 +6,7 @@ import { Tracer } from './services/tracer/tracer.service'
 declare global {
   interface MiddlewareInjected {
     // 中间注入的对象，不一定真的存在，注意调用时间
-    stime: bigint
+    startNs: bigint
     clientId: string
     tracerId: string
     syncManager: SyncManager

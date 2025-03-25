@@ -1,8 +1,8 @@
-import { appLogger } from 'src/shared/tracer/logger'
+import { rootLogger } from 'src/shared/tracer/logger'
 import { Logger } from 'typeorm'
 
 export function getTypeOrmLogger(name: string) {
-  const typeormTracer = appLogger.child({
+  const typeormTracer = rootLogger.child({
     scope: name,
   })
 

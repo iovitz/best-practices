@@ -2,13 +2,16 @@ import { Injectable, NestMiddleware } from '@nestjs/common'
 import { ulid } from 'ulid'
 import { CookieKeys } from 'src/shared/constans/cookie'
 import { Tracer } from 'src/shared/tracer/tracer'
+import { customAlphabet } from 'nanoid'
 
 @Injectable()
 export class InjectUtilsMiddleware implements NestMiddleware {
   private tracer = new Tracer(InjectUtilsMiddleware.name)
 
+  private idGenerator = customAlphabet('ABCDEFGHJKMNPQRTUVWXYabcdefghjkmnpqrtuvwxy346789')
+
   use(req: Req, res: Res, next: () => void) {
-    this.useCost(req, res)
+    this.useReqTime(req, res)
     this.useCookie(req, res)
     this.useTracerId(req, res)
     // 获取请求耗时（ns）
@@ -18,20 +21,8 @@ export class InjectUtilsMiddleware implements NestMiddleware {
   /**
    * 获取请求耗时
    */
-  useCost(req: Req, res: Res) {
-    const startNs = process.hrtime.bigint()
-    res.on('finish', () => {
-      const cost = process.hrtime.bigint() - startNs
-      this.tracer.info(`Connection finished With Status Code ${res.statusCode}`, {
-        cost: cost.toString(),
-        tracerId: req.tracerId,
-      })
-    })
-
-    res.on('close', () => {
-      const cost = process.hrtime.bigint() - startNs
-      this.tracer.info(`Connection Closed With Status Code ${res.statusCode}`, { cost: cost.toString(), tracerId: req.tracerId })
-    })
+  useReqTime(req: Req, res: Res) {
+    req.startNs = res.startNs = process.hrtime.bigint()
   }
 
   /**
@@ -56,8 +47,8 @@ export class InjectUtilsMiddleware implements NestMiddleware {
    * 使用客户端ID
    */
   useTracerId(req: Req, res: Res) {
-    req.clientId = req.getCookie(CookieKeys.ClientId) ?? ulid()
-    req.tracerId = res.tracerId = `${req.clientId}-${ulid()}`
+    req.clientId = req.getCookie(CookieKeys.ClientId) ?? this.idGenerator(8)
+    req.tracerId = res.tracerId = `${req.clientId}-${this.idGenerator(10)}`
     res.cookie(CookieKeys.ClientId, req.clientId, {
       // 可以放到配置中
       signed: false,

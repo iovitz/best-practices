@@ -1,13 +1,17 @@
 import { LoggerService } from '@nestjs/common'
 import { Logger } from 'winston'
-import { appLogger, formatLogContext } from './logger'
+import { formatLogContext, rootLogger } from './logger'
 import { LogContext } from './tracer.types'
 
 export class Tracer implements LoggerService {
+  private static appLogger = rootLogger.child({
+    scope: 'APP',
+  })
+
   private logger: Logger
 
   constructor(scope?: string) {
-    this.logger = scope ? appLogger.child({ scope }) : appLogger
+    this.logger = !scope || scope.toLocaleLowerCase() === 'app' ? Tracer.appLogger : rootLogger.child({ scope })
   }
 
   fatal(message: string, context?: LogContext) {

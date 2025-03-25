@@ -7,11 +7,10 @@ import {
   HttpException,
 } from '@nestjs/common'
 import { Tracer } from 'src/shared/tracer/tracer'
-import { DefaultFilter } from '../default/default.filter'
 
 @Catch(HttpException)
 export class HttpFilter implements ExceptionFilter {
-  private tracer = new Tracer(DefaultFilter.name)
+  private tracer = new Tracer(HttpFilter.name)
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
