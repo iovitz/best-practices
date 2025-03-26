@@ -9,7 +9,7 @@
  * https://sailsjs.com/config/blueprints
  */
 
-const { ulid } = require('ulid');
+const { ulid } = require('ulid')
 
 module.exports.blueprints = {
 
@@ -41,28 +41,26 @@ module.exports.blueprints = {
 
   pluralize: false,
 
-  restPrefix: "/api/v1",
+  restPrefix: '/api/v1',
 
-  parseBlueprintOptions: function(req) {
-
+  parseBlueprintOptions(req) {
     // Get the default query options.
-    var queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req);
+    let queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req)
 
     // If this is the "find" or "populate" blueprint action, and the normal query options
     // indicate that the request is attempting to set an exceedingly high `limit` clause,
     // then prevent it (we'll say `limit` must not exceed 100).
     if (req.options.blueprintAction === 'find' || req.options.blueprintAction === 'populate') {
       if (queryOptions.criteria.limit > 100) {
-        queryOptions.criteria.limit = 100;
+        queryOptions.criteria.limit = 100
       }
     }
     // 所有的id由服务端生成
-    if(req.options.blueprintAction === 'create') {
+    if (req.options.blueprintAction === 'create') {
       req.body.id = ulid()
     }
 
-    return queryOptions;
-
-  }
+    return queryOptions
+  },
 
 }

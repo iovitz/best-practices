@@ -7,19 +7,19 @@
 
 ### getDemo
 GET {{prefix}}/demo/1
-Accept-Version: typeorm:sqlite
+Accept-Version: typeorm:mysql
 
 ### getDemos
 GET {{prefix}}/demo
-  ?page=0&perPage=10
-Accept-Version: typeorm:sqlite
+  ?page=0&perPage=5
+Accept-Version: typeorm:mysql
 
 
 ### createDemo
 @name = {{$random.alphabetic(10)}}
 POST {{prefix}}/demo
 Content-Type: application/json
-Accept-Version: typeorm:sqlite
+Accept-Version: typeorm:mysql
 {
   "name": "before-{{name}}"
 }
@@ -28,7 +28,7 @@ Accept-Version: typeorm:sqlite
 @name = {{$random.alphabetic(10)}}
 PATCH {{prefix}}/demo/1
 Content-Type: application/json
-Accept-Version: typeorm:sqlite
+Accept-Version: typeorm:mysql
 {
   "name": "after-{{name}}"
 }
@@ -36,4 +36,4 @@ Accept-Version: typeorm:sqlite
 
 ### deleteDemo
 DELETE {{prefix}}/demo/1
-Accept-Version: typeorm:sqlite
+Accept-Version: typeorm:mysql

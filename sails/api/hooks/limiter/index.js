@@ -13,7 +13,7 @@ const logger = rootLogger.child({
 class LimiterManager {
   constructor(config) {
     this.config = config
-  // 创建缓存实例
+    // 创建缓存实例
     this.limiterMap = new LRUCache({
       max: config.lruMax, // 最大缓存项数
       maxAge: config.lruMaxAge, // 每个缓存项最多存活1分钟
@@ -48,7 +48,7 @@ module.exports = function defineLimiterHook(sails) {
      * Runs when this Sails app loads/lifts.
      */
     async initialize() {
-      const {limiter: limiterConfig} = sails.config.custom
+      const { limiter: limiterConfig } = sails.config.custom
       sails.limiter = new LimiterManager({
         lruMax: limiterConfig.lruMax,
         lruMaxAge: limiterConfig.lruMaxAge,

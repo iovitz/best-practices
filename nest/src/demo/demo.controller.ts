@@ -1,16 +1,16 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Version } from '@nestjs/common'
 import { eq, gte } from 'drizzle-orm'
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
-import { DRIZZLE_MYSQL, DRIZZLE_SQLITE } from 'src/database/drizzle/drizzle.module'
-import { drizzleSqliteDemos } from 'src/database/drizzle/sqlite/model'
+import { drizzleSqliteDemos } from 'src/database/drizzle-sqlite/model'
 import { CreateDemoBodyDTO, DeleteDemoParamsDTO, GetDemoParamsDTO, GetDemosQueryDTO, UpdateDemoBodyDTO, UpdateDemoParamsDTO } from './demo.dto'
 import { VerifyPipe } from 'src/aspects/pipes/verify/verify.pipe'
 import { MySql2Database } from 'drizzle-orm/mysql2'
-import { drizzleMysqlDemos } from 'src/database/drizzle/mysql/model'
+import { drizzleMysqlDemos } from 'src/database/drizzle-mysql/model'
 import { InjectRepository } from '@nestjs/typeorm'
-import { TypeormMysqlDemo } from 'src/database/typeorm/mysql/demo.entity'
+import { TypeormMysqlDemo } from 'src/database/typeorm-mysql/demo.entity'
 import { Repository } from 'typeorm'
-import { TypeormSqliteDemo } from 'src/database/typeorm/sqlite/demo.entity'
+import { TypeormSqliteDemo } from 'src/database/typeorm-sqlite/demo.entity'
+import { DRIZZLE_MYSQL, DRIZZLE_SQLITE } from 'src/database/database.module'
 
 @Controller('api/demo')
 export class DemoController {
@@ -26,7 +26,7 @@ export class DemoController {
 
   @Get()
   @Version('drizzle:sqlite')
-  getDrizzleSqliteDemos(@Param(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
+  getDrizzleSqliteDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
     return this.drizzleSqlite.select({
       id: drizzleSqliteDemos.id,
       name: drizzleSqliteDemos.name,

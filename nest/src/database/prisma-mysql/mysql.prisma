@@ -10,14 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-}
-
-generator migrate {
-  provider = "prisma-migrate"
-  output   = env("MIGRATIONS_PATH")
 }
 
 model Demo {

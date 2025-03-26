@@ -10,17 +10,13 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-}
-
-generator migrate {
-  provider = "prisma-migrate"
-  output   = env("MIGRATIONS_PATH")
+  provider = "sqlite"
+  url      = "file:prisma-dev.db"
 }
 
 model Demo {
   id   Int    @id @default(autoincrement())
   name String
+
+  @@map("prisma-demos")
 }

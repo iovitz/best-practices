@@ -36,4 +36,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # DB
-/data.db
+/*-dev.db
