@@ -15,12 +15,9 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-generator migrate {
-  provider = "prisma-migrate"
-  output   = env("MIGRATIONS_PATH")
-}
-
 model Demo {
   id   Int    @id @default(autoincrement())
   name String
+
+  @@map("prisma-demos")
 }

@@ -24,10 +24,10 @@
     "yac": "node_modules/.bin/httpyac -e development -o body ./rest.http",
     "prisma:mysql:generate": "prisma generate --config prisma.mysql.ts",
     "prisma:mysql:migrate": "prisma migrate dev --config prisma.mysql.ts",
-    "prisma:mysql:db:push": "prisma db push --config prisma.mysql.ts",
+    "prisma:mysql:sync": "prisma migrate deploy --config prisma.mysql.ts",
     "prisma:sqlite:generate": "prisma generate --config prisma.sqlite.ts",
     "prisma:sqlite:migrate": "prisma migrate dev --config prisma.sqlite.ts",
-    "prisma:sqlite:db:push": "prisma db push --config prisma.sqlite.ts",
+    "prisma:sqlite:sync": "prisma migrate deploy --config prisma.sqlite.ts",
     "drizzle:mysql:migrate": "drizzle-kit generate --config drizzle.mysql.ts",
     "drizzle:mysql:sync": "drizzle-kit migrate --config drizzle.mysql.ts",
     "drizzle:sqlite:migrate": "drizzle-kit generate --config drizzle.sqlite.ts",
@@ -90,7 +90,6 @@
     "@nestjs/cli": "11.0.5",
     "@nestjs/schematics": "11.0.2",
     "@nestjs/testing": "11.0.11",
-    "@prisma/cli": "^2.20.1",
     "@types/bcrypt": "5.0.2",
     "@types/better-sqlite3": "7.6.12",
     "@types/cookie-parser": "1.4.8",
@@ -124,6 +123,9 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.2"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
   },
   "jest": {
     "moduleFileExtensions": [

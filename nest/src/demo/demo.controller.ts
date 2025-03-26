@@ -10,7 +10,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { TypeormMysqlDemo } from 'src/database/typeorm-mysql/demo.entity'
 import { Repository } from 'typeorm'
 import { TypeormSqliteDemo } from 'src/database/typeorm-sqlite/demo.entity'
-import { DRIZZLE_MYSQL, DRIZZLE_SQLITE } from 'src/database/database.module'
+import { DRIZZLE_MYSQL, DRIZZLE_SQLITE, PRISMA_MYSQL, PRISMA_SQLITE, PrismaMysqlClient, PrismaSqliteClient } from 'src/database/database.module'
+import { PrismaClient } from 'src/database/prisma-sqlite/client'
 
 @Controller('api/demo')
 export class DemoController {
@@ -210,6 +211,119 @@ export class DemoController {
   deleteTypeormSqliteDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
     return this.typeormSqliteDemo.delete({
       id,
+    })
+  }
+  // #endregion
+
+  // #region Prisma Mysql
+  @Inject(PRISMA_MYSQL)
+  private prismaMysql: PrismaMysqlClient
+
+  @Get(':id')
+  @Version('prisma:mysql')
+  getPrismaMysqlDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
+    return this.prismaMysql.demo.findFirst({
+      where: { id },
+    })
+  }
+
+  @Get()
+  @Version('prisma:mysql')
+  getPrismaMysqlDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
+    return this.prismaMysql.demo.findMany({
+      skip: page * perPage,
+      take: perPage,
+    })
+  }
+
+  @Post()
+  @Version('prisma:mysql')
+  cratePrismaMysqlDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
+    return this.prismaMysql.demo.create({
+      data: {
+        name,
+      },
+    })
+  }
+
+  @Patch(':id')
+  @Version('prisma:mysql')
+  updatePrismaMysqlDemo(
+    @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
+    @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
+  ) {
+    return this.prismaMysql.demo.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+      },
+    })
+  }
+
+  @Delete(':id')
+  @Version('prisma:mysql')
+  deletePrismaMysqlDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
+    return this.prismaMysql.demo.deleteMany({
+      where: { id },
+    })
+  }
+
+  // #endregion
+
+  // #region Prisma Sqlite
+  @Inject(PRISMA_SQLITE)
+  private prismaSqlite: PrismaSqliteClient
+
+  @Get(':id')
+  @Version('prisma:sqlite')
+  getPrismaSqliteDemo(@Param(VerifyPipe) { id }: GetDemoParamsDTO) {
+    return this.prismaSqlite.demo.findFirst({
+      where: { id },
+    })
+  }
+
+  @Get()
+  @Version('prisma:sqlite')
+  getPrismaSqliteDemos(@Query(VerifyPipe) { page, perPage }: GetDemosQueryDTO) {
+    return this.prismaSqlite.demo.findMany({
+      skip: page * perPage,
+      take: perPage,
+    })
+  }
+
+  @Post()
+  @Version('prisma:sqlite')
+  cratePrismaSqliteDemo(@Body(VerifyPipe) { name }: CreateDemoBodyDTO) {
+    return this.prismaSqlite.demo.create({
+      data: {
+        name,
+      },
+    })
+  }
+
+  @Patch(':id')
+  @Version('prisma:sqlite')
+  updatePrismaSqliteDemo(
+    @Param(VerifyPipe) { id }: UpdateDemoParamsDTO,
+    @Body(VerifyPipe){ name }: UpdateDemoBodyDTO,
+  ) {
+    return this.prismaSqlite.demo.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+      },
+    })
+  }
+
+  @Delete(':id')
+  @Version('prisma:sqlite')
+  deletePrismaSqliteDemo(@Param(VerifyPipe) { id }: DeleteDemoParamsDTO) {
+    return this.prismaSqlite.demo.deleteMany({
+      where: { id },
     })
   }
   // #endregion

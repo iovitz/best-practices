@@ -141,13 +141,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:prisma-dev.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:prisma-dev.db\"\n}\n\n// generator migrate {\n//   provider = \"prisma-migrate\"\n//   output   = env(\"MIGRATIONS_PATH\")  // 设置自定义的迁移文件路径\n// }\n\nmodel Demo {\n  id   Int    @id @default(autoincrement())\n  name String\n\n  @@map(\"prisma-demos\")\n}\n",
-  "inlineSchemaHash": "84ce99dcac5bf73ea20fd237bb11ce4a6b1f6ad7ae728a3b6b4e94d15210afd1",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Demo {\n  id   Int    @id @default(autoincrement())\n  name String\n\n  @@map(\"prisma-demos\")\n}\n",
+  "inlineSchemaHash": "9331123317d467f2c8fb714fffda4d62e08712531f13a95ac7a8cf6bb8e2149a",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -158,7 +158,9 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

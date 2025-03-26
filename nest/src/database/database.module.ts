@@ -1,7 +1,5 @@
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from 'src/services/config/config.service'
-import { PrismaClient as PrismaMysqlClient } from '@prisma/client-mysql'
-import { PrismaClient as PrismaSqliteClient } from '@prisma/client-sqlite'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
@@ -10,6 +8,12 @@ import Database from 'better-sqlite3'
 import { drizzle as drizzleSqlite } from 'drizzle-orm/better-sqlite3'
 import { drizzle } from 'drizzle-orm/mysql2'
 import mysql from 'mysql2/promise'
+import { PrismaClient as PrismaMysqlClient } from '@prisma/client-mysql'
+import { PrismaClient as PrismaSqliteClient } from '@prisma/client-sqlite'
+
+export { PrismaClient as PrismaMysqlClient } from '@prisma/client-mysql'
+
+export { PrismaClient as PrismaSqliteClient } from '@prisma/client-sqlite'
 
 export const PRISMA_SQLITE = Symbol('PRISMA_SQLITE')
 export const PRISMA_MYSQL = Symbol('PRISMA_MYSQL')
@@ -97,7 +101,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const client = new PrismaSqliteClient({
-        datasourceUrl: configService.get('DRIZZLE_DB_FILE_NAME'),
+        datasourceUrl: `file:${join(homedir(), 'sqlite', configService.get('DRIZZLE_DB_FILE_NAME'))}`,
       })
       await client.$connect()
       return client

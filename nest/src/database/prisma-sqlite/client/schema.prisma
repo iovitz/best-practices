@@ -11,13 +11,8 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:prisma-dev.db"
+  url      = env("DATABASE_URL")
 }
-
-// generator migrate {
-//   provider = "prisma-migrate"
-//   output   = env("MIGRATIONS_PATH")  // 设置自定义的迁移文件路径
-// }
 
 model Demo {
   id   Int    @id @default(autoincrement())

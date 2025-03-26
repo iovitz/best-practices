@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNumberString, IsString, Length } from 'class-validator'
+import { Transform } from 'class-transformer'
+import { IsInt, IsNumberString, IsString, Length, Min } from 'class-validator'
 import { PaginationDto } from 'src/shared/dto/dto'
 
 export class GetDemoParamsDTO {
@@ -7,7 +8,9 @@ export class GetDemoParamsDTO {
     example: 1,
     description: 'Demo ID',
   })
-  @IsNumberString()
+  @Transform(({ value }) => Number.parseInt(value, 10)) // 转换为数字
+  @IsInt() // 验证是否为整数
+  @Min(1)
   id: number
 }
 
@@ -28,7 +31,9 @@ export class DeleteDemoParamsDTO {
     example: 1,
     description: 'Demo ID',
   })
-  @IsNumberString()
+  @Transform(({ value }) => Number.parseInt(value, 10)) // 转换为数字
+  @IsInt() // 验证是否为整数
+  @Min(1)
   id: number
 }
 
@@ -37,7 +42,9 @@ export class UpdateDemoParamsDTO {
     example: 1,
     description: 'Demo ID',
   })
-  @IsNumberString()
+  @Transform(({ value }) => Number.parseInt(value, 10)) // 转换为数字
+  @IsInt() // 验证是否为整数
+  @Min(1)
   id: number
 }
 
