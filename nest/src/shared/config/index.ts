@@ -26,9 +26,7 @@ const defaultConfig = {
   NEST_APP_ENV_REDIS_DB_PSWD: '123123',
 
   MYSQL_CONNECTION_URL: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
-  DRIZZLE_DB_FILE_NAME: 'sqlite-dev.db',
-
-  NEST_APP_ENV_TYPEORM_MYSQL_DB_SYNC: 'off',
+  SQLITE_DB_FILE_NAME: 'sqlite-dev.db',
 
 }
 

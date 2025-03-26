@@ -8,6 +8,6 @@ export default defineConfig({
   schema: './src/database/drizzle-sqlite/model.ts',
   out: 'migrations/drizzle-sqlite',
   dbCredentials: {
-    url: join(homedir(), 'sqlite', AppConfig.DRIZZLE_DB_FILE_NAME),
+    url: join(homedir(), 'sqlite', AppConfig.SQLITE_DB_FILE_NAME),
   },
 })

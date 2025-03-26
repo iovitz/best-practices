@@ -46,7 +46,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
           type: 'mysql',
           url: configService.get('MYSQL_CONNECTION_URL'),
           entities: [join(__dirname, 'typeorm-mysql', '*.entity{.ts,.js}')], // 实体路径
-          synchronize: configService.get('NEST_APP_ENV_TYPEORM_MYSQL_DB_SYNC') === 'on',
+          synchronize: false,
           logging: true,
           logger: getTypeOrmLogger('TypeORM-Mysql'),
         }
@@ -59,7 +59,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       useFactory: (configService: ConfigService) => {
         return {
           type: 'better-sqlite3',
-          database: join(homedir(), 'sqlite', configService.get('DRIZZLE_DB_FILE_NAME')),
+          database: join(homedir(), 'sqlite', configService.get('SQLITE_DB_FILE_NAME')),
           entities: [join(__dirname, 'typeorm-sqlite', '*.entity{.ts,.js}')], // 实体路径
           autoLoadEntities: true,
           synchronize: false,
@@ -74,7 +74,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       provide: DRIZZLE_SQLITE,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const client = new Database(join(homedir(), 'sqlite', configService.get('DRIZZLE_DB_FILE_NAME')))
+        const client = new Database(join(homedir(), 'sqlite', configService.get('SQLITE_DB_FILE_NAME')))
         return drizzleSqlite({ client })
       },
     },
@@ -94,7 +94,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const client = new PrismaSqliteClient({
-          datasourceUrl: `file:${join(homedir(), 'sqlite', configService.get('DRIZZLE_DB_FILE_NAME'))}`,
+          datasourceUrl: `file:${join(homedir(), 'sqlite', configService.get('SQLITE_DB_FILE_NAME'))}`,
         })
         await client.$connect()
         return client

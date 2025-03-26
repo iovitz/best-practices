@@ -5,7 +5,7 @@ import { homedir } from 'node:os'
 
 export default new DataSource({
   type: 'better-sqlite3',
-  database: join(homedir(), 'sqlite', AppConfig.DRIZZLE_DB_FILE_NAME),
+  database: join(homedir(), 'sqlite', AppConfig.SQLITE_DB_FILE_NAME),
   migrationsTableName: 'typeorm_migration',
   // 实体路径
   entities: ['src/database/typeorm-sqlite/*.entity{.ts,.js}'],
