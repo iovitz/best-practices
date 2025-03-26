@@ -25,7 +25,7 @@ const defaultConfig = {
   NEST_APP_ENV_REDIS_DB_USER: void 0,
   NEST_APP_ENV_REDIS_DB_PSWD: '123123',
 
-  NEST_APP_ENV_PRISMA_SQLITE_DB_FILE: '/sqlite/NEST_APP_PRISMA.db',
+  NEST_APP_ENV_PRISMA_SQLITE_DB_FILE: 'file:./dev.db',
 
   NEST_APP_ENV_PRISMA_MYSQL_CONNECT_URL: 'mysql://nest_db_prisma:iNop7B9BBDOAwyIY@mysql.sqlpub.com:3306/nest_db_prisma',
 

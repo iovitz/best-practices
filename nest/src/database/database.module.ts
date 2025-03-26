@@ -1,10 +1,8 @@
 import { Global, Module } from '@nestjs/common'
-import { RedisModule } from '@nestjs-modules/ioredis'
-import { ConfigService } from 'src/services/config/config.service'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { TypeormModule } from './typeorm/typeorm.module'
-import { TypeormMysqlDemo } from './typeorm/mysql/demo.entity'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { PrismaMysqlService } from './prisma-mysql/prisma-mysql.service'
+import { PrismaSqliteService } from './prisma-sqlite/prisma-sqlite.service'
 
 @Global()
 @Module({
@@ -26,5 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
     TypeormModule,
     DrizzleModule,
   ],
+  providers: [PrismaMysqlService, PrismaSqliteService],
+  exports: [PrismaMysqlService, PrismaSqliteService],
 })
 export class DatabaseModule {}
