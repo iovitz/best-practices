@@ -44,7 +44,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       useFactory: (configService: ConfigService) => {
         return {
           type: 'mysql',
-          url: configService.get('NEST_APP_ENV_TYPEORM_MYSQL_URL'),
+          url: configService.get('MYSQL_CONNECTION_URL'),
           entities: [join(__dirname, 'typeorm-mysql', '*.entity{.ts,.js}')], // 实体路径
           synchronize: configService.get('NEST_APP_ENV_TYPEORM_MYSQL_DB_SYNC') === 'on',
           logging: true,
@@ -59,10 +59,10 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
       useFactory: (configService: ConfigService) => {
         return {
           type: 'better-sqlite3',
-          database: join(homedir(), configService.get('NEST_APP_ENV_TYPEORM_SQLITE_DB_FILE')),
+          database: join(homedir(), configService.get('DRIZZLE_DB_FILE_NAME')),
           entities: [join(__dirname, 'typeorm-sqlite', '*.entity{.ts,.js}')], // 实体路径
           autoLoadEntities: true,
-          synchronize: configService.get('NEST_APP_ENV_TYPEORM_SQLITE_DB_SYNC'),
+          synchronize: false,
           logging: true,
           logger: getTypeOrmLogger('TypeORM-Sqlite'),
         }

@@ -25,30 +25,28 @@ const defaultConfig = {
   NEST_APP_ENV_REDIS_DB_USER: void 0,
   NEST_APP_ENV_REDIS_DB_PSWD: '123123',
 
-  NEST_APP_ENV_PRISMA_SQLITE_DB_FILE: 'file:./dev.db',
-
   MYSQL_CONNECTION_URL: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
   DRIZZLE_DB_FILE_NAME: 'sqlite-dev.db',
-  NEST_APP_ENV_PRISMA_MYSQL_CONNECT_URL: 'mysql://nest_db_prisma:iNop7B9BBDOAwyIY@mysql.sqlpub.com:3306/nest_db_prisma',
 
-  NEST_APP_ENV_TYPEORM_SQLITE_DB_FILE: 'sqlite/NEST_APP_TYPEORM.db',
-  NEST_APP_ENV_TYPEORM_SQLITE_DB_SYNC: true,
-
-  NEST_APP_ENV_TYPEORM_MYSQL_URL: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
   NEST_APP_ENV_TYPEORM_MYSQL_DB_SYNC: 'off',
 
-  NEST_APP_ENV_DRIZZLE_MYSQL_CONNECT_URL: 'mysql://nest_db_drizzle:AK8vdjpyquG63vcz@mysql.sqlpub.com:3306/nest_db_drizzle',
-
-  NEST_APP_ENV_Mongoose_MONGO_DB_HOST: 'mysql.sqlpub.com',
-  NEST_APP_ENV_Mongoose_MONGO_DB_PORT: 3306,
-  NEST_APP_ENV_Mongoose_MONGO_DB_NAME: 'nest_app_mysql',
-  NEST_APP_ENV_Mongoose_MONGO_DB_USER: 'nest_app_mysql',
-  NEST_APP_ENV_Mongoose_MONGO_DB_PSWD: 'db_pswd',
 }
 
 type ConfigType = typeof defaultConfig
 
-export const AppConfig: Readonly<ConfigType> = rc(AppName, defaultConfig)
+export const AppConfig: Readonly<ConfigType> = mergeProcessEnvConfig(rc(AppName, defaultConfig))
+
+/**
+ * 合并环境变量
+ */
+function mergeProcessEnvConfig(config: ConfigType) {
+  Object.keys(config).forEach((k) => {
+    if (process.env[k]) {
+      config[k] = process.env[k]
+    }
+  })
+  return config
+}
 
 export class Config {
   get<T extends keyof ConfigType>(key: T): ConfigType[T] {
