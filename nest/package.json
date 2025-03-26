@@ -28,12 +28,14 @@
     "prisma:sqlite:generate": "prisma generate --config prisma.sqlite.ts",
     "prisma:sqlite:migrate": "prisma migrate dev --config prisma.sqlite.ts",
     "prisma:sqlite:db:push": "prisma db push --config prisma.sqlite.ts",
-    "drizzle:mysql": "drizzle-kit --config drizzle.mysql.ts",
-    "drizzle:sqlite": "drizzle-kit --config drizzle.sqlite.ts",
+    "drizzle:mysql:migrate": "drizzle-kit generate --config drizzle.mysql.ts",
+    "drizzle:mysql:sync": "drizzle-kit migrate --config drizzle.mysql.ts",
+    "drizzle:sqlite:migrate": "drizzle-kit generate --config drizzle.sqlite.ts",
+    "drizzle:sqlite:sync": "drizzle-kit migrate --config drizzle.sqlite.ts",
     "typeorm:mysql:migrate": "typeorm-ts-node-commonjs migration:generate migrations/typeorm-mysql/migration --dataSource typeorm.mysql.ts",
-    "typeorm:mysql:migrate:run": "typeorm-ts-node-commonjs migration:run --dataSource typeorm.mysql.ts",
+    "typeorm:mysql:sync": "typeorm-ts-node-commonjs migration:run --dataSource typeorm.mysql.ts",
     "typeorm:sqlite:migrate": "typeorm-ts-node-commonjs migration:generate  migrations/typeorm-sqlite/migration --dataSource typeorm.sqlite.ts",
-    "typeorm:sqlite:migrate:run": "typeorm-ts-node-commonjs migration:run --dataSource typeorm.sqlite.ts"
+    "typeorm:sqlite:sync": "typeorm-ts-node-commonjs migration:run --dataSource typeorm.sqlite.ts"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "2.0.2",

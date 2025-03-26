@@ -1,7 +1,7 @@
 {
-  "version": "5",
-  "dialect": "mysql",
-  "id": "e691cfdd-d952-4d29-8942-5990ccb25552",
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "e4023709-01eb-41e9-8c82-dd93518dac7c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "drizzle-demos": {
@@ -9,14 +9,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "text(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -24,26 +24,19 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "drizzle-demos_id": {
-          "name": "drizzle-demos_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraints": {}
     }
   },
   "views": {},
+  "enums": {},
   "_meta": {
     "schemas": {},
     "tables": {},
     "columns": {}
   },
   "internal": {
-    "tables": {},
     "indexes": {}
   }
 }

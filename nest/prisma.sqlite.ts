@@ -2,7 +2,7 @@ import { join } from 'node:path'
 import { defineConfig } from 'prisma/config'
 import { AppConfig } from 'src/shared/config'
 
-process.env.DATABASE_URL = AppConfig.DRIZZLE_SQLITE_FILE
+process.env.DATABASE_URL = AppConfig.DRIZZLE_DB_FILE_NAME
 process.env.MIGRATIONS_PATH = join(__dirname, 'migrate/prisma-sqlite')
 console.error(process.env.MIGRATIONS_PATH)
 

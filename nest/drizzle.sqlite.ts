@@ -1,4 +1,6 @@
 import { defineConfig } from 'drizzle-kit'
+import { homedir } from 'node:os'
+import { join } from 'node:path'
 import { AppConfig } from 'src/shared/config'
 
 export default defineConfig({
@@ -6,6 +8,6 @@ export default defineConfig({
   schema: './src/database/drizzle-sqlite/model.ts',
   out: 'migrations/drizzle-sqlite',
   dbCredentials: {
-    url: AppConfig.DRIZZLE_SQLITE_FILE,
+    url: join(homedir(), 'sqlite', AppConfig.DRIZZLE_DB_FILE_NAME),
   },
 })

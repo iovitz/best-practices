@@ -69,7 +69,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
     provide: DRIZZLE_SQLITE,
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
-      const client = new Database(configService.get('DRIZZLE_SQLITE_FILE'))
+      const client = new Database(configService.get('DRIZZLE_DB_FILE_NAME'))
       return drizzleSqlite({ client })
     },
   }, {
@@ -97,7 +97,7 @@ export const DRIZZLE_MYSQL = Symbol('DRIZZLE_MYSQL')
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const client = new PrismaSqliteClient({
-        datasourceUrl: configService.get('DRIZZLE_SQLITE_FILE'),
+        datasourceUrl: configService.get('DRIZZLE_DB_FILE_NAME'),
       })
       await client.$connect()
       return client
