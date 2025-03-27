@@ -27,7 +27,6 @@ const defaultConfig = {
 
   MYSQL_CONNECTION_URL: 'mysql://nest_db_typeorm:9AWwCAQhAgUtlQZg@mysql.sqlpub.com:3306/nest_db_typeorm',
   SQLITE_DB_FILE_NAME: 'sqlite-dev.db',
-
 }
 
 type ConfigType = typeof defaultConfig
