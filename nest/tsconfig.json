@@ -19,5 +19,8 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": false,
     "skipLibCheck": true
-  }
+  },
+  "exclude": [
+    "src/declares/build.d.ts"
+  ]
 }

@@ -5,6 +5,6 @@
     "Typeorm"
   ],
   "files.associations": {
-    ".apprc": "jsonc"
+    ".serverrc*": "jsonc"
   }
 }

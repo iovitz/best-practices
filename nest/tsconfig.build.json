@@ -4,6 +4,10 @@
     "node_modules",
     "test",
     "dist",
-    "**/*spec.ts"
+    "**/*spec.ts",
+    "migrations/*",
+    "./*.ts",
+    "./*.json",
+    "./src/declares/dev.d.ts"
   ]
 }
