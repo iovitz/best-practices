@@ -3,5 +3,8 @@
     "IOREDIS",
     "PSWD",
     "Typeorm"
-  ]
+  ],
+  "files.associations": {
+    ".apprc": "jsonc"
+  }
 }
