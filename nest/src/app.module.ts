@@ -12,11 +12,10 @@ import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promis
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
 import { InjectUtilsMiddleware } from './aspects/middlewares/inject-utils/inject-utils.middleware'
 import { DatabaseModule } from './database/database.module'
-import { HomeModule } from './home/home.module'
 import { ServicesModule } from './services/services.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
-import { DemoModule } from './demo/demo.module'
 import { DesensitizeInterceptor } from './aspects/interceptors/desensitize/desensitize.interceptor'
+import { FuturesModule } from './futures/futures.module'
 
 @Module({
   imports: [
@@ -29,8 +28,7 @@ import { DesensitizeInterceptor } from './aspects/interceptors/desensitize/desen
       max: 10,
     }),
     SocketV1Module,
-    HomeModule,
-    DemoModule,
+    FuturesModule,
   ],
   providers: [
     {
