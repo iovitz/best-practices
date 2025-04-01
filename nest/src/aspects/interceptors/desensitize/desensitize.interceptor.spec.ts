@@ -1,7 +1,7 @@
-import { DesensitizeInterceptor } from './desensitize.interceptor';
+import { DesensitizeInterceptor } from './desensitize.interceptor'
 
-describe('DesensitizeInterceptor', () => {
+describe('desensitizeInterceptor', () => {
   it('should be defined', () => {
-    expect(new DesensitizeInterceptor()).toBeDefined();
-  });
-});
+    expect(new DesensitizeInterceptor()).toBeDefined()
+  })
+})

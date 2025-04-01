@@ -1,6 +1,6 @@
-import { defineConfig } from 'drizzle-kit'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
+import { defineConfig } from 'drizzle-kit'
 import { AppConfig } from 'src/shared/config'
 
 export default defineConfig({

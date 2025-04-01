@@ -1,7 +1,7 @@
-import { join } from 'node:path'
-import { AppConfig } from './src/shared/config'
-import { DataSource } from 'typeorm'
 import { homedir } from 'node:os'
+import { join } from 'node:path'
+import { DataSource } from 'typeorm'
+import { AppConfig } from './src/shared/config'
 
 export default new DataSource({
   type: 'better-sqlite3',

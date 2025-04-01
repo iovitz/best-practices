@@ -1,11 +1,11 @@
-import 'src/shared/bootstrap/inject-global' // 注入全局变量
+import { VersioningType } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { BootstrapFn, startNestApp } from './shared/bootstrap'
 import { AppConfig } from './shared/config'
-import { VersioningType } from '@nestjs/common'
+import 'src/shared/bootstrap/inject-global' // 注入全局变量
 
 const bootstrap: BootstrapFn = async (appTracer) => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

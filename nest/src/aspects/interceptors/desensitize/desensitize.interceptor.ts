@@ -8,7 +8,7 @@ export class DesensitizeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => {
-        if(data) {
+        if (data) {
           DesensitizationDataFields.forEach(d => delete data[d])
         }
         return data

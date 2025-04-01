@@ -1,5 +1,5 @@
-import { AppConfig } from './src/shared/config'
 import { DataSource } from 'typeorm'
+import { AppConfig } from './src/shared/config'
 
 export default new DataSource({
   type: 'mysql',

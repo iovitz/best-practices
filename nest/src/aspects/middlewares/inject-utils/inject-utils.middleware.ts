@@ -1,8 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common'
-import { ulid } from 'ulid'
+import { customAlphabet } from 'nanoid'
 import { CookieKeys } from 'src/shared/constans/cookie'
 import { Tracer } from 'src/shared/tracer/tracer'
-import { customAlphabet } from 'nanoid'
 
 @Injectable()
 export class InjectUtilsMiddleware implements NestMiddleware {

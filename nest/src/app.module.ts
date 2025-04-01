@@ -7,15 +7,15 @@ import { Tracer } from 'src/shared/tracer/tracer'
 import { BadRequestFilter } from './aspects/filters/bad-request/bad-request.filter'
 import { DefaultFilter } from './aspects/filters/default/default.filter'
 import { HttpFilter } from './aspects/filters/http/http.filter'
+import { DesensitizeInterceptor } from './aspects/interceptors/desensitize/desensitize.interceptor'
 import { LogInterceptor } from './aspects/interceptors/log/log.interceptor'
 import { PreparePromiseInterceptor } from './aspects/interceptors/prepare-promise/prepare-promise.interceptor'
 import { ResponseFormatterInterceptor } from './aspects/interceptors/response-formatter/response-formatter.interceptor'
 import { InjectUtilsMiddleware } from './aspects/middlewares/inject-utils/inject-utils.middleware'
 import { DatabaseModule } from './database/database.module'
+import { FuturesModule } from './futures/futures.module'
 import { ServicesModule } from './services/services.module'
 import { SocketV1Module } from './socketv1/socketv1.module'
-import { DesensitizeInterceptor } from './aspects/interceptors/desensitize/desensitize.interceptor'
-import { FuturesModule } from './futures/futures.module'
 
 @Module({
   imports: [

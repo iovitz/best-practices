@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsInt, IsNumberString, IsString, Length, Min } from 'class-validator'
+import { IsInt, IsString, Length, Min } from 'class-validator'
 import { PaginationDto } from 'src/shared/dto/dto'
 
 export class GetDemoParamsDTO {

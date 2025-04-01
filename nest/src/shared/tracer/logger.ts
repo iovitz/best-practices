@@ -1,5 +1,6 @@
-import path, { join } from 'node:path'
+import { homedir } from 'node:os'
 
+import path, { join } from 'node:path'
 import ansis from 'ansis'
 import { isEmpty, isNil, omit } from 'lodash'
 import { stringify } from 'safe-stable-stringify'
@@ -8,7 +9,6 @@ import { LEVEL, MESSAGE, SPLAT } from 'triple-beam'
 import { createLogger, format, transports } from 'winston'
 import { ErrorContext, Format, FormatedContext, LogContext, LogInfo } from './tracer.types'
 import 'winston-daily-rotate-file'
-import { homedir } from 'node:os'
 
 const ERROR = Symbol('ERROR')
 
@@ -59,7 +59,6 @@ export function createRootLogger() {
               timestamp,
               level,
               message,
-              pid,
               name,
               tracerId,
               scope,
