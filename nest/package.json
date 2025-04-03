@@ -74,6 +74,7 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "safe-stable-stringify": "2.5.0",
+    "snowflake-id": "^1.1.0",
     "socket.io": "4.8.1",
     "statuses": "2.0.1",
     "superagent": "10.2.0",
@@ -81,7 +82,6 @@
     "triple-beam": "1.4.1",
     "typeorm": "0.3.21",
     "ua-parser-js": "2.0.2",
-    "ulid": "2.3.0",
     "winston": "3.17.0",
     "winston-daily-rotate-file": "5.0.0"
   },
