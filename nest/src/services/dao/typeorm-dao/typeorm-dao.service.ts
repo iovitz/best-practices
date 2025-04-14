@@ -1,3 +1,4 @@
+import { TwitterSnowflake } from '@sapphire/snowflake'
 import { Repository } from 'typeorm'
 
 interface EntityWithID {
@@ -6,6 +7,9 @@ interface EntityWithID {
 
 export abstract class TypeormDAOService<T extends EntityWithID> {
   abstract entity: Repository<T>
+  getSnowflakeID() {
+    return TwitterSnowflake.generate().toString()
+  }
 
   create(...args: Parameters< Repository<T>['create']>) {
     return this.entity.create(...args)
